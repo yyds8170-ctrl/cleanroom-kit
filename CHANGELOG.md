@@ -11,3 +11,7 @@
 - 跨平台浏览器探测与启动（`browser.py`），支持 Chrome/Edge/Chromium。
 - 项目脚手架（`scaffold.py` + `templates/web`），内嵌 PolyForm 条款与许可证生成。
 - 统一 CLI（`crk`/`crk.cmd`，无需安装）与 9 项核心测试。
+
+### 修复
+- 测试资产打包进 `tests/fixtures/`，测试完全自包含，不再依赖仓库外文件。
+- 修正 CI 中 `init` 命令参数写法（位置参数与 `--dir` 区分）。

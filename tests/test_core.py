@@ -10,7 +10,9 @@ sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser  # noqa: E402
 
-ASSET = ROOT.parent / "测试" / "capture-example" / "screenshot-1280.png"
+FIXTURES = ROOT / "tests" / "fixtures"
+ASSET = FIXTURES / "page-1280x900.png"
+OTHER = FIXTURES / "other-480x760.png"
 
 
 class TestPNG(unittest.TestCase):
@@ -31,11 +33,9 @@ class TestCompare(unittest.TestCase):
         self.assertTrue(r["bg_match"])
 
     def test_size_mismatch_raises(self):
-        with tempfile.TemporaryDirectory():
-            # 不同尺寸的真实截图应触发 ValueError
-            snake_png = ROOT.parent / "测试" / "rebuild-snake" / "evidence" / "snake-initial.png"
-            with self.assertRaises(ValueError):
-                compare.compare_images(ASSET, snake_png)
+        # 不同尺寸的真实截图应触发 ValueError
+        with self.assertRaises(ValueError):
+            compare.compare_images(ASSET, OTHER)
 
 
 class TestLicense(unittest.TestCase):

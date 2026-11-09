@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: bin/crk doctor
-      - run: bin/crk init /tmp/demo --desc "smoke"
+      - run: bin/crk init demo --dir /tmp/demo --desc "smoke"
       - name: 校验生成项目带许可证
         run: grep -q "PolyForm Noncommercial License 1.0.0" /tmp/demo/LICENSE
 
@@ -42,7 +42,7 @@ jobs:
         id: setup-chrome
       - name: 生成站点并启动静态服务
         run: |
-          bin/crk init /tmp/site demo-site
+          bin/crk init demo-site --dir /tmp/site
           cd /tmp/site && python -m http.server 8060 &
           sleep 3
       - name: CLI 设备模拟截图
