@@ -1,0 +1,6 @@
+#!/bin/sh
+# cleanroom-kit 启动器（macOS/Linux）。无需安装，直接调用。
+ROOT=$(cd "$(dirname "$0")/.." && pwd)
+PY="${PYTHON:-python3}"
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+exec "$PY" -m crkit "$@"

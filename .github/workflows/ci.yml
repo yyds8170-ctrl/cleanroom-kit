@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit:
+    name: 核心单元测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m unittest tests.test_core -v
+
+  cli-smoke:
+    name: CLI 冒烟（doctor/init）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: bin/crk doctor
+      - run: bin/crk init /tmp/demo --desc "smoke"
+      - name: 校验生成项目带许可证
+        run: grep -q "PolyForm Noncommercial License 1.0.0" /tmp/demo/LICENSE
+
+  e2e:
+    name: 端到端（shot + compare）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+      - name: 生成站点并启动静态服务
+        run: |
+          bin/crk init /tmp/site demo-site
+          cd /tmp/site && python -m http.server 8060 &
+          sleep 3
+      - name: CLI 设备模拟截图
+        env:
+          CRK_BROWSER: "${{ steps.setup-chrome.outputs.chrome-path }}"
+        run: bin/crk shot --url http://127.0.0.1:8060/ --out /tmp/shot.png --width 390 --height 844 --mobile --port 9350
+      - name: 像素自对照（应零差异）
+        run: bin/crk compare --orig /tmp/shot.png --rebuild /tmp/shot.png
