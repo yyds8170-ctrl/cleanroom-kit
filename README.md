@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![python](https://img.shields.io/badge/python-3.8%2B%20%7C%20stdlib%20only-lightgrey.svg)](#零依赖与跨平台)
-[![test](https://img.shields.io/badge/tests-17%20passing-brightgreen.svg)](#测试)
+[![test](https://img.shields.io/badge/tests-22%20passing-brightgreen.svg)](#测试)
 [![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#零依赖与跨平台)
 
 一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包。它只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「**取证 → 实现 → 对照 → 验证**」的完整闭环。
@@ -66,7 +66,7 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 | `init` | 从模板创建项目 | `name` `--dir` `--desc` `--force` |
 | `shot` | 设备模拟截图 | `--url` `--out` `--width` `--height` `--mobile` |
 | `inspect` | DOM 取证（设计 token / 元素坐标 / 调色板） | `--url` `--out` `--width` `--height` `--mobile` |
-| `compare` | 像素对照并量化差异，可输出差异热图 | `--orig` `--rebuild` `--max-diff` `--diff-out` |
+| `compare` | 像素对照并量化差异，可输出差异热图 | `--orig` `--rebuild` `--max-diff` `--threshold` `--crop` `--diff-out` |
 | `license` | 生成 PolyForm 许可证 | `name` `--dir` `--note` |
 | `browser` | 启动调试浏览器 | `--port` `--url` `--show` |
 
@@ -95,7 +95,7 @@ cleanroom-kit/
 │   └── license.py           # 许可证生成
 ├── templates/web/           # 项目模板
 ├── data/                    # 内嵌 PolyForm 标准条款
-└── tests/test_core.py       # 核心测试（17 项）
+└── tests/test_core.py       # 核心测试（22 项）
 ```
 
 ## 示例项目
@@ -112,7 +112,7 @@ cleanroom-kit/
 ## 测试
 
 ```bash
-python3 -m unittest tests.test_core -v   # 17 项，覆盖 PNG/对照/取证/脚手架/许可证
+python3 -m unittest tests.test_core -v   # 22 项，覆盖 PNG/归一化/对照/裁剪/取证/脚手架/许可证
 ```
 
 ## 许可证

@@ -1,23 +1,46 @@
 """零依赖像素对照：基于 pngio，量化两张截图的差异。"""
-from .pngio import read_png, write_png
+from .pngio import read_png_rgb, write_png
 
 
-def _corner_bg(w, h, c, px):
-    pts = [
-        (px[(y * w + x) * c:(y * w + x) * c + 3])
-        for x, y in [(5, 5), (w - 5, 5), (5, h - 5), (w - 5, h - 5)]
-    ]
+def _load_pair(orig_path, rebuild_path, crop=False):
+    """读取并归一化为 RGB。尺寸不一致时，crop=True 裁剪到共同最小区域。"""
+    w1, h1, a = read_png_rgb(orig_path)
+    w2, h2, b = read_png_rgb(rebuild_path)
+    if (w1, h1) != (w2, h2):
+        if not crop:
+            raise ValueError(
+                f"尺寸不一致：原版 {w1}x{h1}  vs 复刻 {w2}x{h2}，"
+                "请统一视口，或加 --crop 裁剪到共同区域"
+            )
+        cw, ch = min(w1, w2), min(h1, h2)
+        a = _crop_rgb(a, w1, h1, cw, ch)
+        b = _crop_rgb(b, w2, h2, cw, ch)
+        w1, h1 = cw, ch
+    return w1, h1, a, b
+
+
+def _crop_rgb(px, w, h, cw, ch):
+    out = bytearray(cw * ch * 3)
+    for y in range(ch):
+        src = y * w * 3
+        out[y * cw * 3:y * cw * 3 + cw * 3] = px[src:src + cw * 3]
+    return out
+
+
+def _corner_bg(w, h, px):
+    raw = [(5, 5), (w - 5, 5), (5, h - 5), (w - 5, h - 5)]
+    coords = sorted({
+        (min(max(x, 0), w - 1), min(max(y, 0), h - 1)) for x, y in raw
+    })
+    pts = [px[(y * w + x) * 3:(y * w + x) * 3 + 3] for x, y in coords]
     return tuple(sorted(ch[i] for ch in pts)[len(pts) // 2] for i in range(3))
 
 
-def compare_images(orig_path, rebuild_path, threshold=20):
-    w1, h1, c1, a = read_png(orig_path)
-    w2, h2, c2, b = read_png(rebuild_path)
-    if (w1, h1) != (w2, h2):
-        raise ValueError(f"尺寸不一致：原版 {w1}x{h1} vs 复刻 {w2}x{h2}，请先统一视口")
+def compare_images(orig_path, rebuild_path, threshold=20, crop=False):
+    w1, h1, a, b = _load_pair(orig_path, rebuild_path, crop=crop)
 
-    bg1 = _corner_bg(w1, h1, c1, a)
-    bg2 = _corner_bg(w2, h2, c2, b)
+    bg1 = _corner_bg(w1, h1, a)
+    bg2 = _corner_bg(w1, h1, b)
 
     n = w1 * h1
     total_diff = 0
@@ -36,7 +59,6 @@ def compare_images(orig_path, rebuild_path, threshold=20):
             if col > content_max:
                 content_max = col
 
-    # 内容列（基于与各自背景的差异）
     def content_cols(px, bg):
         lo, hi = w1, -1
         for i in range(n):
@@ -58,12 +80,9 @@ def compare_images(orig_path, rebuild_path, threshold=20):
     }
 
 
-def build_diff_image(orig_path, rebuild_path, threshold=20):
+def build_diff_image(orig_path, rebuild_path, threshold=20, crop=False):
     """返回 (width, height, rgb)。差异像素标红，一致区域灰化（保留原版上下文）。"""
-    w1, h1, _, a = read_png(orig_path)
-    w2, h2, _, b = read_png(rebuild_path)
-    if (w1, h1) != (w2, h2):
-        raise ValueError(f"尺寸不一致：原版 {w1}x{h1} vs 复刻 {w2}x{h2}，请先统一视口")
+    w1, h1, a, b = _load_pair(orig_path, rebuild_path, crop=crop)
     n = w1 * h1
     out = bytearray(n * 3)
     for i in range(n):
@@ -77,8 +96,8 @@ def build_diff_image(orig_path, rebuild_path, threshold=20):
     return w1, h1, out
 
 
-def write_diff_image(orig_path, rebuild_path, out_path, threshold=20):
-    w, h, rgb = build_diff_image(orig_path, rebuild_path, threshold)
+def write_diff_image(orig_path, rebuild_path, out_path, threshold=20, crop=False):
+    w, h, rgb = build_diff_image(orig_path, rebuild_path, threshold, crop)
     write_png(out_path, w, h, rgb)
     return out_path
 

@@ -2,6 +2,18 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.3.0] - 2026-11-10
+
+### 新增
+- `pngio.read_png_rgb` 统一归一化：灰度/RGBA/灰度+alpha 自动转 RGB，RGBA 按 alpha 合成到白底，兼容各类截图格式。
+- `compare --threshold`：单像素差异判定阈值可配置（默认 20）。
+- `compare --crop`：两张图尺寸不一致时裁剪到共同最小区域，而非直接报错。
+- 5 项单元测试（RGBA/灰度/透明合成、裁剪对齐、阈值），核心测试增至 22 项。
+
+### 修复
+- 修正 alpha 合成公式（此前不透明像素会被错误地洗白）。
+- 修复小尺寸图片在背景采样时的越界问题，采样点自动 clamp 到有效范围。
+
 ## [1.2.0] - 2026-11-10
 
 ### 新增

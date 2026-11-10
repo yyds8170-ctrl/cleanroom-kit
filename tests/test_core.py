@@ -1,9 +1,11 @@
 """cleanroom-kit 核心测试（unittest，标准库，零依赖）。"""
 import json
 import os
+import struct
 import sys
 import tempfile
 import unittest
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -14,6 +16,25 @@ from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
 OTHER = FIXTURES / "other-480x760.png"
+
+
+def _write_raw_png(path, w, h, color_type, channels, pixels):
+    """构造 8 位、非隔行 PNG（用于测试 RGBA/灰度等非 RGB 格式）。"""
+    def chunk(ct, data):
+        block = ct + data
+        return struct.pack(">I", len(data)) + block + struct.pack(
+            ">I", zlib.crc32(block) & 0xFFFFFFFF)
+    stride = w * channels
+    raw = bytearray()
+    for y in range(h):
+        raw.append(0)
+        raw.extend(pixels[y * stride:(y + 1) * stride])
+    ihdr = struct.pack(">IIBBBBB", w, h, 8, color_type, 0, 0, 0)
+    with open(path, "wb") as f:
+        f.write(b"\x89PNG\r\n\x1a\n")
+        f.write(chunk(b"IHDR", ihdr))
+        f.write(chunk(b"IDAT", zlib.compress(bytes(raw))))
+        f.write(chunk(b"IEND", b""))
 
 
 class TestPNG(unittest.TestCase):
@@ -39,6 +60,33 @@ class TestPNG(unittest.TestCase):
             with self.assertRaises(ValueError):
                 pngio.write_png(Path(d) / "x.png", 2, 2, bytearray([1, 2, 3]))
 
+    def test_rgb_normalizes_rgba_opaque(self):
+        with tempfile.TemporaryDirectory() as d:
+            # 2x1 不透明 RGBA
+            pix = bytearray([10, 20, 30, 255, 40, 50, 60, 255])
+            p = Path(d) / "rgba.png"
+            _write_raw_png(p, 2, 1, 6, 4, pix)
+            w, h, rgb = pngio.read_png_rgb(p)
+            self.assertEqual((w, h), (2, 1))
+            self.assertEqual(bytes(rgb), bytes([10, 20, 30, 40, 50, 60]))
+
+    def test_rgb_normalizes_grayscale(self):
+        with tempfile.TemporaryDirectory() as d:
+            pix = bytearray([0, 128, 255])  # 3x1 灰度
+            p = Path(d) / "gray.png"
+            _write_raw_png(p, 3, 1, 0, 1, pix)
+            w, h, rgb = pngio.read_png_rgb(p)
+            self.assertEqual(bytes(rgb), bytes([0, 0, 0, 128, 128, 128, 255, 255, 255]))
+
+    def test_rgba_semi_transparent_composited_white(self):
+        with tempfile.TemporaryDirectory() as d:
+            # 黑色、alpha=0（全透明）→ 合成白底应为 255
+            pix = bytearray([0, 0, 0, 0])
+            p = Path(d) / "a0.png"
+            _write_raw_png(p, 1, 1, 6, 4, pix)
+            _, _, rgb = pngio.read_png_rgb(p)
+            self.assertEqual(bytes(rgb), bytes([255, 255, 255]))
+
 
 class TestCompare(unittest.TestCase):
     def test_identical_images(self):
@@ -51,6 +99,30 @@ class TestCompare(unittest.TestCase):
         # 不同尺寸的真实截图应触发 ValueError
         with self.assertRaises(ValueError):
             compare.compare_images(ASSET, OTHER)
+
+    def test_crop_aligns_mismatched_sizes(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([10, 10, 10] * 6)   # 3x2
+            b = bytearray([10, 10, 10] * 4)   # 2x2
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, 3, 2, a)
+            pngio.write_png(pb, 2, 2, b)
+            r = compare.compare_images(pa, pb, crop=True)
+            self.assertEqual(r["size"], (2, 2))  # 裁剪到共同最小区域
+            w, h, _ = compare.build_diff_image(pa, pb, crop=True)
+            self.assertEqual((w, h), (2, 2))
+
+    def test_threshold_changes_detection(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([10, 10, 10] * 2)
+            b = bytearray([10, 10, 10, 25, 10, 10])  # 单像素总差 15
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, 2, 1, a)
+            pngio.write_png(pb, 2, 1, b)
+            strict = compare.compare_images(pa, pb, threshold=10)   # 15>10 算差异
+            loose = compare.compare_images(pa, pb, threshold=30)    # 15<=30 不算
+            self.assertGreater(strict["diff_ratio_pct"], 0.0)
+            self.assertEqual(loose["diff_ratio_pct"], 0.0)
 
     def test_diff_image_identical_has_no_red(self):
         w, h, rgb = compare.build_diff_image(ASSET, ASSET)

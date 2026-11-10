@@ -46,10 +46,11 @@ def cmd_shot(a):
 
 
 def cmd_compare(a):
-    r = compare_images(a.orig, a.rebuild)
+    r = compare_images(a.orig, a.rebuild, threshold=a.threshold, crop=a.crop)
     print(format_report(r))
     if a.diff_out:
-        compare.write_diff_image(a.orig, a.rebuild, a.diff_out)
+        compare.write_diff_image(a.orig, a.rebuild, a.diff_out,
+                                 threshold=a.threshold, crop=a.crop)
         print(f"差异热图已保存：{a.diff_out}")
     if r["diff_ratio_pct"] > a.max_diff:
         print(f"差异 {r['diff_ratio_pct']:.1f}% 超过阈值 {a.max_diff}%", file=sys.stderr)
@@ -107,6 +108,10 @@ def build_parser():
     s = sub.add_parser("compare", help="像素对照")
     s.add_argument("--orig", required=True); s.add_argument("--rebuild", required=True)
     s.add_argument("--max-diff", type=float, default=10.0)
+    s.add_argument("--threshold", type=int, default=20,
+                   help="单像素 RGB 差值判定阈值（默认 20）")
+    s.add_argument("--crop", action="store_true",
+                   help="尺寸不一致时裁剪到共同最小区域")
     s.add_argument("--diff-out", help="差异热图输出路径（差异像素标红）")
     s.set_defaults(func=cmd_compare)
 

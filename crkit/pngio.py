@@ -95,6 +95,35 @@ def pixel_at(pixels, channels, width, x, y):
     return tuple(pixels[i:i + channels])
 
 
+def read_png_rgb(path):
+    """读取任意支持的 PNG 并归一化为 (width, height, rgb_bytearray)。
+    灰度扩展为 RGB；RGBA/灰度+alpha 按 alpha 合成到白底，避免半透明误差。
+    """
+    w, h, c, px = read_png(path)
+    if c == 3:
+        return w, h, px
+    n = w * h
+    out = bytearray(n * 3)
+    if c == 1:  # 灰度
+        for i in range(n):
+            v = px[i]
+            out[i * 3:i * 3 + 3] = bytes((v, v, v))
+    elif c == 2:  # 灰度 + alpha
+        for i in range(n):
+            v, a = px[i * 2], px[i * 2 + 1]
+            comp = 255 - (255 - v) * a // 255
+            out[i * 3:i * 3 + 3] = bytes((comp, comp, comp))
+    elif c == 4:  # RGBA，合成到白底
+        for i in range(n):
+            r, g, b, a = px[i * 4], px[i * 4 + 1], px[i * 4 + 2], px[i * 4 + 3]
+            out[i * 3] = 255 - (255 - r) * a // 255
+            out[i * 3 + 1] = 255 - (255 - g) * a // 255
+            out[i * 3 + 2] = 255 - (255 - b) * a // 255
+    else:
+        raise ValueError(f"无法归一化通道数 {c}")
+    return w, h, out
+
+
 def _chunk(ctype, data):
     block = ctype + data
     return struct.pack(">I", len(data)) + block + struct.pack(">I", zlib.crc32(block) & 0xFFFFFFFF)
