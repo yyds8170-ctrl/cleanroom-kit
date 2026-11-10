@@ -2,6 +2,13 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.2.0] - 2026-11-10
+
+### 新增
+- 纯标准库 PNG 编码（`pngio.write_png`，zlib/struct），与解码器支持完整往返。
+- `compare --diff-out` 可视化差异热图：差异像素标红、一致区域灰化，直观定位需要修正的位置。
+- 4 项单元测试（PNG 往返/异常、差异热图），核心测试增至 17 项。
+
 ## [1.1.0] - 2026-11-10
 
 ### 新增

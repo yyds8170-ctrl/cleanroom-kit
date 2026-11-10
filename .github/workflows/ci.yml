@@ -51,6 +51,10 @@ jobs:
         run: bin/crk shot --url http://127.0.0.1:8060/ --out /tmp/shot.png --width 390 --height 844 --mobile --port 9350
       - name: 像素自对照（应零差异）
         run: bin/crk compare --orig /tmp/shot.png --rebuild /tmp/shot.png
+      - name: 差异热图（自对照应无红色）
+        run: |
+          bin/crk compare --orig /tmp/shot.png --rebuild /tmp/shot.png --diff-out /tmp/diff.png
+          python3 -c "import sys;sys.path.insert(0,'.');from crkit import pngio;w,h,c,px=pngio.read_png('/tmp/diff.png');red=sum(1 for i in range(w*h) if px[i*3]==255 and px[i*3+1]==0 and px[i*3+2]==0);assert red==0,red;print('差异热图 OK，红色像素 0')"
       - name: DOM 取证（inspect）
         run: |
           bin/crk inspect --url http://127.0.0.1:8060/ --out /tmp/inspect.json --width 390 --height 844 --mobile --port 9351

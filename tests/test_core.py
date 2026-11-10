@@ -25,6 +25,20 @@ class TestPNG(unittest.TestCase):
     def test_roundtrip_paeth(self):
         self.assertEqual(ws and pngio._paeth(10, 20, 5) in range(0, 256), True)
 
+    def test_write_png_roundtrip(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = bytearray([255, 0, 0, 0, 255, 0, 0, 0, 255, 10, 20, 30])
+            p = Path(d) / "rt.png"
+            pngio.write_png(p, 2, 2, src)
+            w, h, c, back = pngio.read_png(p)
+            self.assertEqual((w, h, c), (2, 2, 3))
+            self.assertEqual(bytes(back), bytes(src))
+
+    def test_write_png_bad_length_raises(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(ValueError):
+                pngio.write_png(Path(d) / "x.png", 2, 2, bytearray([1, 2, 3]))
+
 
 class TestCompare(unittest.TestCase):
     def test_identical_images(self):
@@ -37,6 +51,28 @@ class TestCompare(unittest.TestCase):
         # 不同尺寸的真实截图应触发 ValueError
         with self.assertRaises(ValueError):
             compare.compare_images(ASSET, OTHER)
+
+    def test_diff_image_identical_has_no_red(self):
+        w, h, rgb = compare.build_diff_image(ASSET, ASSET)
+        reds = sum(
+            1 for i in range(w * h)
+            if rgb[i * 3] == 255 and rgb[i * 3 + 1] == 0 and rgb[i * 3 + 2] == 0
+        )
+        self.assertEqual(reds, 0)
+
+    def test_diff_image_marks_difference_red(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([10, 10, 10] * 4)
+            b = bytearray([10, 10, 10] * 4)
+            b[0:3] = bytearray([250, 250, 250])  # 第一个像素制造差异
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, 2, 2, a)
+            pngio.write_png(pb, 2, 2, b)
+            w, h, rgb = compare.build_diff_image(pa, pb)
+            self.assertEqual(tuple(rgb[0:3]), (255, 0, 0))  # 差异像素标红
+            out = Path(d) / "diff.png"
+            compare.write_diff_image(pa, pb, out)
+            self.assertTrue(out.exists())
 
 
 class TestLicense(unittest.TestCase):

@@ -5,6 +5,7 @@ import sys
 
 from . import browser as bmod
 from . import inspect as imod
+from . import compare
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -47,6 +48,9 @@ def cmd_shot(a):
 def cmd_compare(a):
     r = compare_images(a.orig, a.rebuild)
     print(format_report(r))
+    if a.diff_out:
+        compare.write_diff_image(a.orig, a.rebuild, a.diff_out)
+        print(f"差异热图已保存：{a.diff_out}")
     if r["diff_ratio_pct"] > a.max_diff:
         print(f"差异 {r['diff_ratio_pct']:.1f}% 超过阈值 {a.max_diff}%", file=sys.stderr)
         sys.exit(1)
@@ -102,7 +106,9 @@ def build_parser():
 
     s = sub.add_parser("compare", help="像素对照")
     s.add_argument("--orig", required=True); s.add_argument("--rebuild", required=True)
-    s.add_argument("--max-diff", type=float, default=10.0); s.set_defaults(func=cmd_compare)
+    s.add_argument("--max-diff", type=float, default=10.0)
+    s.add_argument("--diff-out", help="差异热图输出路径（差异像素标红）")
+    s.set_defaults(func=cmd_compare)
 
     s = sub.add_parser("inspect", help="DOM 取证（设计 token/元素坐标/调色板）")
     s.add_argument("--url", required=True); s.add_argument("--out", default="inspect.json")

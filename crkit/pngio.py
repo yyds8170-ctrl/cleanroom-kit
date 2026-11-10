@@ -93,3 +93,27 @@ def read_png(path):
 def pixel_at(pixels, channels, width, x, y):
     i = (y * width + x) * channels
     return tuple(pixels[i:i + channels])
+
+
+def _chunk(ctype, data):
+    block = ctype + data
+    return struct.pack(">I", len(data)) + block + struct.pack(">I", zlib.crc32(block) & 0xFFFFFFFF)
+
+
+def write_png(path, width, height, rgb_bytes, compress=9):
+    """写入 8 位、非隔行 RGB（color type 2）PNG。rgb_bytes 长度需为 width*height*3。"""
+    if len(rgb_bytes) != width * height * 3:
+        raise ValueError("像素数据长度与宽高不匹配")
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    stride = width * 3
+    raw = bytearray()
+    for y in range(height):
+        raw.append(0)  # filter type 0（None）
+        raw.extend(rgb_bytes[y * stride:(y + 1) * stride])
+    idat = zlib.compress(bytes(raw), compress)
+    with open(path, "wb") as f:
+        f.write(PNG_SIG)
+        f.write(_chunk(b"IHDR", ihdr))
+        f.write(_chunk(b"IDAT", idat))
+        f.write(_chunk(b"IEND", b""))
+    return path
