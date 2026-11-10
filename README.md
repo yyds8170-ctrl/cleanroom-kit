@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![python](https://img.shields.io/badge/python-3.8%2B%20%7C%20stdlib%20only-lightgrey.svg)](#零依赖与跨平台)
-[![test](https://img.shields.io/badge/tests-9%20passing-brightgreen.svg)](#测试)
+[![test](https://img.shields.io/badge/tests-13%20passing-brightgreen.svg)](#测试)
 
 一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包：只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「取证 → 手工实现 → 量化对照 → 验证」的完整闭环。
 
@@ -29,6 +29,9 @@ bin/crk init my-app --desc "我的复刻项目"
 # 对目标页面做精确视口截图（设备模拟，自动启停浏览器）
 bin/crk shot --url https://example.com --out evidence/orig.png --width 1280 --height 900
 
+# DOM 取证：提取设计 token、元素坐标与调色板（输出 JSON）
+bin/crk inspect --url https://example.com --out evidence/inspect.json --width 1280 --height 900
+
 # 实现后，与原版做像素级量化对照
 bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png
 ```
@@ -40,6 +43,7 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png
 | `doctor` | 环境自检 | — |
 | `init` | 从模板创建项目 | `name` `--dir` `--desc` `--force` |
 | `shot` | 设备模拟截图 | `--url` `--out` `--width` `--height` `--mobile` |
+| `inspect` | DOM 取证（设计 token/元素坐标/调色板） | `--url` `--out` `--width` `--height` `--mobile` |
 | `compare` | 像素对照并量化差异 | `--orig` `--rebuild` `--max-diff` |
 | `license` | 生成 PolyForm 许可证 | `name` `--dir` `--note` |
 | `browser` | 启动调试浏览器 | `--port` `--url` `--show` |
@@ -48,7 +52,7 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png
 
 ## 标准工作流
 
-1. **取证**：用 `shot` 在统一视口下截图，配合 CDP 读取外部可见的布局、颜色与交互（不读取源码）。
+1. **取证**：用 `shot` 在统一视口下截图，用 `inspect` 提取设计 token、元素坐标与调色板（只读取外部可见信息，不读取源码）。
 2. **实现**：用 `init` 起项目，编码代理仅依据取证证据从零写出可运行代码。
 3. **对照**：用 `compare` 量化背景色、平均像素差、差异占比与内容列位置。
 4. **验证**：迭代修正直到差异收敛，所有检查可重复运行。
@@ -63,12 +67,13 @@ cleanroom-kit/
 │   ├── pngio.py             # PNG 解码（zlib，替代图像库）
 │   ├── ws.py / cdp.py       # WebSocket + CDP 客户端
 │   ├── browser.py           # 浏览器探测与启动
+│   ├── inspect.py           # DOM 取证（设计 token/元素坐标/调色板）
 │   ├── compare.py           # 像素对照
 │   ├── scaffold.py          # 脚手架
 │   └── license.py           # 许可证生成
 ├── templates/web/           # 项目模板
 ├── data/                    # 内嵌 PolyForm 标准条款
-└── tests/test_core.py       # 核心测试（9 项）
+└── tests/test_core.py       # 核心测试（13 项）
 ```
 
 ## 与 craft-anything 的关系

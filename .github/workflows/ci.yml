@@ -51,3 +51,7 @@ jobs:
         run: bin/crk shot --url http://127.0.0.1:8060/ --out /tmp/shot.png --width 390 --height 844 --mobile --port 9350
       - name: 像素自对照（应零差异）
         run: bin/crk compare --orig /tmp/shot.png --rebuild /tmp/shot.png
+      - name: DOM 取证（inspect）
+        run: |
+          bin/crk inspect --url http://127.0.0.1:8060/ --out /tmp/inspect.json --width 390 --height 844 --mobile --port 9351
+          python3 -c "import json;d=json.load(open('/tmp/inspect.json'));assert d['viewport']['width']==390;assert len(d['elements'])>0;print('inspect 端到端 OK，元素',len(d['elements']))"

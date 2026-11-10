@@ -2,6 +2,16 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.1.0] - 2026-11-10
+
+### 新增
+- `inspect` 取证命令（`crkit/inspect.py`）：通过 CDP 提取页面设计 token（计算样式、字体、字号、颜色、行高）、关键元素的精确 bounding box 与去重调色板，输出结构化 JSON。
+- inspect 单元测试 4 项（模拟 CDP 会话，不依赖真实浏览器），核心测试增至 13 项。
+- CI 端到端加入 inspect 取证验证。
+
+### 变更
+- 补全「取证 → 实现 → 对照 → 验证」闭环中的 DOM 取证环节，与文档承诺一致。
+
 ## [1.0.0] - 2026-11-09
 
 ### 新增

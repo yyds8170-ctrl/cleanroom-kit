@@ -1,4 +1,5 @@
 """cleanroom-kit 核心测试（unittest，标准库，零依赖）。"""
+import json
 import os
 import sys
 import tempfile
@@ -8,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from crkit import pngio, compare, license as lic, scaffold, ws, browser  # noqa: E402
+from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -72,6 +73,51 @@ class TestBrowserDetect(unittest.TestCase):
     def test_find_returns_path_or_none(self):
         r = browser.find_browser()
         self.assertTrue(r is None or os.path.exists(r))
+
+
+class FakeCDP:
+    """模拟 CDP 会话，避免单元测试依赖真实浏览器。"""
+    def __init__(self, payload):
+        self._payload = payload
+        self.navigated = None
+
+    def navigate(self, url, wait=1.0):
+        self.navigated = url
+
+    def evaluate(self, js):
+        return self._payload
+
+
+class TestInspect(unittest.TestCase):
+    def _payload(self):
+        return {
+            "url": "http://x",
+            "viewport": {"width": 390, "height": 844},
+            "tokens": {"body": {"color": "rgb(0, 0, 0)"}},
+            "elements": [{"tag": "h1", "box": {"x": 1, "y": 2, "width": 10, "height": 20}}],
+            "palette": ["rgb(0, 0, 0)"],
+        }
+
+    def test_inspect_page_with_navigation(self):
+        fake = FakeCDP(self._payload())
+        data = insp.inspect_page(fake, url="http://x", wait=0)
+        self.assertEqual(fake.navigated, "http://x")
+        self.assertEqual(data["elements"][0]["box"]["width"], 10)
+
+    def test_bad_payload_raises(self):
+        with self.assertRaises(RuntimeError):
+            insp.inspect_page(FakeCDP(["not", "dict"]))
+
+    def test_write_report_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "inspect.json"
+            insp.write_report(self._payload(), out)
+            loaded = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(loaded["viewport"]["width"], 390)
+
+    def test_js_constant_contains_key_apis(self):
+        self.assertIn("getComputedStyle", insp.INSPECT_JS)
+        self.assertIn("getBoundingClientRect", insp.INSPECT_JS)
 
 
 if __name__ == "__main__":

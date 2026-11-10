@@ -4,6 +4,7 @@ import shutil
 import sys
 
 from . import browser as bmod
+from . import inspect as imod
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -51,6 +52,22 @@ def cmd_compare(a):
         sys.exit(1)
 
 
+def cmd_inspect(a):
+    r = bmod.launch(port=a.port, headless=True)
+    try:
+        c = CDP(get_page_ws("127.0.0.1", a.port))
+        c.set_device_metrics(a.width, a.height, mobile=a.mobile)
+        data = imod.inspect_page(c, a.url, wait=a.wait)
+        imod.write_report(data, a.out)
+        c.close()
+        print(
+            f"已取证：{a.out}（{len(data.get('elements', []))} 个元素，"
+            f"{len(data.get('palette', []))} 种颜色）"
+        )
+    finally:
+        r["process"].terminate()
+
+
 def cmd_doctor(a):
     import platform
     print("运行环境：", platform.platform())
@@ -86,6 +103,12 @@ def build_parser():
     s = sub.add_parser("compare", help="像素对照")
     s.add_argument("--orig", required=True); s.add_argument("--rebuild", required=True)
     s.add_argument("--max-diff", type=float, default=10.0); s.set_defaults(func=cmd_compare)
+
+    s = sub.add_parser("inspect", help="DOM 取证（设计 token/元素坐标/调色板）")
+    s.add_argument("--url", required=True); s.add_argument("--out", default="inspect.json")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9342); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5); s.set_defaults(func=cmd_inspect)
 
     sub.add_parser("doctor", help="环境自检").set_defaults(func=cmd_doctor)
     return p
