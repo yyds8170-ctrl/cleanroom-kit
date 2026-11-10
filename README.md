@@ -3,36 +3,58 @@
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![python](https://img.shields.io/badge/python-3.8%2B%20%7C%20stdlib%20only-lightgrey.svg)](#零依赖与跨平台)
 [![test](https://img.shields.io/badge/tests-17%20passing-brightgreen.svg)](#测试)
+[![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#零依赖与跨平台)
 
-一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包：只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「取证 → 手工实现 → 量化对照 → 验证」的完整闭环。
+一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包。它只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「**取证 → 实现 → 对照 → 验证**」的完整闭环。
 
 > **维护者 / Maintainer：洋洋（[yyds8170-ctrl](https://github.com/yyds8170-ctrl)）**
 >
 > 本工具包为独立实现，不包含任何第三方源码或二进制，与相关第三方**无隶属、无背书、无赞助关系**。仅可对你拥有或已获授权的目标使用。详见 [NOTICE](NOTICE)。
 
+## 目录
+
+- [特性亮点](#特性亮点)
+- [零依赖与跨平台](#零依赖与跨平台)
+- [快速开始](#快速开始)
+- [命令清单](#命令清单)
+- [标准工作流](#标准工作流)
+- [目录结构](#目录结构-1)
+- [示例项目](#示例项目)
+- [与 craft-anything 的关系](#与-craft-anything-的关系)
+- [测试](#测试)
+- [许可证](#许可证)
+
+## 特性亮点
+
+- **零安装**：仅依赖 Python 3.8+ 标准库，无需 `pip`、Docker 或任何外部二进制。
+- **DOM 取证**：一键提取设计 token、计算样式、元素精确坐标与调色板，输出结构化 JSON。
+- **设备模拟**：基于标准 CDP 精确控制视口尺寸，移动端/桌面端一致。
+- **量化对照**：背景色、平均像素差、差异占比、内容列位置，并可生成**差异热图**直观定位。
+- **跨平台**：自动探测系统 Chrome / Edge / Chromium，三大操作系统行为一致。
+
 ## 零依赖与跨平台
 
 - 核心仅使用 **Python 3.8+ 标准库**，无需 `pip install`、无需 Docker/Electron。
 - 浏览器自动化通过标准 **Chrome DevTools Protocol** 驱动系统已装的 Chrome / Edge / Chromium，Windows、macOS、Linux 行为一致。
-- 浏览器路径自动探测，也可用环境变量 `CRK_BROWSER` 指定。
-- 无需安装即可运行：clone 后直接调用 `bin/crk`（macOS/Linux）或 `bin/crk.cmd`（Windows）。
+- 浏览器路径自动探测，也可用环境变量 `CRK_BROWSER` 显式指定。
+- clone 后直接运行，无需安装：`bin/crk`（macOS/Linux）或 `bin/crk.cmd`（Windows）。
 
 ## 快速开始
 
 ```bash
-# 环境自检：确认 Python、浏览器与可选运行时
+# 1. 环境自检：确认 Python、浏览器与可选运行时
 bin/crk doctor
 
-# 从模板创建一个新项目（自动带 LICENSE/NOTICE/VERSION）
+# 2. 从模板创建一个新项目（自动带 LICENSE/NOTICE/VERSION）
 bin/crk init my-app --desc "我的复刻项目"
 
-# 对目标页面做精确视口截图（设备模拟，自动启停浏览器）
+# 3. 对目标页面做精确视口截图（设备模拟，自动启停浏览器）
 bin/crk shot --url https://example.com --out evidence/orig.png --width 1280 --height 900
 
-# DOM 取证：提取设计 token、元素坐标与调色板（输出 JSON）
+# 4. DOM 取证：提取设计 token、元素坐标与调色板（输出 JSON）
 bin/crk inspect --url https://example.com --out evidence/inspect.json --width 1280 --height 900
 
-# 实现后，与原版做像素级量化对照，并生成差异热图（差异像素标红）
+# 5. 实现后做像素级对照，并生成差异热图（差异像素标红）
 bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-out evidence/diff.png
 ```
 
@@ -43,7 +65,7 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 | `doctor` | 环境自检 | — |
 | `init` | 从模板创建项目 | `name` `--dir` `--desc` `--force` |
 | `shot` | 设备模拟截图 | `--url` `--out` `--width` `--height` `--mobile` |
-| `inspect` | DOM 取证（设计 token/元素坐标/调色板） | `--url` `--out` `--width` `--height` `--mobile` |
+| `inspect` | DOM 取证（设计 token / 元素坐标 / 调色板） | `--url` `--out` `--width` `--height` `--mobile` |
 | `compare` | 像素对照并量化差异，可输出差异热图 | `--orig` `--rebuild` `--max-diff` `--diff-out` |
 | `license` | 生成 PolyForm 许可证 | `name` `--dir` `--note` |
 | `browser` | 启动调试浏览器 | `--port` `--url` `--show` |
@@ -55,7 +77,7 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 1. **取证**：用 `shot` 在统一视口下截图，用 `inspect` 提取设计 token、元素坐标与调色板（只读取外部可见信息，不读取源码）。
 2. **实现**：用 `init` 起项目，编码代理仅依据取证证据从零写出可运行代码。
 3. **对照**：用 `compare` 量化背景色、平均像素差、差异占比与内容列位置。
-4. **验证**：迭代修正直到差异收敛，所有检查可重复运行。
+4. **验证**：迭代修正直到差异收敛，所有检查均可重复运行。
 
 ## 目录结构
 
@@ -68,7 +90,7 @@ cleanroom-kit/
 │   ├── ws.py / cdp.py       # WebSocket + CDP 客户端
 │   ├── browser.py           # 浏览器探测与启动
 │   ├── inspect.py           # DOM 取证（设计 token/元素坐标/调色板）
-│   ├── compare.py           # 像素对照
+│   ├── compare.py           # 像素对照与差异热图
 │   ├── scaffold.py          # 脚手架
 │   └── license.py           # 许可证生成
 ├── templates/web/           # 项目模板
@@ -76,9 +98,22 @@ cleanroom-kit/
 └── tests/test_core.py       # 核心测试（17 项）
 ```
 
+## 示例项目
+
+工具包附带两个完整的参考示例，展示从取证到达标的全过程：
+
+- [craft-example-rebuild](https://github.com/yyds8170-ctrl/craft-example-rebuild)：静态网站复刻（HTML/CSS，含响应式与无障碍）。
+- [craft-snake-rebuild](https://github.com/yyds8170-ctrl/craft-snake-rebuild)：带交互逻辑的贪吃蛇（难度、音效、完美通关）。
+
 ## 与 craft-anything 的关系
 
-本工具包可独立使用。若系统已安装 craft-anything（`craft-anything-cli` 在 PATH 中），可将其作为**可选增强**提供更丰富的反汇编/取证能力；未安装时，内置的 CDP 取证与对照能力不受影响。
+本工具包可独立使用。若系统已安装 craft-anything（`craft-anything-cli` 在 PATH 中），可将其作为**可选增强**，提供更丰富的反汇编/取证能力；未安装时，内置的 CDP 取证与对照能力不受影响。
+
+## 测试
+
+```bash
+python3 -m unittest tests.test_core -v   # 17 项，覆盖 PNG/对照/取证/脚手架/许可证
+```
 
 ## 许可证
 
