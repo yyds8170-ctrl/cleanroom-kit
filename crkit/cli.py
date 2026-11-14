@@ -30,9 +30,12 @@ def cmd_license(a):
 
 def cmd_browser(a):
     r = bmod.launch(port=a.port, url=a.url, headless=not a.show)
-    print(f"浏览器已启动：{r['browser']} 调试端口 {r['port']}")
-    if a.show:
-        r["process"].wait()
+    try:
+        print(f"浏览器已启动：{r['browser']} 调试端口 {r['port']}")
+        if a.show:
+            r["process"].wait()
+    finally:
+        bmod.close_session(r)
 
 
 def cmd_shot(a):
@@ -40,14 +43,14 @@ def cmd_shot(a):
     try:
         c = CDP(get_page_ws("127.0.0.1", a.port))
         c.set_device_metrics(a.width, a.height, mobile=a.mobile)
-        c.navigate(a.url, wait=a.wait)
+        c.navigate(a.url, wait=a.wait, timeout=a.timeout)
         data = c.screenshot()
         with open(a.out, "wb") as f:
             f.write(data)
         c.close()
         print(f"已保存截图（{a.width}x{a.height}）：{a.out}（{len(data)} bytes）")
     finally:
-        r["process"].terminate()
+        bmod.close_session(r)
 
 
 def cmd_compare(a):
@@ -67,7 +70,7 @@ def cmd_inspect(a):
     try:
         c = CDP(get_page_ws("127.0.0.1", a.port))
         c.set_device_metrics(a.width, a.height, mobile=a.mobile)
-        data = imod.inspect_page(c, a.url, wait=a.wait)
+        data = imod.inspect_page(c, a.url, wait=a.wait, timeout=a.timeout)
         imod.write_report(data, a.out)
         c.close()
         print(
@@ -75,7 +78,7 @@ def cmd_inspect(a):
             f"{len(data.get('palette', []))} 种颜色）"
         )
     finally:
-        r["process"].terminate()
+        bmod.close_session(r)
 
 
 def cmd_version(a):
@@ -135,7 +138,9 @@ def build_parser():
     s.add_argument("--url", required=True); s.add_argument("--out", default="shot.png")
     s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
     s.add_argument("--port", type=int, default=9341); s.add_argument("--mobile", action="store_true")
-    s.add_argument("--wait", type=float, default=1.5); s.set_defaults(func=cmd_shot)
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_shot)
 
     s = sub.add_parser("compare", help="像素对照")
     s.add_argument("--orig", required=True); s.add_argument("--rebuild", required=True)
@@ -151,7 +156,9 @@ def build_parser():
     s.add_argument("--url", required=True); s.add_argument("--out", default="inspect.json")
     s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
     s.add_argument("--port", type=int, default=9342); s.add_argument("--mobile", action="store_true")
-    s.add_argument("--wait", type=float, default=1.5); s.set_defaults(func=cmd_inspect)
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_inspect)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")
     s.add_argument("--json", action="store_true")
@@ -165,7 +172,11 @@ def build_parser():
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
-    args.func(args)
+    try:
+        args.func(args)
+    except RuntimeError as e:
+        print(f"错误：{e}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

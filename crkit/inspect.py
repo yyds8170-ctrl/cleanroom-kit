@@ -58,10 +58,10 @@ INSPECT_JS = r"""
 """
 
 
-def inspect_page(cdp, url=None, wait=1.5):
+def inspect_page(cdp, url=None, wait=1.5, timeout=15):
     """在已连接的 CDP 会话上执行取证；可先导航到 url。"""
     if url:
-        cdp.navigate(url, wait=wait)
+        cdp.navigate(url, wait=wait, timeout=timeout)
     data = cdp.evaluate(INSPECT_JS)
     if not isinstance(data, dict) or "tokens" not in data:
         raise RuntimeError("取证返回结构异常")

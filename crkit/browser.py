@@ -1,6 +1,7 @@
 """跨平台浏览器探测与启动（标准库）。自动寻找系统 Chrome/Edge/Chromium。"""
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -62,12 +63,21 @@ def json_loads(b):
     return json.loads(b.decode())
 
 
-def launch(port=9340, url="about:blank", headless=True, user_data_dir=None):
+def port_in_use(port, host="127.0.0.1"):
+    """标准库探测端口是否已被占用（能连上即视为占用）。"""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(0.3)
+        return s.connect_ex((host, port)) == 0
+
+
+def launch(port=9340, url="about:blank", headless=True, user_data_dir=None, cleanup=True):
     browser = find_browser()
     if not browser:
         raise RuntimeError(
             "未找到 Chrome/Edge/Chromium。请安装其一，或用环境变量 CRK_BROWSER 指定可执行文件路径。"
         )
+    if port_in_use(port):
+        raise RuntimeError(f"调试端口 {port} 已被占用，请更换 --port 后重试")
     profile = user_data_dir or tempfile.mkdtemp(prefix="crk-profile-")
     args = [
         browser,
@@ -80,4 +90,28 @@ def launch(port=9340, url="about:blank", headless=True, user_data_dir=None):
     args.append(url)
     proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     info = _wait_ready(port, proc=proc)
-    return {"process": proc, "port": port, "browser": browser, "info": info}
+    return {
+        "process": proc,
+        "port": port,
+        "browser": browser,
+        "info": info,
+        "profile": profile,
+        "cleanup": cleanup and user_data_dir is None,
+    }
+
+
+def close_session(session, wait_timeout=3):
+    """统一回收会话：terminate → 等待退出 → 必要时 kill，并清理临时 profile。"""
+    proc = session.get("process")
+    if proc is not None and proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(timeout=wait_timeout)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            try:
+                proc.wait(timeout=wait_timeout)
+            except subprocess.TimeoutExpired:
+                pass
+    if session.get("cleanup") and session.get("profile"):
+        shutil.rmtree(session["profile"], ignore_errors=True)

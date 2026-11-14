@@ -2,6 +2,21 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.5.0] - 2026-11-14
+
+### 新增
+- `browser.port_in_use` 端口预检：启动前探测调试端口，占用时中文报错并建议更换 `--port`。
+- `browser.close_session` 统一会话回收：`terminate` → 等待 3 秒 → 必要时 `kill`，再清理临时 profile；`shot`/`inspect`/`browser` 命令的 finally 全部走该路径。
+- `cdp.wait_for_load`：导航在事件流中等待 `Page.loadEventFired`，超时回退兜底等待；`shot`/`inspect` 新增 `--timeout`（默认 15 秒）透传导航等待上限。
+- WebSocket 续帧重组（opcode 0x0 与前一文本帧拼接）；二进制帧（0x2）抛出明确中文报错，不再静默当文本解码。
+- 5 项单元测试（端口占用探测、占用端口报错、导航事件顺序、续帧重组、二进制帧报错），核心测试增至 31 项。
+
+### 修复
+- 临时 profile 目录启动后从不回收、反复运行堆积：统一在会话关闭时清理（显式指定 `user_data_dir` 时不删除）。
+- 浏览器就绪超时不区分「进程已退出」与「端口未就绪」：补进程返回码判定，报错给出更换端口 / 指定浏览器路径的可操作建议。
+- 大响应分片时续帧拼包失败、二进制帧被静默当文本解码：分别修复为拼接重组与明确中文报错。
+- CLI 运行期异常由裸栈跟踪改为统一中文错误信息，并以退出码 1 结束。
+
 ## [1.4.0] - 2026-11-14
 
 ### 新增

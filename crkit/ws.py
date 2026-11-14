@@ -68,9 +68,11 @@ class WebSocket:
         self.sock.sendall(bytes(header) + masked)
 
     def recv_text(self):
+        buf = b""
         while True:
             b1, b2 = self._recv_exact(2)
             opcode = b1 & 0x0F
+            fin = b1 & 0x80
             length = b2 & 0x7F
             if length == 126:
                 length = struct.unpack(">H", self._recv_exact(2))[0]
@@ -85,7 +87,16 @@ class WebSocket:
                 continue
             if opcode == 0x8:  # close
                 raise ConnectionError("对端关闭连接")
-            return payload.decode("utf-8", errors="replace")
+            if opcode == 0x2:  # 二进制帧
+                raise ConnectionError("收到二进制帧（opcode 0x2），当前 WebSocket 客户端仅支持文本帧")
+            if opcode == 0x1:  # 文本首帧
+                buf = payload
+            elif opcode == 0x0:  # 续帧
+                buf += payload
+            else:
+                raise ConnectionError(f"不支持的帧 opcode {opcode}")
+            if fin:
+                return buf.decode("utf-8", errors="replace")
 
     def _send_pong(self, payload):
         mask_key = os.urandom(4)

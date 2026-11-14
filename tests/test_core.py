@@ -1,6 +1,7 @@
 """cleanroom-kit 核心测试（unittest，标准库，零依赖）。"""
 import json
 import os
+import socket
 import struct
 import sys
 import tempfile
@@ -12,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -184,6 +185,93 @@ class TestBrowserDetect(unittest.TestCase):
         self.assertTrue(r is None or os.path.exists(r))
 
 
+class TestBrowserPort(unittest.TestCase):
+    def test_port_in_use_detects_open_port(self):
+        srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        srv.bind(("127.0.0.1", 0))
+        srv.listen(1)
+        port = srv.getsockname()[1]
+        try:
+            self.assertTrue(browser.port_in_use(port))
+        finally:
+            srv.close()
+        self.assertFalse(browser.port_in_use(port))
+
+    def test_launch_reports_busy_port(self):
+        srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        srv.bind(("127.0.0.1", 0))
+        srv.listen(1)
+        port = srv.getsockname()[1]
+        try:
+            with self.assertRaises(RuntimeError) as ctx:
+                browser.launch(port=port, headless=True)
+            self.assertIn(str(port), str(ctx.exception))
+        finally:
+            srv.close()
+
+
+class _FakeWS:
+    """模拟 WebSocket 会话，按队列回放消息并记录发出的命令。"""
+
+    def __init__(self, messages):
+        self._messages = list(messages)
+        self.sent = []
+        self.sock = type("S", (), {"settimeout": lambda self, t: None})()
+
+    def send_text(self, text):
+        self.sent.append(json.loads(text))
+
+    def recv_text(self):
+        return json.dumps(self._messages.pop(0))
+
+    def close(self):
+        pass
+
+
+class TestCDPNavigate(unittest.TestCase):
+    def test_navigate_waits_for_load_event(self):
+        ws = _FakeWS([
+            {"id": 1, "result": {}},
+            {"id": 2, "result": {}},
+            {"method": "Page.loadEventFired"},
+        ])
+        c = cdpmod.CDP("ws://x", ws=ws)
+        c.navigate("http://x", wait=0, timeout=5)
+        methods = [m["method"] for m in ws.sent]
+        self.assertEqual(methods[0], "Page.enable")
+        self.assertEqual(methods[1], "Page.navigate")
+
+
+def _ws_frame(opcode, payload, fin=True):
+    b1 = (0x80 if fin else 0x00) | opcode
+    return bytes(bytearray([b1, len(payload)])) + payload
+
+
+class TestWSFrames(unittest.TestCase):
+    def test_continuation_frame_reassembled(self):
+        srv, cli = socket.socketpair()
+        w = ws.WebSocket.__new__(ws.WebSocket)
+        w.sock = cli
+        srv.sendall(
+            _ws_frame(0x1, "片段一".encode(), fin=False)
+            + _ws_frame(0x0, "-片段二".encode(), fin=True)
+        )
+        self.assertEqual(w.recv_text(), "片段一-片段二")
+        srv.close()
+        cli.close()
+
+    def test_binary_frame_raises_clear_error(self):
+        srv, cli = socket.socketpair()
+        w = ws.WebSocket.__new__(ws.WebSocket)
+        w.sock = cli
+        srv.sendall(_ws_frame(0x2, b"\x00\x01"))
+        with self.assertRaises(ConnectionError) as ctx:
+            w.recv_text()
+        self.assertIn("二进制帧", str(ctx.exception))
+        srv.close()
+        cli.close()
+
+
 class TestVersion(unittest.TestCase):
     def test_version_matches_VERSION(self):
         self.assertEqual(
@@ -233,7 +321,7 @@ class FakeCDP:
         self._payload = payload
         self.navigated = None
 
-    def navigate(self, url, wait=1.0):
+    def navigate(self, url, wait=1.0, timeout=15):
         self.navigated = url
 
     def evaluate(self, js):
