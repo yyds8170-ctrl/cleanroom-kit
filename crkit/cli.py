@@ -103,8 +103,10 @@ def cmd_inspect(a):
         c = CDP(get_page_ws("127.0.0.1", a.port))
         c.set_device_metrics(a.width, a.height, mobile=a.mobile)
         data = imod.inspect_page(c, a.url, wait=a.wait, timeout=a.timeout,
-                                 full_page=a.full_page)
+                                 full_page=a.full_page, max_text=a.max_text)
         imod.write_report(data, a.out)
+        if a.text_out:
+            imod.write_plaintext(data, a.text_out)
         c.close()
         print(
             f"已取证：{a.out}（{len(data.get('elements', []))} 个元素，"
@@ -194,6 +196,8 @@ def build_parser():
     s.add_argument("--wait", type=float, default=1.5)
     s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
     s.add_argument("--full-page", action="store_true", help="全页坐标（box.y 叠加滚动偏移）")
+    s.add_argument("--text-out", help="纯文本大纲另存路径（.txt）")
+    s.add_argument("--max-text", type=int, default=4000, help="纯文本字符上限（默认 4000）")
     s.set_defaults(func=cmd_inspect)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod, cli  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -371,6 +371,29 @@ class FakeCDP:
         return self._payload
 
 
+class TestColors(unittest.TestCase):
+    def test_parse_hex_rgb_rgba(self):
+        self.assertEqual(colors.parse_color("#fff")["hex"], "#ffffff")
+        self.assertEqual(colors.parse_color("#ff8800")["hex"], "#ff8800")
+        rgb = colors.parse_color("rgb(255, 0, 128)")
+        self.assertEqual(rgb["hex"], "#ff0080")
+        self.assertEqual(rgb["alpha"], 1.0)
+        rgba = colors.parse_color("rgba(10, 20, 30, 0.5)")
+        self.assertEqual(rgba["hex"], "#0a141e")
+        self.assertEqual(rgba["alpha"], 0.5)
+
+    def test_parse_oklch_marks_approx(self):
+        c = colors.parse_color("oklch(60% 0.15 250)")
+        self.assertTrue(c["hex"])
+        self.assertEqual(c["space"], "oklch-approx")
+
+    def test_unparsable_kept_raw(self):
+        c = colors.parse_color("not-a-color")
+        self.assertEqual(c["space"], "raw")
+        self.assertIsNone(c["hex"])
+        self.assertEqual(c["raw"], "not-a-color")
+
+
 class TestInspect(unittest.TestCase):
     def _payload(self):
         return {
@@ -404,6 +427,53 @@ class TestInspect(unittest.TestCase):
 
     def test_fullpage_box_adds_scroll_offset(self):
         self.assertIn("scrollY", insp.INSPECT_JS)
+
+    def _rich_payload(self):
+        p = self._payload()
+        p.update({
+            "links": [{"text": "Learn more", "href": "/x", "target": None}],
+            "images": [{"alt": "logo", "naturalWidth": 100, "naturalHeight": 40,
+                        "box": {"x": 1, "y": 2, "width": 100, "height": 40}}],
+            "headings": [{"level": 1, "text": "标题",
+                          "box": {"x": 1, "y": 2, "width": 100, "height": 20}}],
+            "a11y": {"lang": "en", "images_without_alt": 0,
+                     "landmarks": ["main"], "unnamed_controls": []},
+            "design": {"font_sizes": ["16px"], "font_weights": ["400"],
+                       "fonts": ["sans"], "max_widths": [], "radii": [],
+                       "shadows": [], "spacing": []},
+            "text": "页面可见纯文本",
+        })
+        return p
+
+    def test_report_has_new_sections(self):
+        fake = FakeCDP(self._rich_payload())
+        data = insp.inspect_page(fake, wait=0)
+        self.assertEqual(data["links"][0]["href"], "/x")
+        self.assertEqual(data["headings"][0]["level"], 1)
+        self.assertEqual(data["a11y"]["lang"], "en")
+        self.assertIn("font_sizes", data["design"])
+        self.assertEqual(data["text"], "页面可见纯文本")
+
+    def test_palette_normalized_objects(self):
+        payload = self._payload()
+        payload["palette"] = ["rgba(10, 20, 30, 0.5)"]
+        data = insp.inspect_page(FakeCDP(payload), wait=0)
+        self.assertEqual(data["palette"][0]["hex"], "#0a141e")
+        self.assertEqual(data["palette"][0]["alpha"], 0.5)
+
+    def test_js_collects_links_and_headings(self):
+        self.assertIn("querySelectorAll('a')", insp.INSPECT_JS)
+        self.assertIn("h1,h2,h3,h4,h5,h6", insp.INSPECT_JS)
+        self.assertIn("alt", insp.INSPECT_JS)
+        self.assertIn("header,nav,main,footer,aside,section", insp.INSPECT_JS)
+
+    def test_plaintext_export(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "text.txt"
+            insp.write_plaintext(self._rich_payload(), out)
+            txt = out.read_text(encoding="utf-8")
+            self.assertIn("标题", txt)
+            self.assertIn("页面可见纯文本", txt)
 
 
 if __name__ == "__main__":

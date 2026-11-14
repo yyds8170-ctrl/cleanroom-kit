@@ -1,0 +1,265 @@
+{
+  "url": "https://example.com/",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "tokens": {
+    "body": {
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "color": "rgb(0, 0, 0)",
+      "fontFamily": "system-ui, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "25.6px"
+    }
+  },
+  "elements": [
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "This domain is for use in documentation examples without needing permission. Thi",
+      "box": {
+        "x": 432,
+        "y": 241,
+        "width": 416,
+        "height": 77
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "هذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، ي",
+      "box": {
+        "x": 432,
+        "y": 334,
+        "width": 416,
+        "height": 45
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。",
+      "box": {
+        "x": 432,
+        "y": 393,
+        "width": 416,
+        "height": 45
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "L’usage de ce domaine est réservé à des exemples de documentation, sans autorisa",
+      "box": {
+        "x": 432,
+        "y": 451,
+        "width": 416,
+        "height": 90
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Данный домен предназначен для использования в примерах документации без необходи",
+      "box": {
+        "x": 432,
+        "y": 555,
+        "width": 416,
+        "height": 112
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Este dominio está destinado al uso en ejemplos de documentación sin necesidad de",
+      "box": {
+        "x": 432,
+        "y": 681,
+        "width": 416,
+        "height": 67
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Learn more",
+      "box": {
+        "x": 600,
+        "y": 764,
+        "width": 79,
+        "height": 20
+      },
+      "style": {
+        "color": {
+          "hex": "#0000ee",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    }
+  ],
+  "palette": [
+    {
+      "hex": "#000000",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#eeeeee",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#0000ee",
+      "alpha": 1.0,
+      "space": "rgb"
+    }
+  ],
+  "links": [
+    {
+      "text": "Learn more",
+      "href": "https://iana.org/help/example-domains",
+      "target": null
+    }
+  ],
+  "images": [],
+  "headings": [],
+  "a11y": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "landmarks": [],
+    "unnamed_controls": []
+  },
+  "design": {
+    "font_sizes": [
+      "16px",
+      "14px"
+    ],
+    "font_weights": [
+      "400"
+    ],
+    "fonts": [
+      "Times New Roman",
+      "system-ui"
+    ],
+    "max_widths": [
+      "416px"
+    ],
+    "radii": [],
+    "shadows": [],
+    "spacing": [
+      "-44px",
+      "16px",
+      "14px"
+    ]
+  },
+  "text": "This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes. هذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمراقبة. 该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。 L’usage de ce domaine est réservé à des exemples de documentation, sans autorisation préalable. Il ne s’agit pas d’un service ; son utilisation à des fins de test ou de surveillance est à éviter. Данный домен предназначен для использования в примерах документации без необходимости получения предварительного разрешения. Это не сервис; не рекомендуется его использование для тестирования и мониторинга. Este dominio está destinado al uso en ejemplos de documentación sin necesidad de permiso. Esto no es un servicio; evitar utilizarlo para realizar pruebas o monitoreos. Learn more",
+  "full_page": false
+}

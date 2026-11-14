@@ -2,6 +2,18 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.7.0] - 2026-11-14
+
+### 新增
+- 新增 `crkit/colors.py` 颜色归一化：解析 `#rgb / #rrggbb / #rrggbbaa / rgb() / rgba() / oklch()`，统一输出 `{hex, alpha, space}`；oklch 标 `oklch-approx`，不可解析保留原值标 `raw`。
+- 取证报告扩充 `links / images / headings / a11y / design / text` 段：链接文本与目标、图片 alt 与自然尺寸、标题大纲、无障碍清单（语言/缺 alt 图片/地标/未命名控件）、字号字重字体圆角阴影间距分桶、可见纯文本。
+- `inspect` 新增 `--text-out`（纯文本大纲另存 `.txt`）与 `--max-text`（纯文本字符上限，默认 4000）。
+- 7 项单元测试（颜色 hex/rgb/rgba、oklch 标注、raw 兜底、新段透传、色板归一化、JS 采集关键选择器、纯文本导出），核心测试增至 43 项。
+
+### 修复
+- 色板直接保留裸 `rgb()/rgba()/oklch()` 字符串：统一归一化为结构化 hex token，元素文字色与背景色同步处理。
+- `rgb()/rgba()` 仅兼容逗号分隔：补空格分隔与斜杠 alpha 写法解析。
+
 ## [1.6.0] - 2026-11-14
 
 ### 新增
