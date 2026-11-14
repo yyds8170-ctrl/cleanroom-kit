@@ -104,7 +104,10 @@ INSPECT_JS = r"""
     if (cs.maxWidth && cs.maxWidth !== 'none') sets.max_widths.add(cs.maxWidth);
     if (cs.borderRadius && cs.borderRadius !== '0px') sets.radii.add(cs.borderRadius);
     if (cs.boxShadow && cs.boxShadow !== 'none') sets.shadows.add(cs.boxShadow);
-    if (cs.marginTop && cs.marginTop !== '0px') sets.spacing.add(cs.marginTop);
+    for (const prop of ['margin', 'marginTop', 'marginBottom', 'padding', 'paddingTop', 'paddingBottom']) {
+      const v = cs[prop];
+      if (v && v !== '0px' && v !== '0px 0px') sets.spacing.add(v);
+    }
   }
   out.design = Object.fromEntries(
     Object.entries(sets).map(([k, v]) => [k, [...v].slice(0, 20)])

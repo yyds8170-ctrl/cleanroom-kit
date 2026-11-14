@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "name": "开始后遮罩隐藏",
+      "pass": false,
+      "expected": {
+        "text": "已开始"
+      },
+      "actual": "已暂停",
+      "reason": null
+    }
+  ],
+  "all_pass": false,
+  "note": "归档自 v1.9.0 失败样例：改坏断言值应判 FAIL 并非零退出"
+}

@@ -39,14 +39,22 @@ def _crop_rgb(px, w, h, cw, ch):
 
 
 def _resize_rgb(px, w, h, tw, th):
-    """最近邻缩放对齐到目标尺寸（纯标准库，不引第三方图像库）。"""
+    """等比缩放对齐到目标画布（保持宽高比，居中留边，最近邻，纯标准库）。"""
+    fill = _corner_bg(w, h, px)
+    scale = min(tw / w, th / h)
+    nw = max(1, min(tw, round(w * scale)))
+    nh = max(1, min(th, round(h * scale)))
     out = bytearray(tw * th * 3)
-    for y in range(th):
-        sy = min(h - 1, y * h // th)
-        for x in range(tw):
-            sx = min(w - 1, x * w // tw)
+    for i in range(tw * th):
+        out[i * 3:i * 3 + 3] = bytes(fill)
+    ox = (tw - nw) // 2
+    oy = (th - nh) // 2
+    for y in range(nh):
+        sy = min(h - 1, y * h // nh)
+        for x in range(nw):
+            sx = min(w - 1, x * w // nw)
             src = (sy * w + sx) * 3
-            dst = (y * tw + x) * 3
+            dst = ((oy + y) * tw + (ox + x)) * 3
             out[dst:dst + 3] = px[src:src + 3]
     return out
 

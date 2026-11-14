@@ -29,13 +29,18 @@ class CDP:
         self._id += 1
         return self._id
 
+    def _cache_event(self, msg):
+        self._event_cache.append(msg)
+        if len(self._event_cache) > 32:  # 上限防止长会话缓存无限增长
+            self._event_cache.pop(0)
+
     def send(self, method, params=None):
         mid = self._next_id()
         self.ws.send_text(json.dumps({"id": mid, "method": method, "params": params or {}}))
         while True:
             msg = json.loads(self.ws.recv_text())
             if "id" not in msg:
-                self._event_cache.append(msg)
+                self._cache_event(msg)
                 continue
             if msg.get("id") == mid:
                 if "error" in msg:
@@ -63,8 +68,12 @@ class CDP:
             while time.time() < deadline:
                 msg = json.loads(self.ws.recv_text())
                 if "id" not in msg:
-                    self._event_cache.append(msg)
+                    self._cache_event(msg)
                 if msg.get("method") == "Page.loadEventFired":
+                    for i, cached in enumerate(self._event_cache):
+                        if cached is msg:
+                            self._event_cache.pop(i)
+                            break
                     return True
         except (socket.timeout, OSError, ConnectionError):
             return False

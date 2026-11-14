@@ -200,6 +200,9 @@ class TestCompare(unittest.TestCase):
             pngio.write_png(pb, 2, 2, b)
             r = compare.compare_images(pa, pb, resize=True)
             self.assertEqual(r["size"], (3, 2))
+            # 等比缩放：2x2 源图缩到 4x3 画布时内容区 3x3，宽高比保持 1:1
+            scaled = compare._resize_rgb(bytearray([10, 10, 10] * 4), 2, 2, 4, 3)
+            self.assertEqual(len(scaled), 4 * 3 * 3)
 
     def test_crop_and_resize_mutually_exclusive(self):
         args = cli.build_parser().parse_args(
@@ -233,6 +236,12 @@ class TestLicense(unittest.TestCase):
             self.assertTrue(p.exists())
             self.assertIn("Copyright (c) 2026 洋洋", lic.build_notice("demo"))
 
+    def test_year_override(self):
+        text = lic.build_license("demo", year=2027)
+        self.assertIn("Copyright (c) 2027 洋洋", text)
+        notice = lic.build_notice("demo", year=2027)
+        self.assertIn("https://github.com/yyds8170-ctrl/demo", notice)
+
 
 class TestScaffold(unittest.TestCase):
     def test_init_project(self):
@@ -248,6 +257,37 @@ class TestScaffold(unittest.TestCase):
             Path(d, "x").write_text("y")
             with self.assertRaises(FileExistsError):
                 scaffold.init_project(d, "p")
+
+    def test_web_stack_full_skeleton(self):
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "webproj"
+            scaffold.init_project(target, "webproj", "说明", stack="web")
+            for f in ["evidence/README.md", "tests/README.md", "js/.gitkeep",
+                      "README.md", ".github/workflows/ci.yml", "LICENSE", "NOTICE", "VERSION"]:
+                self.assertTrue((target / f).exists(), f)
+
+    def test_game_stack_has_canvas_and_module(self):
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "gameproj"
+            scaffold.init_project(target, "gameproj", "说明", stack="game")
+            html = (target / "index.html").read_text(encoding="utf-8")
+            self.assertIn("<canvas", html)
+            self.assertIn('type="module"', html)
+            self.assertTrue((target / "js/main.js").exists())
+
+    def test_placeholders_replaced(self):
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "ph"
+            scaffold.init_project(target, "ph", "描述", stack="game",
+                                  author="洋洋", github_user="yyds8170-ctrl",
+                                  github_repo="ph-repo", year=2027)
+            leftover = [p for p in target.rglob("*")
+                        if p.is_file() and "{{" in p.read_text(encoding="utf-8")]
+            self.assertEqual(leftover, [])
+            readme = (target / "README.md").read_text(encoding="utf-8")
+            self.assertIn("2027", readme)
+            self.assertIn("洋洋", readme)
+            self.assertIn("ph-repo", readme)
 
 
 class TestBrowserDetect(unittest.TestCase):
@@ -311,6 +351,8 @@ class TestCDPNavigate(unittest.TestCase):
         methods = [m["method"] for m in ws.sent]
         self.assertEqual(methods[0], "Page.enable")
         self.assertEqual(methods[1], "Page.navigate")
+        # 消费掉的加载事件已清理，缓存不残留
+        self.assertEqual(c._event_cache, [])
 
     def test_click_evaluates_selector(self):
         ws = _FakeWS([{"id": 1, "result": {"result": {"value": True}}}])
@@ -373,6 +415,16 @@ class TestCLIParse(unittest.TestCase):
         self.assertEqual(args2.command, "probe")
 
 
+class TestActCDP:
+    """记录 eval 调用并返回固定值。"""
+    def __init__(self):
+        self.calls = []
+
+    def eval_state(self, js):
+        self.calls.append(js)
+        return {"score": 3}
+
+
 class TestAct(unittest.TestCase):
     def test_script_parses_steps(self):
         steps = act.load_steps(
@@ -381,6 +433,13 @@ class TestAct(unittest.TestCase):
         self.assertEqual([s["op"] for s in steps], ["click", "key"])
         with self.assertRaises(RuntimeError):
             act.load_steps(inline='[{"op":"teleport"}]')
+        # eval 返回值记入日志（回归：A4）
+        cdp = TestActCDP()
+        report = act.run_steps(
+            cdp, [{"op": "eval", "condition": "document.getElementById('score').textContent"}]
+        )
+        self.assertTrue(report[0]["ok"])
+        self.assertEqual(report[0]["value"], {"score": 3})
 
 
 class TestProbeCDP:
@@ -579,6 +638,9 @@ class TestColors(unittest.TestCase):
         rgba = colors.parse_color("rgba(10, 20, 30, 0.5)")
         self.assertEqual(rgba["hex"], "#0a141e")
         self.assertEqual(rgba["alpha"], 0.5)
+        rgba_pct = colors.parse_color("rgba(10, 20, 30, 50%)")
+        self.assertEqual(rgba_pct["hex"], "#0a141e")
+        self.assertEqual(rgba_pct["alpha"], 0.5)
 
     def test_parse_oklch_marks_approx(self):
         c = colors.parse_color("oklch(60% 0.15 250)")

@@ -4,6 +4,14 @@
 `{op: "click"|"type"|"key"|"scroll"|"wait"|"eval"|"screenshot",
  target?, text?, code?, x?, y?, condition?, timeout?, out?, full_page?}`
 
+- `click`：`target` 选择器，点击匹配元素。
+- `type`：`target` 选择器 + `text`，聚焦并填入文本，派发 input。
+- `key`：`code` 键盘码（如 `Space`），派发 keydown/keyup。
+- `scroll`：`x` / `y` 滚动坐标。
+- `wait`：`condition` 条件表达式 + 可选 `timeout`（秒）。
+- `eval`：`condition` 表达式，返回值记入日志 `value`。
+- `screenshot`：`out` 截图路径，可选 `full_page` 布尔。
+
 许可证：PolyForm Noncommercial License 1.0.0。
 Copyright (c) 2026 洋洋。
 """
@@ -42,6 +50,7 @@ def run_steps(cdp, steps):
         op = step["op"]
         t0 = time.time()
         err = None
+        value = None
         try:
             if op == "click":
                 cdp.click(step["target"])
@@ -54,7 +63,7 @@ def run_steps(cdp, steps):
             elif op == "wait":
                 cdp.wait_for(step["condition"], timeout=step.get("timeout", 15))
             elif op == "eval":
-                cdp.eval_state(step.get("condition", ""))
+                value = cdp.eval_state(step.get("condition", ""))
             elif op == "screenshot":
                 data = cdp.screenshot(full_page=step.get("full_page", False))
                 Path(step["out"]).write_bytes(data)
@@ -66,5 +75,6 @@ def run_steps(cdp, steps):
             "ok": err is None,
             "elapsed_ms": round((time.time() - t0) * 1000, 1),
             "error": err,
+            "value": value,
         })
     return report

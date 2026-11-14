@@ -20,13 +20,20 @@ from .version import get_version
 
 
 def cmd_init(a):
-    target = a.dir or a.name
-    p = init_project(target, a.name, a.desc or "", force=a.force)
-    print(f"已创建项目：{p}")
+    if a.dir:
+        target = Path(a.dir)
+        name = a.name
+    else:
+        target = Path(a.name)
+        name = target.name
+    p = init_project(target, name, a.desc or "", stack=a.stack,
+                     author=a.author, github_user=a.github_user,
+                     github_repo=a.github_repo, year=a.year, force=a.force)
+    print(f"已创建项目：{p}（栈：{a.stack}）")
 
 
 def cmd_license(a):
-    p = write_license(a.dir or ".", a.name, a.note or "")
+    p = write_license(a.dir or ".", a.name, a.note or "", year=a.year)
     print(f"已生成 LICENSE：{p}")
 
 
@@ -249,10 +256,16 @@ def build_parser():
 
     s = sub.add_parser("init", help="从模板创建新项目")
     s.add_argument("name"); s.add_argument("--dir"); s.add_argument("--desc")
+    s.add_argument("--stack", choices=["web", "game"], default="web")
+    s.add_argument("--author", default="洋洋")
+    s.add_argument("--github-user", default="yyds8170-ctrl")
+    s.add_argument("--github-repo", help="仓库名（默认与项目名一致）")
+    s.add_argument("--year", type=int, help="许可证年份（默认当前年）")
     s.add_argument("--force", action="store_true"); s.set_defaults(func=cmd_init)
 
     s = sub.add_parser("license", help="生成 PolyForm 许可证")
     s.add_argument("name"); s.add_argument("--dir", default="."); s.add_argument("--note")
+    s.add_argument("--year", type=int, help="许可证年份（默认当前年）")
     s.set_defaults(func=cmd_license)
 
     s = sub.add_parser("browser", help="启动调试浏览器")

@@ -77,7 +77,11 @@ def parse_color(value):
                      for t in part.split() if t]
             r, g, b = (_parse_channel(parts[0]), _parse_channel(parts[1]),
                        _parse_channel(parts[2]))
-            alpha = float(parts[3]) if len(parts) > 3 else 1.0
+            if len(parts) > 3:
+                alpha_raw = parts[3]
+                alpha = float(alpha_raw.rstrip("%")) / 100 if alpha_raw.endswith("%") else float(alpha_raw)
+            else:
+                alpha = 1.0
         except (ValueError, IndexError):
             return {"hex": None, "alpha": 1.0, "space": "raw", "raw": s}
         return {"hex": f"#{_clamp_byte(r):02x}{_clamp_byte(g):02x}{_clamp_byte(b):02x}",

@@ -2,6 +2,21 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.11.0] - 2026-11-14
+
+### 新增
+- `init --stack web|game`：新增 `templates/game/`（canvas + ES module 占位）；两栈均自带 `evidence/ tests/ js/ README.md`、CI 工作流与 `.gitignore` 骨架。
+- 占位符扩充为 `{{PROJECT}} {{DESCRIPTION}} {{YEAR}} {{AUTHOR}} {{GITHUB_USER}} {{GITHUB_REPO}}`；`license --year` / `init --year` 年份可配（默认当前年），NOTICE 补 GitHub 项目 URL 行。
+- 4 项单元测试（web 全骨架、game 画布与模块脚本、占位符无残留、许可证年份覆盖与 NOTICE URL），核心测试增至 64 项。
+
+### 修复
+- `compare --resize` 改为等比缩放对齐（保持宽高比、居中留边），不再拉伸变形。
+- `rgba(...,50%)` 百分比 alpha 换算为 0~1。
+- 取证 spacing 补采 margin / padding 主要方向，不再只取 `marginTop`。
+- `act` 的 `eval` 返回值写入逐步日志 `value` 字段；补全 `screenshot` 动作 schema 文档。
+- CDP 事件缓存设上限并在事件消费后清理，避免长会话内存增长。
+- 归档 v1.9.0 失败样例断言报告；核实根 LICENSE / NOTICE 署名无 `NOASSERTION` 占位。
+
 ## [1.10.0] - 2026-11-14
 
 ### 新增
