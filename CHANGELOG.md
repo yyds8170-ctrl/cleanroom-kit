@@ -2,6 +2,19 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.6.0] - 2026-11-14
+
+### 新增
+- `cdp.page_dimensions` 探测整页 `scrollWidth / scrollHeight`；`screenshot(full_page=True)` 隐藏滚动条、按整页尺寸同步设备度量并传 `captureBeyondViewport: true`。
+- `shot` 新增 `--full-page` 全页长图开关与 `--widths` 逗号分隔多宽度批量出图，输出名 `<主名>-<宽度>.png`，stdout 回写实际 PNG 尺寸。
+- `inspect` 新增 `--full-page` 透传；取证 JS 元素 `box.y` 叠加 `window.scrollY`，报告记录 `full_page` 标记。
+- 5 项单元测试（全页参数、多宽度输出名、scrollY 坐标、长图往返尺寸、CLI 新参数解析），核心测试增至 36 项。
+
+### 修复
+- 截图只截当前视口，长页面漏掉首屏以下内容：补齐全页跨视口截图与全页坐标换算。
+- 全页截图前滚动条挤压内容列：截图前隐藏滚动条。
+- 非法 `--widths` 宽度（非整数 / 非正数）抛裸栈：改为中文报错并在 CLI 层统一退出码 1。
+
 ## [1.5.0] - 2026-11-14
 
 ### 新增

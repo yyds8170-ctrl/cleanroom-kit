@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -88,6 +88,14 @@ class TestPNG(unittest.TestCase):
             _write_raw_png(p, 1, 1, 6, 4, pix)
             _, _, rgb = pngio.read_png_rgb(p)
             self.assertEqual(bytes(rgb), bytes([255, 255, 255]))
+
+    def test_readback_fullpage_dimensions(self):
+        with tempfile.TemporaryDirectory() as d:
+            pix = bytearray([10, 20, 30] * 200 * 1200)
+            p = Path(d) / "long.png"
+            pngio.write_png(p, 200, 1200, pix)
+            w, h, c, _ = pngio.read_png(p)
+            self.assertEqual((w, h, c), (200, 1200, 3))
 
 
 class TestCompare(unittest.TestCase):
@@ -241,6 +249,41 @@ class TestCDPNavigate(unittest.TestCase):
         self.assertEqual(methods[0], "Page.enable")
         self.assertEqual(methods[1], "Page.navigate")
 
+    def test_fullpage_screenshot_passes_capture_beyond_viewport(self):
+        import base64
+        b64 = base64.b64encode(b"x").decode()
+        ws = _FakeWS([
+            {"id": 1, "result": {"result": {"value": {"w": 1280, "h": 2400}}}},
+            {"id": 2, "result": {}},
+            {"id": 3, "result": {}},
+            {"id": 4, "result": {"data": b64}},
+        ])
+        c = cdpmod.CDP("ws://x", ws=ws)
+        c.screenshot(full_page=True)
+        shot = [m for m in ws.sent if m["method"] == "Page.captureScreenshot"][0]
+        self.assertTrue(shot["params"]["captureBeyondViewport"])
+
+
+class TestShotOutput(unittest.TestCase):
+    def test_widths_expands_multiple_outputs(self):
+        self.assertEqual(
+            cli._expand_outputs("site.png", [1280, 390]),
+            ["site-1280.png", "site-390.png"],
+        )
+        with self.assertRaises(RuntimeError):
+            cli._parse_widths("abc")
+        with self.assertRaises(RuntimeError):
+            cli._parse_widths("-100")
+
+
+class TestCLIParse(unittest.TestCase):
+    def test_shot_parser_registers_new_flags(self):
+        args = cli.build_parser().parse_args(
+            ["shot", "--url", "http://x", "--full-page", "--widths", "1280,390"]
+        )
+        self.assertTrue(args.full_page)
+        self.assertEqual(args.widths, "1280,390")
+
 
 def _ws_frame(opcode, payload, fin=True):
     b1 = (0x80 if fin else 0x00) | opcode
@@ -358,6 +401,9 @@ class TestInspect(unittest.TestCase):
     def test_js_constant_contains_key_apis(self):
         self.assertIn("getComputedStyle", insp.INSPECT_JS)
         self.assertIn("getBoundingClientRect", insp.INSPECT_JS)
+
+    def test_fullpage_box_adds_scroll_offset(self):
+        self.assertIn("scrollY", insp.INSPECT_JS)
 
 
 if __name__ == "__main__":

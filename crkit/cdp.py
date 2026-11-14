@@ -75,8 +75,24 @@ class CDP:
             raise RuntimeError(f"JS 执行异常：{r['exceptionDetails']}")
         return r.get("result", {}).get("value")
 
-    def screenshot(self):
-        r = self.send("Page.captureScreenshot", {"format": "png"})
+    def page_dimensions(self):
+        """探测整页滚动尺寸（scrollWidth / scrollHeight）。"""
+        return self.evaluate(
+            "({w: document.documentElement.scrollWidth, "
+            "h: document.documentElement.scrollHeight})"
+        ) or {"w": 0, "h": 0}
+
+    def screenshot(self, full_page=False):
+        params = {"format": "png"}
+        if full_page:
+            dims = self.page_dimensions()
+            self.send("Emulation.setScrollbarsHidden", {"hidden": True})
+            self.send("Emulation.setDeviceMetricsOverride", {
+                "width": dims["w"], "height": dims["h"],
+                "deviceScaleFactor": 1, "mobile": False,
+            })
+            params["captureBeyondViewport"] = True
+        r = self.send("Page.captureScreenshot", params)
         import base64
         return base64.b64decode(r["data"])
 

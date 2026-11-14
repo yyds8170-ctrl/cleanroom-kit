@@ -22,6 +22,7 @@ INSPECT_JS = r"""
   };
   const selectors = ['h1','h2','h3','h4','p','a','button','input','img','ul','ol','section','header','footer','nav','main'];
   const seen = new Set();
+  const sy = window.scrollY || 0;
   for (const el of document.querySelectorAll(selectors.join(','))) {
     if (seen.has(el)) continue;
     seen.add(el);
@@ -34,7 +35,7 @@ INSPECT_JS = r"""
       className: (typeof el.className === 'string' && el.className) ? el.className : null,
       text: (el.textContent || '').trim().slice(0, 80),
       box: {
-        x: Math.round(rect.x), y: Math.round(rect.y),
+        x: Math.round(rect.x), y: Math.round(rect.y + sy),
         width: Math.round(rect.width), height: Math.round(rect.height)
       },
       style: {
@@ -58,13 +59,14 @@ INSPECT_JS = r"""
 """
 
 
-def inspect_page(cdp, url=None, wait=1.5, timeout=15):
+def inspect_page(cdp, url=None, wait=1.5, timeout=15, full_page=False):
     """在已连接的 CDP 会话上执行取证；可先导航到 url。"""
     if url:
         cdp.navigate(url, wait=wait, timeout=timeout)
     data = cdp.evaluate(INSPECT_JS)
     if not isinstance(data, dict) or "tokens" not in data:
         raise RuntimeError("取证返回结构异常")
+    data["full_page"] = full_page
     return data
 
 

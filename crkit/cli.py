@@ -10,6 +10,7 @@ from . import browser as bmod
 from . import cleanwords
 from . import inspect as imod
 from . import compare
+from . import pngio
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -38,17 +39,48 @@ def cmd_browser(a):
         bmod.close_session(r)
 
 
+def _parse_widths(text):
+    if not text:
+        return []
+    out = []
+    for x in text.split(","):
+        x = x.strip()
+        if not x:
+            continue
+        try:
+            v = int(x)
+        except ValueError:
+            raise RuntimeError(f"--widths 宽度必须为整数，收到：{x}")
+        if v <= 0:
+            raise RuntimeError(f"--widths 宽度必须为正数，收到：{v}")
+        out.append(v)
+    return out
+
+
+def _expand_outputs(out, widths):
+    if not widths:
+        return [out]
+    p = Path(out)
+    suffix = p.suffix or ".png"
+    return [str(p.with_name(f"{p.stem}-{w}{suffix}")) for w in widths]
+
+
 def cmd_shot(a):
+    widths = _parse_widths(a.widths)
+    targets = widths or [a.width]
+    outs = _expand_outputs(a.out, widths)
     r = bmod.launch(port=a.port, headless=True)
     try:
         c = CDP(get_page_ws("127.0.0.1", a.port))
-        c.set_device_metrics(a.width, a.height, mobile=a.mobile)
-        c.navigate(a.url, wait=a.wait, timeout=a.timeout)
-        data = c.screenshot()
-        with open(a.out, "wb") as f:
-            f.write(data)
+        for width, out in zip(targets, outs):
+            c.set_device_metrics(width, a.height, mobile=a.mobile)
+            c.navigate(a.url, wait=a.wait, timeout=a.timeout)
+            data = c.screenshot(full_page=a.full_page)
+            with open(out, "wb") as f:
+                f.write(data)
+            w_out, h_out, _, _ = pngio.read_png(out)
+            print(f"已保存截图（{w_out}x{h_out}）：{out}（{len(data)} bytes）")
         c.close()
-        print(f"已保存截图（{a.width}x{a.height}）：{a.out}（{len(data)} bytes）")
     finally:
         bmod.close_session(r)
 
@@ -70,7 +102,8 @@ def cmd_inspect(a):
     try:
         c = CDP(get_page_ws("127.0.0.1", a.port))
         c.set_device_metrics(a.width, a.height, mobile=a.mobile)
-        data = imod.inspect_page(c, a.url, wait=a.wait, timeout=a.timeout)
+        data = imod.inspect_page(c, a.url, wait=a.wait, timeout=a.timeout,
+                                 full_page=a.full_page)
         imod.write_report(data, a.out)
         c.close()
         print(
@@ -140,6 +173,8 @@ def build_parser():
     s.add_argument("--port", type=int, default=9341); s.add_argument("--mobile", action="store_true")
     s.add_argument("--wait", type=float, default=1.5)
     s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.add_argument("--full-page", action="store_true", help="截取整页长图（跨视口）")
+    s.add_argument("--widths", help="逗号分隔多宽度批量出图，如 1280,390")
     s.set_defaults(func=cmd_shot)
 
     s = sub.add_parser("compare", help="像素对照")
@@ -158,6 +193,7 @@ def build_parser():
     s.add_argument("--port", type=int, default=9342); s.add_argument("--mobile", action="store_true")
     s.add_argument("--wait", type=float, default=1.5)
     s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.add_argument("--full-page", action="store_true", help="全页坐标（box.y 叠加滚动偏移）")
     s.set_defaults(func=cmd_inspect)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")

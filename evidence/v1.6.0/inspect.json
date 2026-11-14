@@ -1,0 +1,1057 @@
+{
+  "url": "http://127.0.0.1:8072/",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "tokens": {
+    "body": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "color": "rgb(86, 86, 79)",
+      "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "normal"
+    }
+  },
+  "elements": [
+    {
+      "tag": "header",
+      "id": null,
+      "className": "site-header",
+      "text": "IANA\n      Internet Assigned Numbers Authority\n    \n    \n      The global coordi",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 279
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "intro",
+      "text": "The global coordination of the DNS Root, IP addressing, and other Internet\n     ",
+      "box": {
+        "x": 355,
+        "y": 175,
+        "width": 570,
+        "height": 66
+      },
+      "style": {
+        "color": "rgb(102, 102, 102)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": "avoid-break",
+      "text": "Learn more.",
+      "box": {
+        "x": 644,
+        "y": 219,
+        "width": 91,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "main",
+      "id": null,
+      "className": "cards-band",
+      "text": "Domain Names\n        Management of the DNS Root Zone (assignments of ccTLDs and ",
+      "box": {
+        "x": 0,
+        "y": 279,
+        "width": 1280,
+        "height": 357
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgb(248, 249, 250)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Domain Names\n        Management of the DNS Root Zone (assignments of ccTLDs and ",
+      "box": {
+        "x": 100,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Domain Names",
+      "box": {
+        "x": 110,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Domain Names",
+      "box": {
+        "x": 207,
+        "y": 324,
+        "width": 133,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(84, 90, 100)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Management of the DNS Root Zone (assignments of ccTLDs and gTLDs) along\n        ",
+      "box": {
+        "x": 110,
+        "y": 358,
+        "width": 327,
+        "height": 88
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Management\n          Database of Top Level Domains\n          .int Regi",
+      "box": {
+        "x": 110,
+        "y": 456,
+        "width": 327,
+        "height": 110
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Management",
+      "box": {
+        "x": 128,
+        "y": 456,
+        "width": 182,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Database of Top Level Domains",
+      "box": {
+        "x": 128,
+        "y": 478,
+        "width": 235,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".int Registry",
+      "box": {
+        "x": 128,
+        "y": 500,
+        "width": 89,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".arpa Registry",
+      "box": {
+        "x": 128,
+        "y": 522,
+        "width": 104,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IDN Practices Repository",
+      "box": {
+        "x": 128,
+        "y": 544,
+        "width": 185,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Number Resources\n        Coordination of the global IP and AS number spaces, suc",
+      "box": {
+        "x": 467,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Number Resources",
+      "box": {
+        "x": 477,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Number Resources",
+      "box": {
+        "x": 558,
+        "y": 324,
+        "width": 164,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(84, 90, 100)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Coordination of the global IP and AS number spaces, such as allocations\n        ",
+      "box": {
+        "x": 477,
+        "y": 358,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "IP Addresses & AS Numbers\n          Network abuse information",
+      "box": {
+        "x": 477,
+        "y": 434,
+        "width": 327,
+        "height": 44
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IP Addresses & AS Numbers",
+      "box": {
+        "x": 495,
+        "y": 434,
+        "width": 210,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Network abuse information",
+      "box": {
+        "x": 495,
+        "y": 456,
+        "width": 207,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Protocol Assignments\n        The central repository for protocol name and number",
+      "box": {
+        "x": 833,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Protocol Assignments",
+      "box": {
+        "x": 843,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Assignments",
+      "box": {
+        "x": 913,
+        "y": 324,
+        "width": 187,
+        "height": 24
+      },
+      "style": {
+        "color": "rgb(84, 90, 100)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "The central repository for protocol name and number registries used in\n         ",
+      "box": {
+        "x": 843,
+        "y": 358,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries\n          Apply for an assignment\n          Time Zone Databa",
+      "box": {
+        "x": 843,
+        "y": 434,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": "rgb(86, 86, 79)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries",
+      "box": {
+        "x": 861,
+        "y": 434,
+        "width": 141,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Apply for an assignment",
+      "box": {
+        "x": 861,
+        "y": 456,
+        "width": 183,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Time Zone Database",
+      "box": {
+        "x": 861,
+        "y": 478,
+        "width": 154,
+        "height": 22
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "footer",
+      "id": null,
+      "className": "site-footer",
+      "text": "Domain Names\n        \n          Root Zone Registry\n          .INT Registry\n     ",
+      "box": {
+        "x": 0,
+        "y": 636,
+        "width": 1280,
+        "height": 208
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgb(235, 239, 241)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Registry\n          .INT Registry\n          .ARPA Registry\n          ID",
+      "box": {
+        "x": 220,
+        "y": 660,
+        "width": 394,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Registry",
+      "box": {
+        "x": 220,
+        "y": 660,
+        "width": 107,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".INT Registry",
+      "box": {
+        "x": 343,
+        "y": 660,
+        "width": 72,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".ARPA Registry",
+      "box": {
+        "x": 431,
+        "y": 660,
+        "width": 82,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IDN Repository",
+      "box": {
+        "x": 528,
+        "y": 660,
+        "width": 85,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Number Registries\n          RIR Allocation Data\n          Abuse Information",
+      "box": {
+        "x": 220,
+        "y": 687,
+        "width": 351,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Number Registries",
+      "box": {
+        "x": 220,
+        "y": 687,
+        "width": 105,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "RIR Allocation Data",
+      "box": {
+        "x": 341,
+        "y": 687,
+        "width": 108,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Abuse Information",
+      "box": {
+        "x": 465,
+        "y": 687,
+        "width": 106,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries\n          Time Zone Database",
+      "box": {
+        "x": 220,
+        "y": 714,
+        "width": 237,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries",
+      "box": {
+        "x": 220,
+        "y": 714,
+        "width": 105,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Time Zone Database",
+      "box": {
+        "x": 341,
+        "y": 714,
+        "width": 116,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "News\n          Performance\n          The Organization\n          Archive\n        ",
+      "box": {
+        "x": 220,
+        "y": 741,
+        "width": 368,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "News",
+      "box": {
+        "x": 220,
+        "y": 741,
+        "width": 31,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Performance",
+      "box": {
+        "x": 267,
+        "y": 741,
+        "width": 73,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "The Organization",
+      "box": {
+        "x": 356,
+        "y": 741,
+        "width": 97,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Archive",
+      "box": {
+        "x": 469,
+        "y": 741,
+        "width": 42,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Contact Us",
+      "box": {
+        "x": 527,
+        "y": 741,
+        "width": 61,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "footer-note",
+      "text": "The IANA functions coordinate the Internet’s globally unique\n        identifiers",
+      "box": {
+        "x": 100,
+        "y": 776,
+        "width": 1080,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Public Technical Identifiers",
+      "box": {
+        "x": 622,
+        "y": 776,
+        "width": 150,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "ICANN",
+      "box": {
+        "x": 855,
+        "y": 776,
+        "width": 38,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": "legal",
+      "text": "Privacy Policy\n        Terms of Service",
+      "box": {
+        "x": 100,
+        "y": 807,
+        "width": 1080,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(153, 153, 160)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Privacy Policy",
+      "box": {
+        "x": 100,
+        "y": 807,
+        "width": 76,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Terms of Service",
+      "box": {
+        "x": 192,
+        "y": 807,
+        "width": 92,
+        "height": 17
+      },
+      "style": {
+        "color": "rgb(46, 125, 202)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    }
+  ],
+  "palette": [
+    "rgb(0, 0, 0)",
+    "rgb(86, 86, 79)",
+    "rgb(255, 255, 255)",
+    "rgb(46, 125, 202)",
+    "rgb(102, 102, 102)",
+    "rgb(248, 249, 250)",
+    "rgb(84, 90, 100)",
+    "rgb(153, 153, 160)",
+    "rgb(235, 239, 241)"
+  ],
+  "full_page": true
+}
