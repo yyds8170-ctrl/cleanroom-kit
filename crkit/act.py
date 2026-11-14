@@ -25,7 +25,10 @@ VALID_OPS = {"click", "type", "key", "scroll", "wait", "eval", "screenshot"}
 def load_steps(script_path=None, inline=None):
     """读取并校验动作序列，返回有序步骤列表；非法动作抛中文错误。"""
     if script_path:
-        raw = Path(script_path).read_text(encoding="utf-8")
+        sp = Path(script_path)
+        if not sp.exists():
+            raise RuntimeError(f"动作序列文件不存在：{script_path}")
+        raw = sp.read_text(encoding="utf-8")
     elif inline:
         raw = inline
     else:

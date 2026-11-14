@@ -1,0 +1,129 @@
+{
+  "pairs": [
+    {
+      "element": "main「贪吃蛇\n      \n        得分0\n 」",
+      "fg": "#e7f0ec",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 18.3,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "header「贪吃蛇\n      \n        得分0\n 」",
+      "fg": "#e7f0ec",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 18.3,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "h1「贪吃蛇」",
+      "fg": "#e7f0ec",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 18.3,
+      "grade": "AAA",
+      "large": true,
+      "requirement": "大字号 AA≥3.0 / AAA≥4.5",
+      "pass": true
+    },
+    {
+      "element": "button「简单」",
+      "fg": "#8ba59c",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 8.59,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "button「普通」",
+      "fg": "#06281a",
+      "bg": "#22c55e",
+      "ratio": 6.68,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "button「困难」",
+      "fg": "#8ba59c",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 8.59,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "button#mute-btn「音效：开」",
+      "fg": "#8ba59c",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 8.59,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p#overlay-title「准备开始」",
+      "fg": "#e7f0ec",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 18.3,
+      "grade": "AAA",
+      "large": true,
+      "requirement": "大字号 AA≥3.0 / AAA≥4.5",
+      "pass": true
+    },
+    {
+      "element": "p#overlay-text「按 空格 或点击按钮开始」",
+      "fg": "#8ba59c",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 8.59,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "button#start-btn「开始游戏」",
+      "fg": "#06281a",
+      "bg": "#22c55e",
+      "ratio": 6.68,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「方向键 / WASD 控制移动 · 空格暂停或继」",
+      "fg": "#8ba59c",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": 8.59,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "unverified": 0
+  },
+  "checklist": {
+    "lang": "zh-CN",
+    "images_without_alt": 0,
+    "unnamed_controls": [],
+    "landmarks": [
+      "main",
+      "header"
+    ]
+  }
+}

@@ -1,0 +1,1781 @@
+{
+  "url": "http://127.0.0.1:18193/",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "tokens": {
+    "body": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "color": "rgb(86, 86, 79)",
+      "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "normal"
+    }
+  },
+  "elements": [
+    {
+      "tag": "header",
+      "id": null,
+      "className": "site-header",
+      "text": "IANA\n      Internet Assigned Numbers Authority\n    \n    \n      The global coordi",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 279
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#ffffff",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "intro",
+      "text": "The global coordination of the DNS Root, IP addressing, and other Internet\n     ",
+      "box": {
+        "x": 355,
+        "y": 175,
+        "width": 570,
+        "height": 66
+      },
+      "style": {
+        "color": {
+          "hex": "#666666",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": "avoid-break",
+      "text": "Learn more.",
+      "box": {
+        "x": 644,
+        "y": 219,
+        "width": 91,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "main",
+      "id": null,
+      "className": "cards-band",
+      "text": "Domain Names\n        Management of the DNS Root Zone (assignments of ccTLDs and ",
+      "box": {
+        "x": 0,
+        "y": 279,
+        "width": 1280,
+        "height": 357
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#f8f9fa",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Domain Names\n        Management of the DNS Root Zone (assignments of ccTLDs and ",
+      "box": {
+        "x": 100,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#ffffff",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Domain Names",
+      "box": {
+        "x": 110,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Domain Names",
+      "box": {
+        "x": 207,
+        "y": 324,
+        "width": 133,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#545a64",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Management of the DNS Root Zone (assignments of ccTLDs and gTLDs) along\n        ",
+      "box": {
+        "x": 110,
+        "y": 358,
+        "width": 327,
+        "height": 88
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Management\n          Database of Top Level Domains\n          .int Regi",
+      "box": {
+        "x": 110,
+        "y": 456,
+        "width": 327,
+        "height": 110
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Management",
+      "box": {
+        "x": 128,
+        "y": 456,
+        "width": 182,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Database of Top Level Domains",
+      "box": {
+        "x": 128,
+        "y": 478,
+        "width": 235,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".int Registry",
+      "box": {
+        "x": 128,
+        "y": 500,
+        "width": 89,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".arpa Registry",
+      "box": {
+        "x": 128,
+        "y": 522,
+        "width": 104,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IDN Practices Repository",
+      "box": {
+        "x": 128,
+        "y": 544,
+        "width": 185,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Number Resources\n        Coordination of the global IP and AS number spaces, suc",
+      "box": {
+        "x": 467,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#ffffff",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Number Resources",
+      "box": {
+        "x": 477,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Number Resources",
+      "box": {
+        "x": 558,
+        "y": 324,
+        "width": 164,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#545a64",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "Coordination of the global IP and AS number spaces, such as allocations\n        ",
+      "box": {
+        "x": 477,
+        "y": 358,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "IP Addresses & AS Numbers\n          Network abuse information",
+      "box": {
+        "x": 477,
+        "y": 434,
+        "width": 327,
+        "height": 44
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IP Addresses & AS Numbers",
+      "box": {
+        "x": 495,
+        "y": 434,
+        "width": 210,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Network abuse information",
+      "box": {
+        "x": 495,
+        "y": 456,
+        "width": 207,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "section",
+      "id": null,
+      "className": "card",
+      "text": "Protocol Assignments\n        The central repository for protocol name and number",
+      "box": {
+        "x": 833,
+        "y": 314,
+        "width": 347,
+        "height": 262
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#ffffff",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "className": null,
+      "text": "Protocol Assignments",
+      "box": {
+        "x": 843,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Assignments",
+      "box": {
+        "x": 913,
+        "y": 324,
+        "width": 187,
+        "height": 24
+      },
+      "style": {
+        "color": {
+          "hex": "#545a64",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": null,
+      "text": "The central repository for protocol name and number registries used in\n         ",
+      "box": {
+        "x": 843,
+        "y": 358,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries\n          Apply for an assignment\n          Time Zone Databa",
+      "box": {
+        "x": 843,
+        "y": 434,
+        "width": 327,
+        "height": 66
+      },
+      "style": {
+        "color": {
+          "hex": "#56564f",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries",
+      "box": {
+        "x": 861,
+        "y": 434,
+        "width": 141,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Apply for an assignment",
+      "box": {
+        "x": 861,
+        "y": 456,
+        "width": 183,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Time Zone Database",
+      "box": {
+        "x": 861,
+        "y": 478,
+        "width": 154,
+        "height": 22
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "footer",
+      "id": null,
+      "className": "site-footer",
+      "text": "Domain Names\n        \n          Root Zone Registry\n          .INT Registry\n     ",
+      "box": {
+        "x": 0,
+        "y": 636,
+        "width": 1280,
+        "height": 208
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#ebeff1",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Registry\n          .INT Registry\n          .ARPA Registry\n          ID",
+      "box": {
+        "x": 220,
+        "y": 660,
+        "width": 394,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Root Zone Registry",
+      "box": {
+        "x": 220,
+        "y": 660,
+        "width": 107,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".INT Registry",
+      "box": {
+        "x": 343,
+        "y": 660,
+        "width": 72,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": ".ARPA Registry",
+      "box": {
+        "x": 431,
+        "y": 660,
+        "width": 82,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "IDN Repository",
+      "box": {
+        "x": 528,
+        "y": 660,
+        "width": 85,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Number Registries\n          RIR Allocation Data\n          Abuse Information",
+      "box": {
+        "x": 220,
+        "y": 687,
+        "width": 351,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Number Registries",
+      "box": {
+        "x": 220,
+        "y": 687,
+        "width": 105,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "RIR Allocation Data",
+      "box": {
+        "x": 341,
+        "y": 687,
+        "width": 108,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Abuse Information",
+      "box": {
+        "x": 465,
+        "y": 687,
+        "width": 106,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries\n          Time Zone Database",
+      "box": {
+        "x": 220,
+        "y": 714,
+        "width": 237,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Protocol Registries",
+      "box": {
+        "x": 220,
+        "y": 714,
+        "width": 105,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Time Zone Database",
+      "box": {
+        "x": 341,
+        "y": 714,
+        "width": 116,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": null,
+      "text": "News\n          Performance\n          The Organization\n          Archive\n        ",
+      "box": {
+        "x": 220,
+        "y": 741,
+        "width": 368,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "News",
+      "box": {
+        "x": 220,
+        "y": 741,
+        "width": 31,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Performance",
+      "box": {
+        "x": 267,
+        "y": 741,
+        "width": 73,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "The Organization",
+      "box": {
+        "x": 356,
+        "y": 741,
+        "width": 97,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Archive",
+      "box": {
+        "x": 469,
+        "y": 741,
+        "width": 42,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Contact Us",
+      "box": {
+        "x": 527,
+        "y": 741,
+        "width": 61,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "footer-note",
+      "text": "The IANA functions coordinate the Internet’s globally unique\n        identifiers",
+      "box": {
+        "x": 100,
+        "y": 776,
+        "width": 1080,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Public Technical Identifiers",
+      "box": {
+        "x": 622,
+        "y": 776,
+        "width": 150,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "ICANN",
+      "box": {
+        "x": 855,
+        "y": 776,
+        "width": 38,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "className": "legal",
+      "text": "Privacy Policy\n        Terms of Service",
+      "box": {
+        "x": 100,
+        "y": 807,
+        "width": 1080,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#9999a0",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Privacy Policy",
+      "box": {
+        "x": 100,
+        "y": 807,
+        "width": 76,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": null,
+      "text": "Terms of Service",
+      "box": {
+        "x": 192,
+        "y": 807,
+        "width": 92,
+        "height": 17
+      },
+      "style": {
+        "color": {
+          "hex": "#2e7dca",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "\"Noto Sans\", Noto, system-ui, -apple-system, \"Segoe UI\", Arial, sans-serif"
+      }
+    }
+  ],
+  "palette": [
+    {
+      "hex": "#000000",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#56564f",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#ffffff",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#2e7dca",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#666666",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#f8f9fa",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#545a64",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#9999a0",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#ebeff1",
+      "alpha": 1.0,
+      "space": "rgb"
+    }
+  ],
+  "links": [
+    {
+      "text": "Learn more.",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Domain Names",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Root Zone Management",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Database of Top Level Domains",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": ".int Registry",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": ".arpa Registry",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "IDN Practices Repository",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Number Resources",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "IP Addresses & AS Numbers",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Network abuse information",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Protocol Assignments",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Protocol Registries",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Apply for an assignment",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Time Zone Database",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Root Zone Registry",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": ".INT Registry",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": ".ARPA Registry",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "IDN Repository",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Number Registries",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "RIR Allocation Data",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Abuse Information",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Protocol Registries",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Time Zone Database",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "News",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Performance",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "The Organization",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Archive",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Contact Us",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Public Technical Identifiers",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "ICANN",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Privacy Policy",
+      "href": "#",
+      "target": null
+    },
+    {
+      "text": "Terms of Service",
+      "href": "#",
+      "target": null
+    }
+  ],
+  "images": [],
+  "headings": [
+    {
+      "level": 2,
+      "text": "Domain Names",
+      "box": {
+        "x": 110,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      }
+    },
+    {
+      "level": 2,
+      "text": "Number Resources",
+      "box": {
+        "x": 477,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      }
+    },
+    {
+      "level": 2,
+      "text": "Protocol Assignments",
+      "box": {
+        "x": 843,
+        "y": 324,
+        "width": 327,
+        "height": 24
+      }
+    }
+  ],
+  "a11y": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "landmarks": [
+      "header",
+      "main",
+      "section",
+      "footer"
+    ],
+    "unnamed_controls": []
+  },
+  "design": {
+    "font_sizes": [
+      "16px",
+      "118px",
+      "18px",
+      "12px"
+    ],
+    "font_weights": [
+      "400",
+      "700",
+      "500"
+    ],
+    "fonts": [
+      "Times New Roman",
+      "Noto Sans"
+    ],
+    "max_widths": [
+      "570px",
+      "1120px"
+    ],
+    "radii": [
+      "8px"
+    ],
+    "shadows": [
+      "rgba(0, 0, 0, 0.16) 0px 2px 4px 0px"
+    ],
+    "spacing": [
+      "normal",
+      "-1px",
+      "0px 355px",
+      "355px",
+      "0px 10px",
+      "35px 0px 60px",
+      "35px",
+      "60px",
+      "0px 80px",
+      "80px",
+      "0px 20px",
+      "20px",
+      "10px",
+      "0px 0px 10px",
+      "0px 0px 0px 18px",
+      "24px 0px 20px",
+      "24px",
+      "16px",
+      "18px 0px 14px",
+      "18px"
+    ]
+  },
+  "text": "IANA Internet Assigned Numbers Authority The global coordination of the DNS Root, IP addressing, and other Internet protocol resources is performed as the Internet Assigned Numbers Authority (IANA) functions. Learn more. Domain Names Management of the DNS Root Zone (assignments of ccTLDs and gTLDs) along with other functions such as the .int and .arpa zones. Root Zone Management Database of Top Level Domains .int Registry .arpa Registry IDN Practices Repository Number Resources Coordination of the global IP and AS number spaces, such as allocations made to Regional Internet Registries. IP Addresses & AS Numbers Network abuse information Protocol Assignments The central repository for protocol name and number registries used in many Internet protocols. Protocol Registries Apply for an assignment Time Zone Database Domain Names Root Zone Registry .INT Registry .ARPA Registry IDN Repository Number Resources Number Registries RIR Allocation Data Abuse Information Protocols Protocol Registries Time Zone Database About Us News Performance The Organization Archive Contact Us The IANA functions coordinate the Internet’s globally unique identifiers, and are provided by Public Technical Identifiers, an affiliate of ICANN. Privacy Policy Terms of Service",
+  "full_page": false
+}

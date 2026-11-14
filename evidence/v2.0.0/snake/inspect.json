@@ -1,0 +1,431 @@
+{
+  "url": "http://127.0.0.1:18192/",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "tokens": {
+    "body": {
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "color": "rgb(231, 240, 236)",
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "normal"
+    }
+  },
+  "elements": [
+    {
+      "tag": "main",
+      "id": null,
+      "className": "app",
+      "text": "贪吃蛇\n      \n        得分0\n        最高0\n      \n    \n\n    \n      \n        难度\n        简",
+      "box": {
+        "x": 430,
+        "y": 28,
+        "width": 420,
+        "height": 844
+      },
+      "style": {
+        "color": {
+          "hex": "#e7f0ec",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "tag": "header",
+      "id": null,
+      "className": "hud",
+      "text": "贪吃蛇\n      \n        得分0\n        最高0",
+      "box": {
+        "x": 430,
+        "y": 28,
+        "width": 420,
+        "height": 58
+      },
+      "style": {
+        "color": {
+          "hex": "#e7f0ec",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "tag": "h1",
+      "id": null,
+      "className": null,
+      "text": "贪吃蛇",
+      "box": {
+        "x": 430,
+        "y": 41,
+        "width": 78,
+        "height": 32
+      },
+      "style": {
+        "color": {
+          "hex": "#e7f0ec",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "24px",
+        "fontWeight": "700",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "tag": "button",
+      "id": null,
+      "className": null,
+      "text": "简单",
+      "box": {
+        "x": 441,
+        "y": 125,
+        "width": 48,
+        "height": 31
+      },
+      "style": {
+        "color": {
+          "hex": "#8ba59c",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "fontFamily": "Arial"
+      }
+    },
+    {
+      "tag": "button",
+      "id": null,
+      "className": "active",
+      "text": "普通",
+      "box": {
+        "x": 495,
+        "y": 125,
+        "width": 48,
+        "height": 31
+      },
+      "style": {
+        "color": {
+          "hex": "#06281a",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#22c55e",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "13px",
+        "fontWeight": "700",
+        "fontFamily": "Arial"
+      }
+    },
+    {
+      "tag": "button",
+      "id": null,
+      "className": null,
+      "text": "困难",
+      "box": {
+        "x": 549,
+        "y": 125,
+        "width": 48,
+        "height": 31
+      },
+      "style": {
+        "color": {
+          "hex": "#8ba59c",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "fontFamily": "Arial"
+      }
+    },
+    {
+      "tag": "button",
+      "id": "mute-btn",
+      "className": null,
+      "text": "音效：开",
+      "box": {
+        "x": 776,
+        "y": 117,
+        "width": 74,
+        "height": 31
+      },
+      "style": {
+        "color": {
+          "hex": "#8ba59c",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "fontFamily": "Arial"
+      }
+    },
+    {
+      "tag": "p",
+      "id": "overlay-title",
+      "className": null,
+      "text": "准备开始",
+      "box": {
+        "x": 566,
+        "y": 330,
+        "width": 148,
+        "height": 30
+      },
+      "style": {
+        "color": {
+          "hex": "#e7f0ec",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "22px",
+        "fontWeight": "700",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": "overlay-text",
+      "className": null,
+      "text": "按 空格 或点击按钮开始",
+      "box": {
+        "x": 566,
+        "y": 366,
+        "width": 148,
+        "height": 18
+      },
+      "style": {
+        "color": {
+          "hex": "#8ba59c",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "tag": "button",
+      "id": "start-btn",
+      "className": null,
+      "text": "开始游戏",
+      "box": {
+        "x": 580,
+        "y": 400,
+        "width": 120,
+        "height": 44
+      },
+      "style": {
+        "color": {
+          "hex": "#06281a",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#22c55e",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "fontFamily": "Arial"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "hint",
+      "text": "方向键 / WASD 控制移动 · 空格暂停或继续",
+      "box": {
+        "x": 430,
+        "y": 611,
+        "width": 420,
+        "height": 18
+      },
+      "style": {
+        "color": {
+          "hex": "#8ba59c",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      }
+    }
+  ],
+  "palette": [
+    {
+      "hex": "#000000",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#e7f0ec",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#162620",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#8ba59c",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#06281a",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#22c55e",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#0f1a17",
+      "alpha": 0.72,
+      "space": "rgb"
+    }
+  ],
+  "links": [],
+  "images": [],
+  "headings": [
+    {
+      "level": 1,
+      "text": "贪吃蛇",
+      "box": {
+        "x": 430,
+        "y": 41,
+        "width": 78,
+        "height": 32
+      }
+    }
+  ],
+  "a11y": {
+    "lang": "zh-CN",
+    "images_without_alt": 0,
+    "landmarks": [
+      "main",
+      "header"
+    ],
+    "unnamed_controls": []
+  },
+  "design": {
+    "font_sizes": [
+      "16px",
+      "24px",
+      "12px",
+      "20px",
+      "13px",
+      "22px",
+      "14px",
+      "18px"
+    ],
+    "font_weights": [
+      "400",
+      "700"
+    ],
+    "fonts": [
+      "Times New Roman",
+      "system-ui",
+      "Arial"
+    ],
+    "max_widths": [
+      "420px"
+    ],
+    "radii": [
+      "10px",
+      "8px",
+      "14px",
+      "12px"
+    ],
+    "shadows": [],
+    "spacing": [
+      "normal",
+      "28px 16px",
+      "28px",
+      "0px 0px 16px",
+      "16px",
+      "10px",
+      "6px 14px",
+      "6px",
+      "0px 0px 14px",
+      "14px",
+      "6px 10px",
+      "0px 4px",
+      "5px 10px",
+      "5px",
+      "0px 0px 6px",
+      "10px 28px",
+      "14px 0px",
+      "8px",
+      "1px 6px",
+      "1px"
+    ]
+  },
+  "text": "贪吃蛇 得分 0 最高 0 难度 简单 普通 困难 音效：开 准备开始 按 空格 或点击按钮开始 开始游戏 方向键 / WASD 控制移动 · 空格暂停或继续",
+  "full_page": false
+}

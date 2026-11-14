@@ -95,13 +95,19 @@ def _color_display(token):
     return token
 
 
-def _hex_of(token):
-    """只取不透明颜色；半透明颜色合成背景未知，标 unverified 更稳妥。"""
+def _color_record(token):
+    """统一成 `{hex, alpha, ...}` 记录，兼容 dict 与颜色字符串。"""
     if isinstance(token, dict):
-        if token.get("alpha", 1.0) < 0.999:
-            return None
-        return token.get("hex")
-    return parse_hex(token)
+        return token
+    return colors.parse_color(token)
+
+
+def _hex_of(token):
+    """只取不透明颜色；半透明/透明色合成背景未知，标 unverified 更稳妥。"""
+    rec = _color_record(token)
+    if rec.get("alpha", 1.0) < 0.999:
+        return None
+    return rec.get("hex")
 
 
 def _label(el):
@@ -115,10 +121,9 @@ def _label(el):
 
 
 def _opaque(token):
-    """颜色 token 是否为可用于配对的不透明颜色。"""
-    if isinstance(token, dict):
-        return token.get("alpha", 1.0) >= 0.999 and token.get("hex")
-    return bool(token and token.strip() and token.strip() != "transparent")
+    """颜色 token 是否为可用于配对的不透明颜色（识别 rgba 0 透明度）。"""
+    rec = _color_record(token)
+    return rec.get("alpha", 1.0) >= 0.999 and bool(rec.get("hex"))
 
 
 def pair_element(el, fallback_fg=None, fallback_bg=None):

@@ -1,0 +1,47 @@
+{
+  "overall": "pass",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "steps": [
+    {
+      "step": "shot",
+      "pass": true,
+      "artifact": "shot.png",
+      "detail": "1280x900"
+    },
+    {
+      "step": "inspect",
+      "pass": true,
+      "artifact": "inspect.json",
+      "detail": "元素 5"
+    },
+    {
+      "step": "a11y",
+      "pass": true,
+      "artifact": "a11y.json",
+      "detail": "失败 0，未核验 0"
+    },
+    {
+      "step": "compare",
+      "pass": true,
+      "artifact": "compare.json",
+      "detail": "0.0% match"
+    },
+    {
+      "step": "probe",
+      "pass": true,
+      "artifact": "probe.json",
+      "detail": "断言 2 条"
+    },
+    {
+      "step": "baseline",
+      "pass": true,
+      "artifact": "baseline.json",
+      "detail": "稳定"
+    }
+  ],
+  "url": "http://127.0.0.1:18191/"
+}

@@ -2,6 +2,28 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [2.0.0] - 2026-11-14
+
+### 演进总览（v1.4.0 → v2.0.0）
+
+自 v1.4.0 工程基线起，工具包依次落地：浏览器会话与导航可靠性、全页截图与多视口批量取证、颜色归一化与结构大纲、区块级像素对照与 JSON 报告、act/probe 交互取证与状态断言、WCAG 对比度检查、web/game 双栈脚手架、批量流水线与基线回归快照、PNG 格式加固与发布自检。v2.0.0 在上述能力之上做里程碑收敛：把分散命令串成**单命令完整闭环**，提供 **clone 即自证**入口，并统一命令文档；同时清零终审遗留 C1–C5，补齐边界/异常输入容错。核心测试由 77 项增至 88 项。
+
+### 新增
+
+- `verify` 单命令完整闭环：同一会话内依次完成截图 → DOM 取证 → 无障碍对比度 →（可选）像素对照 →（可选）状态断言 →（可选）基线回归，分步记录状态并汇总 `report.json` + `report.md` 与总体 pass/fail；缺输入的步骤标记 skipped，不计失败。
+- `selftest` 一键自证：环境自检 + 全量单测 + 发布一致性自检串联执行，任一失败以退出码 1 结束，fresh clone 后可直接自证可用。
+- `docs/COMMAND_REFERENCE.md`：全部 CLI 命令、参数、退出码与结构化产物的统一速查，README 命令清单改为摘要并引用该文档。
+- 11 项单元测试（verify 聚合通过/失败/跳过、JSON 与 Markdown 报告落盘、web/game 模板骨架跑绿、基线 verdict 降级与改善口径、bg_match 布尔方向、坏 JSON/缺文件/非法视口/空断言边界），核心测试增至 88 项。
+
+### 修复
+
+- **C1**：根 `NOTICE` 补 `Project URL` 行，与 `license.build_notice` 输出格式一致。
+- **C2**：基线 `verdict` / `bg_match` / `mean_abs_diff` 改为**仅判降级**：分级变差、背景由一致变不一致、平均差回升超容差才记漂移；改善不报误报。`verdict` 默认严格全等，`--lenient-verdict` 下 match/minor 互不算降级。
+- **C3**：模板占位测试由恒真断言改为真实校验——核心骨架文件存在 + 文本文件占位符零残留；init 生成后双栈测试均可跑绿。
+- **C4**：全仓终查 `NOASSERTION`，根 `LICENSE` / `NOTICE` / `CITATION.cff` 无版权占位，SPDX 许可证标识为 `PolyForm-Noncommercial-1.0.0`；历史证据与 CHANGELOG 中描述该核查过程的叙述文字保留不改。
+- **C5**：对 `测试/rebuild-snake/` 补跑 act/probe 交互闭环，截图与断言报告归档 `evidence/v2.0.0/snake/`。
+- 边界容错：坏 JSON 断言/动作序列、缺失参考图/取证报告/脚本文件、非法视口宽高、被占用调试端口，均给出明确中文报错并以退出码 1 结束，不再抛裸栈。
+
 ## [1.13.0] - 2026-11-14
 
 ### 新增

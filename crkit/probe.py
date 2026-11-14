@@ -66,7 +66,13 @@ def all_pass(report):
 
 
 def load_assertions(path):
-    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    p = Path(path)
+    if not p.exists():
+        raise RuntimeError(f"断言文件不存在：{path}")
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"断言 JSON 解析失败：{exc}") from exc
     if not isinstance(data, list):
         raise RuntimeError("断言序列必须是数组")
     return data

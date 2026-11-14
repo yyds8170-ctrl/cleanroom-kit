@@ -11,7 +11,7 @@ from . import cleanwords
 from . import inspect as imod
 from . import compare
 from . import pngio
-from . import act, probe, a11y, pipeline, baseline
+from . import act, probe, a11y, pipeline, baseline, verify
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -74,6 +74,7 @@ def _expand_outputs(out, widths):
 
 
 def cmd_shot(a):
+    _validate_viewport(a.width, a.height)
     widths = _parse_widths(a.widths)
     targets = widths or [a.width]
     outs = _expand_outputs(a.out, widths)
@@ -97,6 +98,14 @@ def cmd_shot(a):
 def _validate_compare_options(a):
     if a.crop and a.resize:
         raise RuntimeError("--crop 与 --resize 互斥，请二选一")
+    for label, path in (("原版图", a.orig), ("复刻图", a.rebuild)):
+        if not Path(path).exists():
+            raise RuntimeError(f"{label}不存在：{path}")
+
+
+def _validate_viewport(width, height):
+    if width <= 0 or height <= 0:
+        raise RuntimeError(f"视口宽高必须为正数，收到：{width}×{height}")
 
 
 def cmd_compare(a):
@@ -117,6 +126,7 @@ def cmd_compare(a):
 
 
 def cmd_inspect(a):
+    _validate_viewport(a.width, a.height)
     r = bmod.launch(port=a.port, headless=True)
     try:
         c = CDP(get_page_ws("127.0.0.1", a.port))
@@ -136,6 +146,7 @@ def cmd_inspect(a):
 
 
 def cmd_act(a):
+    _validate_viewport(a.width, a.height)
     steps = act.load_steps(script_path=a.script, inline=a.steps)
     r = bmod.launch(port=a.port, headless=True)
     try:
@@ -158,6 +169,7 @@ def cmd_act(a):
 
 
 def cmd_probe(a):
+    _validate_viewport(a.width, a.height)
     assertions = probe.load_assertions(a.assertions)
     r = bmod.launch(port=a.port, headless=True)
     try:
@@ -183,6 +195,8 @@ def cmd_probe(a):
 
 def cmd_a11y(a):
     if a.inspect:
+        if not Path(a.inspect).exists():
+            raise RuntimeError(f"取证报告不存在：{a.inspect}")
         report = json.loads(Path(a.inspect).read_text(encoding="utf-8"))
     elif a.url:
         r = bmod.launch(port=a.port, headless=True)
@@ -297,6 +311,7 @@ def cmd_baseline(a):
         current = json.loads(Path(a.current).read_text(encoding="utf-8")) if a.current else {}
         res = baseline.diff_snapshot(a.name, current, max_ratio_drift=a.max_diff,
                                      mean_diff_tol=a.mean_diff_tol,
+                                     verdict_strict=not a.lenient_verdict,
                                      root=a.evidence_root)
         for d in res["drift"]:
             print(f"漂移：{d['metric']} 基线 {d['baseline']} → 当前 {d['current']}（{d['detail']}）")
@@ -305,6 +320,64 @@ def cmd_baseline(a):
         print(f"回归判定：{'regressed' if res['regressed'] else 'stable'}")
         if res["regressed"]:
             sys.exit(1)
+
+
+def cmd_verify(a):
+    _validate_viewport(a.width, a.height)
+    if a.ref and not Path(a.ref).exists():
+        raise RuntimeError(f"参考图不存在：{a.ref}")
+    assertions = probe.load_assertions(a.assertions) if a.assertions else None
+    r = bmod.launch(port=a.port, headless=True)
+    try:
+        c = CDP(get_page_ws("127.0.0.1", a.port))
+        report = verify.run_verify(
+            c, a.url, a.out, ref=a.ref, assertions=assertions,
+            baseline_name=a.baseline, max_diff=a.max_diff, width=a.width,
+            height=a.height, mobile=a.mobile, wait=a.wait, timeout=a.timeout,
+            evidence_root=a.evidence_root)
+        c.close()
+    finally:
+        bmod.close_session(r)
+    out = Path(a.out)
+    verify.write_report_json(report, out / "report.json")
+    verify.write_report_md(report, out / "report.md")
+    s = report["summary"]
+    print(f"闭环验证：总体 {report['overall']}（{s['passed']}/{s['total']} 步通过）")
+    for st in report["steps"]:
+        mark = "跳过" if st.get("skipped") else ("PASS" if st["pass"] else "FAIL")
+        print(f"  [{mark}] {st['step']}：{st['detail']}")
+    if report["overall"] != "pass":
+        sys.exit(1)
+
+
+def cmd_selftest(a):
+    import unittest
+    import importlib.util
+    root = Path(__file__).resolve().parent.parent
+    info = _doctor_info(a.port)
+    print(f"版本：{info['version']}　Python：{info['python']}　平台：{info['platform']}")
+    print(f"浏览器：{info['browser'] or '未找到（可选，截图/取证类命令需要）'}")
+
+    loader = unittest.TestLoader()
+    suite = loader.discover(str(root / "tests"))
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+
+    spec = importlib.util.spec_from_file_location(
+        "pre_release_check", root / "scripts" / "pre_release_check.py")
+    prc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(prc)
+    check = prc.run_checks(root)
+    for item in check["checks"]:
+        if item["name"] == "git 工作区干净":
+            continue  # 封版门禁，selftest 阶段仅提示
+        mark = "PASS" if item["ok"] else "FAIL"
+        print(f"[{mark}] {item['name']}：{item['detail']}")
+
+    consistency_ok = all(c["ok"] for c in check["checks"] if c["name"] != "git 工作区干净")
+    ok = result.wasSuccessful() and consistency_ok
+    print("自证通过。" if ok else "自证未通过，请查看上方失败项。")
+    if not ok:
+        sys.exit(1)
 
 
 def cmd_version(a):
@@ -480,8 +553,28 @@ def build_parser():
     s.add_argument("--current", help="当前指标 JSON（diff）")
     s.add_argument("--max-diff", type=float, default=5.0, help="差异占比回升漂移阈值（百分点）")
     s.add_argument("--mean-diff-tol", type=float, default=3.0, help="平均差绝对容差")
+    s.add_argument("--lenient-verdict", action="store_true",
+                   help="verdict 宽松口径：match/minor 互不算降级")
     s.add_argument("--evidence-root", default="evidence", help="证据根目录")
     s.set_defaults(func=cmd_baseline)
+
+    s = sub.add_parser("verify", help="单命令完整闭环：截图→取证→对照→无障碍→断言→基线")
+    s.add_argument("--url", required=True)
+    s.add_argument("--out", default="evidence/verify", help="闭环证据输出目录")
+    s.add_argument("--ref", help="对照参考图 PNG（可选，提供后执行像素对照）")
+    s.add_argument("--assertions", help="断言序列 JSON（可选，提供后执行 probe）")
+    s.add_argument("--baseline", help="基线名（可选，对照后做回归比对）")
+    s.add_argument("--max-diff", type=float, default=10.0)
+    s.add_argument("--evidence-root", default="evidence", help="证据根目录")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9367); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_verify)
+
+    s = sub.add_parser("selftest", help="clone 即自证：环境自检 + 单测 + 发布一致性自检")
+    s.add_argument("--port", type=int, default=9340, help="自检端口")
+    s.set_defaults(func=cmd_selftest)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")
     s.add_argument("--json", action="store_true")

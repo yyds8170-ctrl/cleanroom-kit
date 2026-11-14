@@ -1,0 +1,68 @@
+{
+  "pairs": [
+    {
+      "element": "main「Example Domain」",
+      "fg": "#000000",
+      "bg": "rgb(238, 238, 238)",
+      "ratio": 18.32,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "h1「Example Domain」",
+      "fg": "#000000",
+      "bg": "rgb(238, 238, 238)",
+      "ratio": 18.32,
+      "grade": "AAA",
+      "large": true,
+      "requirement": "大字号 AA≥3.0 / AAA≥4.5",
+      "pass": true
+    },
+    {
+      "element": "p「This domain is for use i」",
+      "fg": "#000000",
+      "bg": "rgb(238, 238, 238)",
+      "ratio": 18.32,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「该域名仅用于文档示例，无需获得许可。这并非一项服」",
+      "fg": "#333333",
+      "bg": "rgb(238, 238, 238)",
+      "ratio": 9.75,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Learn more」",
+      "fg": "#000000",
+      "bg": "rgb(238, 238, 238)",
+      "ratio": 18.32,
+      "grade": "AAA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "unverified": 0
+  },
+  "checklist": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "unnamed_controls": [],
+    "landmarks": [
+      "main"
+    ]
+  }
+}

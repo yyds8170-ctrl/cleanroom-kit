@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "name": "标题文本就位",
+      "pass": true,
+      "expected": {
+        "text": "Example Domain"
+      },
+      "actual": "Example Domain",
+      "reason": null
+    },
+    {
+      "name": "主区域可见",
+      "pass": true,
+      "expected": {
+        "visible": true
+      },
+      "actual": true,
+      "reason": null
+    }
+  ],
+  "all_pass": true
+}

@@ -1,0 +1,51 @@
+{
+  "name": "v1.12-example",
+  "drift": [],
+  "content_changes": [
+    {
+      "field": "content_original",
+      "baseline": [
+        0,
+        1279
+      ],
+      "current": [
+        435,
+        843
+      ]
+    },
+    {
+      "field": "content_rebuild",
+      "baseline": [
+        0,
+        1279
+      ],
+      "current": [
+        435,
+        843
+      ]
+    },
+    {
+      "field": "content_rows_original",
+      "baseline": [
+        53,
+        899
+      ],
+      "current": [
+        189,
+        436
+      ]
+    },
+    {
+      "field": "content_rows_rebuild",
+      "baseline": [
+        48,
+        843
+      ],
+      "current": [
+        189,
+        436
+      ]
+    }
+  ],
+  "regressed": false
+}

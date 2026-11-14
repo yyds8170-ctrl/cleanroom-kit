@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe, a11y, pipeline, baseline  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe, a11y, pipeline, baseline, verify  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -590,6 +590,24 @@ class TestA11y(unittest.TestCase):
         self.assertIsNotNone(result["pairs"][0]["ratio"])
         self.assertTrue(result["pairs"][0]["pass"])
 
+    def test_transparent_rgba_not_black_false_fail(self):
+        report = {
+            "tokens": {"body": {"color": "rgb(0, 0, 0)",
+                                "backgroundColor": "rgba(0, 0, 0, 0)"}},
+            "elements": [{
+                "tag": "p", "text": "正文",
+                "style": {"color": "rgb(0, 0, 0)",
+                          "backgroundColor": "rgba(0, 0, 0, 0)"},
+            }],
+            "a11y": {"lang": "en", "images_without_alt": 0,
+                     "unnamed_controls": [], "landmarks": []},
+        }
+        result = a11y.analyze_inspect(report)
+        pair = result["pairs"][0]
+        self.assertIsNone(pair["ratio"])
+        self.assertEqual(pair["grade"], "unverified")
+        self.assertFalse(pair["pass"])
+
     def test_unparsable_marked_unverified(self):
         report = {
             "tokens": {"body": {"color": "raw-ink", "backgroundColor": "transparent"}},
@@ -728,6 +746,45 @@ class TestBaseline(unittest.TestCase):
             res2 = baseline.diff_snapshot("demo", worse, root=d)
             self.assertTrue(res2["regressed"])
             self.assertTrue(any(x["metric"] == "mean_abs_diff" for x in res2["drift"]))
+
+    def test_verdict_strict_and_lenient(self):
+        with tempfile.TemporaryDirectory() as d:
+            baseline.save_snapshot("demo", {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                                             "bg_match": True, "verdict": "match"}, root=d)
+            close = {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                     "bg_match": True, "verdict": "minor"}
+            # 默认严格口径：match → minor 判降级漂移
+            strict = baseline.diff_snapshot("demo", close, root=d)
+            self.assertTrue(strict["regressed"])
+            self.assertTrue(any(x["metric"] == "verdict" for x in strict["drift"]))
+            # 宽松口径：match/minor 互不算降级，不报 verdict 漂移
+            lenient = baseline.diff_snapshot("demo", close, verdict_strict=False, root=d)
+            self.assertFalse(any(x["metric"] == "verdict" for x in lenient["drift"]))
+            # 宽松口径下 match → major 仍报漂移
+            worse = {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                     "bg_match": True, "verdict": "major"}
+            lenient_worse = baseline.diff_snapshot("demo", worse, verdict_strict=False, root=d)
+            self.assertTrue(lenient_worse["regressed"])
+            # major → match 属于改善，不报 verdict 漂移
+            improved = {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                        "bg_match": True, "verdict": "match"}
+            better = baseline.diff_snapshot("demo", improved, root=d)
+            self.assertFalse(any(x["metric"] == "verdict" for x in better["drift"]))
+
+    def test_bg_match_strict_boolean(self):
+        with tempfile.TemporaryDirectory() as d:
+            baseline.save_snapshot("demo", {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                                             "bg_match": True, "verdict": "match"}, root=d)
+            flipped = {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                       "bg_match": False, "verdict": "match"}
+            res = baseline.diff_snapshot("demo", flipped, root=d)
+            self.assertTrue(res["regressed"])
+            self.assertTrue(any(x["metric"] == "bg_match" for x in res["drift"]))
+            # False → True 属于改善，不报漂移
+            healed = {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                      "bg_match": True, "verdict": "match"}
+            res2 = baseline.diff_snapshot("demo", healed, root=d)
+            self.assertFalse(any(x["metric"] == "bg_match" for x in res2["drift"]))
 
 
 class TestLint(unittest.TestCase):
@@ -943,6 +1000,93 @@ class TestRelease(unittest.TestCase):
             res2 = prc.run_checks(d)
             self.assertFalse(res2["ok"])
             self.assertTrue(any("VERSION" in c["name"] for c in res2["checks"] if not c["ok"]))
+
+
+class TestBoundary(unittest.TestCase):
+    def test_load_assertions_missing_and_bad_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            missing = Path(d) / "nope.json"
+            with self.assertRaises(RuntimeError):
+                probe.load_assertions(str(missing))
+            bad = Path(d) / "bad.json"
+            bad.write_text("{ not json", encoding="utf-8")
+            with self.assertRaises(RuntimeError):
+                probe.load_assertions(str(bad))
+            not_list = Path(d) / "obj.json"
+            not_list.write_text("{}", encoding="utf-8")
+            with self.assertRaises(RuntimeError):
+                probe.load_assertions(str(not_list))
+
+    def test_empty_assertions_all_pass(self):
+        self.assertTrue(probe.all_pass([]))
+
+    def test_viewport_must_be_positive(self):
+        with self.assertRaises(RuntimeError):
+            cli._validate_viewport(0, 900)
+        with self.assertRaises(RuntimeError):
+            cli._validate_viewport(1280, -1)
+        cli._validate_viewport(1280, 900)  # 正数不抛
+
+    def test_compare_missing_files_rejected(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as d:
+            good = Path(d) / "good.png"
+            good.write_bytes(b"x")
+            args = SimpleNamespace(orig=str(good), rebuild=str(Path(d) / "no.png"),
+                                    crop=False, resize=False)
+            with self.assertRaises(RuntimeError):
+                cli._validate_compare_options(args)
+
+
+class TestVerify(unittest.TestCase):
+    def test_aggregate_all_pass(self):
+        steps = [{"step": "shot", "pass": True, "detail": "1280x900"},
+                 {"step": "probe", "pass": True, "skipped": True, "detail": "未提供断言"}]
+        res = verify.aggregate(steps)
+        self.assertEqual(res["overall"], "pass")
+        self.assertEqual(res["summary"]["failed"], 0)
+
+    def test_aggregate_failure_propagates(self):
+        steps = [{"step": "shot", "pass": True},
+                 {"step": "compare", "pass": False, "detail": "超阈值"}]
+        res = verify.aggregate(steps)
+        self.assertEqual(res["overall"], "fail")
+        self.assertEqual(res["summary"]["failed"], 1)
+
+    def test_report_writers(self):
+        with tempfile.TemporaryDirectory() as d:
+            res = verify.aggregate([{"step": "shot", "pass": True,
+                                      "artifact": "shot.png", "detail": "1280x900"}])
+            res["url"] = "https://example.com"
+            verify.write_report_json(res, Path(d) / "report.json")
+            verify.write_report_md(res, Path(d) / "report.md")
+            data = json.loads((Path(d) / "report.json").read_text(encoding="utf-8"))
+            self.assertEqual(data["overall"], "pass")
+            md = (Path(d) / "report.md").read_text(encoding="utf-8")
+            self.assertIn("闭环验证报告", md)
+            self.assertIn("shot", md)
+
+
+class TestTemplateSkeleton(unittest.TestCase):
+    def _run_skeleton(self, stack):
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "proj"
+            scaffold.init_project(target, "proj", "描述", stack=stack)
+            self.assertTrue((target / "tests" / "test_skeleton.py").exists())
+            spec = importlib.util.spec_from_file_location(
+                "test_skeleton", target / "tests" / "test_skeleton.py")
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            suite = unittest.TestLoader().loadTestsFromModule(mod)
+            res = unittest.TextTestRunner(verbosity=0).run(suite)
+            self.assertTrue(res.wasSuccessful(),
+                            [x[1] for x in res.failures + res.errors])
+
+    def test_web_skeleton_passes(self):
+        self._run_skeleton("web")
+
+    def test_game_skeleton_passes(self):
+        self._run_skeleton("game")
 
 
 if __name__ == "__main__":

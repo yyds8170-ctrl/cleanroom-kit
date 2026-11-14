@@ -1,0 +1,47 @@
+{
+  "overall": "fail",
+  "summary": {
+    "total": 6,
+    "passed": 5,
+    "failed": 1
+  },
+  "steps": [
+    {
+      "step": "shot",
+      "pass": true,
+      "artifact": "shot.png",
+      "detail": "1280x900"
+    },
+    {
+      "step": "inspect",
+      "pass": true,
+      "artifact": "inspect.json",
+      "detail": "元素 54"
+    },
+    {
+      "step": "a11y",
+      "pass": false,
+      "artifact": "a11y.json",
+      "detail": "失败 34，未核验 0"
+    },
+    {
+      "step": "compare",
+      "pass": true,
+      "artifact": "compare.json",
+      "detail": "16.764062499999998% minor"
+    },
+    {
+      "step": "probe",
+      "pass": true,
+      "skipped": true,
+      "detail": "未提供断言，跳过"
+    },
+    {
+      "step": "baseline",
+      "pass": true,
+      "skipped": true,
+      "detail": "未指定基线，跳过"
+    }
+  ],
+  "url": "http://127.0.0.1:18193/"
+}

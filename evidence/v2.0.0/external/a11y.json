@@ -1,0 +1,86 @@
+{
+  "pairs": [
+    {
+      "element": "p「This domain is for use i」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「هذا النطاق مُخصص للاستخد」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「该域名仅用于文档示例，无需获得许可。这并非一项服」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「L’usage de ce domaine es」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「Данный домен предназначе」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「Este dominio está destin」",
+      "fg": "#000000",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Learn more」",
+      "fg": "#0000ee",
+      "bg": "rgba(0, 0, 0, 0)",
+      "ratio": null,
+      "grade": "unverified",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passed": 0,
+    "failed": 0,
+    "unverified": 7
+  },
+  "checklist": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "unnamed_controls": [],
+    "landmarks": []
+  }
+}

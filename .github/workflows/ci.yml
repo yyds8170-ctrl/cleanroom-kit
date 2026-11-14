@@ -79,3 +79,9 @@ jobs:
         run: |
           printf '%s' '[{"name":"标题可见","selector":"h1","expect":{"visible":true}}]' > /tmp/assert.json
           bin/crk probe --url http://127.0.0.1:8060/ --assertions /tmp/assert.json --out /tmp/probe.json --port 9353
+      - name: 单命令闭环（verify）
+        env:
+          CRK_BROWSER: "${{ steps.setup-chrome.outputs.chrome-path }}"
+        run: |
+          bin/crk verify --url http://127.0.0.1:8060/ --out /tmp/verify --port 9354
+          python3 -c "import json;d=json.load(open('/tmp/verify/report.json'));assert d['overall'] in ('pass','fail');assert d['summary']['total']==6;print('verify 端到端 OK，总体',d['overall'])"

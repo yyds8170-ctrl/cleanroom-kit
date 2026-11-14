@@ -2,8 +2,8 @@
 
 [![ci](https://img.shields.io/github/actions/workflow/status/yyds8170-ctrl/cleanroom-kit/ci.yml?branch=main)](https://github.com/yyds8170-ctrl/cleanroom-kit/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
-[![version](https://img.shields.io/badge/version-1.13.0-blue.svg)](#快速开始)
-[![tests](https://img.shields.io/badge/tests-77%20passing-brightgreen.svg)](#测试)
+[![version](https://img.shields.io/badge/version-2.0.0-blue.svg)](#快速开始)
+[![tests](https://img.shields.io/badge/tests-89%20passing-brightgreen.svg)](#测试)
 
 ![cleanroom-kit banner](docs/banner.svg)
 
@@ -59,6 +59,12 @@ bin/crk inspect --url https://example.com --out evidence/inspect.json --width 12
 
 # 5. 实现后做像素级对照，并生成差异热图（差异像素标红）
 bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-out evidence/diff.png
+
+# 6. 单命令完整闭环：截图→取证→无障碍→对照→断言→基线，汇总 report.md/json
+bin/crk verify --url https://example.com --out evidence/verify --ref evidence/rebuild.png
+
+# 7. clone 后一键自证：环境自检 + 全量单测 + 发布一致性自检
+bin/crk selftest
 ```
 
 ## 命令清单
@@ -76,11 +82,13 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 | `a11y` | WCAG 对比度与无障碍清单检查（AA/AAA 分级） | `--inspect` `--url` `--out`/`--json`（结构化 JSON 报告路径） `--width` `--height` `--mobile` `--wait` `--timeout` |
 | `compare` | 像素对照（区块级差异 + JSON 报告 + 差异热图） | `--orig` `--rebuild` `--max-diff` `--threshold` `--crop` `--resize` `--diff-out` `--json` |
 | `pipeline` | 批量流水线：截图→取证→对照→汇总报告，可归档 zip | `--targets` `--site` `--out` `--rebuild-dir` `--archive` `--widths` `--max-diff` |
-| `baseline` | 基准快照保存与回归比对 | `save`/`diff` `--name` `--orig` `--metrics` `--current` `--max-diff` |
+| `baseline` | 基准快照保存与回归比对（仅判降级，改善不误报） | `save`/`diff` `--name` `--orig` `--metrics` `--current` `--max-diff` `--mean-diff-tol` `--lenient-verdict` |
+| `verify` | 单命令完整闭环：截图→取证→无障碍→对照→断言→基线，汇总 pass/fail | `--url` `--out` `--ref` `--assertions` `--baseline` `--max-diff` 通用视口参数 |
+| `selftest` | clone 即自证：环境自检 + 全量单测 + 发布一致性自检 | `--port` |
 | `license` | 生成 PolyForm 许可证 | `name` `--dir` `--note` `--year` |
 | `browser` | 启动调试浏览器 | `--port` `--url` `--show` |
 
-也可用模块方式运行：`python3 -m crkit <command>`。
+完整参数、退出码与结构化产物说明见 [docs/COMMAND_REFERENCE.md](docs/COMMAND_REFERENCE.md)。也可用模块方式运行：`python3 -m crkit <command>`。
 
 ## 标准工作流
 
@@ -103,15 +111,17 @@ cleanroom-kit/
 │   ├── browser.py           # 浏览器探测与启动
 │   ├── inspect.py           # DOM 取证（设计 token/元素坐标/调色板）
 │   ├── compare.py           # 像素对照与差异热图
+│   ├── verify.py            # 单命令闭环编排与汇总报告
 │   ├── scaffold.py          # 脚手架
 │   └── license.py           # 许可证生成
 ├── templates/web/           # web 栈项目模板
 ├── templates/game/         # game 栈项目模板（canvas + ES module）
 ├── data/                    # 内嵌 PolyForm 标准条款
 ├── docs/banner.svg          # README 标题头图
+├── docs/COMMAND_REFERENCE.md  # 全部命令统一速查
 ├── scripts/pre_release_check.py  # 发布前一致性自检
 ├── evidence/                # 各版本真实浏览器验证产物
-└── tests/test_core.py       # 核心测试（77 项）
+└── tests/test_core.py       # 核心测试（89 项）
 ```
 
 ## 验证与证据
@@ -136,7 +146,7 @@ python3 scripts/pre_release_check.py   # 发布前自检，全部通过才允许
 ## 测试
 
 ```bash
-python3 -m unittest tests.test_core -v   # 77 项，覆盖 PNG 隔行/透明/CRC/颜色归一化/对照/网格分桶/取证/交互动作/断言/WCAG 对比度/脚手架双栈/批量流水线/基线容差/doctor JSON/发布自检/许可证年份/版本一致性/合规自检/会话可靠性/WS 帧/全页截图
+python3 -m unittest tests.test_core -v   # 89 项，覆盖 PNG 隔行/透明/CRC/颜色归一化/对照/网格分桶/取证/交互动作/断言/WCAG 对比度/脚手架双栈/批量流水线/基线降级口径/闭环 verify 聚合与报告/边界输入容错/doctor JSON/发布自检/许可证年份/版本一致性/合规自检/会话可靠性/WS 帧/全页截图
 ```
 
 ## 许可证

@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "python": "3.12.11",
+  "platform": "Linux-6.6.95.bck.4-rc3-amd64-x86_64-with-glibc2.35",
+  "browser": "/usr/local/bin/chromium",
+  "node": "/opt/nodejs/22/bin/node",
+  "craft_cli": null,
+  "port": 9340,
+  "port_free": true,
+  "license": "PolyForm Noncommercial License 1.0.0"
+}

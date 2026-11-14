@@ -1,0 +1,541 @@
+{
+  "pairs": [
+    {
+      "element": "header「IANA\n      Internet Assi」",
+      "fg": "#56564f",
+      "bg": "#ffffff",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「The global coordination 」",
+      "fg": "#666666",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 5.07,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Learn more.」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "main「Domain Names\n        Man」",
+      "fg": "#56564f",
+      "bg": "#f8f9fa",
+      "ratio": 6.17,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "section「Domain Names\n        Man」",
+      "fg": "#56564f",
+      "bg": "#ffffff",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "h2「Domain Names」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Domain Names」",
+      "fg": "#545a64",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.09,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「Management of the DNS Ro」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "ul「Root Zone Management\n   」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Root Zone Management」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Database of Top Level Do」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「.int Registry」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「.arpa Registry」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「IDN Practices Repository」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "section「Number Resources\n       」",
+      "fg": "#56564f",
+      "bg": "#ffffff",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "h2「Number Resources」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Number Resources」",
+      "fg": "#545a64",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.09,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「Coordination of the glob」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "ul「IP Addresses & AS Number」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「IP Addresses & AS Number」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Network abuse informatio」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "section「Protocol Assignments\n   」",
+      "fg": "#56564f",
+      "bg": "#ffffff",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "h2「Protocol Assignments」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Protocol Assignments」",
+      "fg": "#545a64",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.09,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "p「The central repository f」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "ul「Protocol Registries\n    」",
+      "fg": "#56564f",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 6.47,
+      "grade": "AA",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": true
+    },
+    {
+      "element": "a「Protocol Registries」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Apply for an assignment」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Time Zone Database」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "footer「Domain Names\n        \n  」",
+      "fg": "#9999a0",
+      "bg": "#ebeff1",
+      "ratio": 2.28,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "ul「Root Zone Registry\n     」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Root Zone Registry」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「.INT Registry」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「.ARPA Registry」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「IDN Repository」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "ul「Number Registries\n      」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Number Registries」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「RIR Allocation Data」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Abuse Information」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "ul「Protocol Registries\n    」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "ul「News\n          Performan」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「News」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Performance」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「The Organization」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Archive」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Contact Us」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "p「The IANA functions coord」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Public Technical Identif」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「ICANN」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "ul「Privacy Policy\n        T」",
+      "fg": "#9999a0",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 2.61,
+      "grade": "fail",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Privacy Policy」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    },
+    {
+      "element": "a「Terms of Service」",
+      "fg": "#2e7dca",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 3.89,
+      "grade": "A",
+      "large": false,
+      "requirement": "正文 AA≥4.5 / AAA≥7.0",
+      "pass": false
+    }
+  ],
+  "summary": {
+    "total": 52,
+    "passed": 18,
+    "failed": 34,
+    "unverified": 0
+  },
+  "checklist": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "unnamed_controls": [],
+    "landmarks": [
+      "header",
+      "main",
+      "section",
+      "footer"
+    ]
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "size": [
+    1280,
+    900
+  ],
+  "bg_original": [
+    255,
+    255,
+    255
+  ],
+  "bg_rebuild": [
+    255,
+    255,
+    255
+  ],
+  "bg_match": true,
+  "mean_abs_diff": 28.483716145833334,
+  "diff_ratio_pct": 16.764062499999998,
+  "content_original": [
+    0,
+    1279
+  ],
+  "content_rebuild": [
+    0,
+    1279
+  ],
+  "content_rows_original": [
+    53,
+    899
+  ],
+  "content_rows_rebuild": [
+    48,
+    843
+  ],
+  "grid": {
+    "cols": 8,
+    "rows": 6,
+    "buckets": [
+      {
+        "row": 0,
+        "col": 0,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "diff_pixels": 10654,
+        "diff_ratio_pct": 44.391666666666666
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "diff_pixels": 9618,
+        "diff_ratio_pct": 40.075
+      },
+      {
+        "row": 0,
+        "col": 5,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 0,
+        "col": 6,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 0,
+        "col": 7,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "diff_pixels": 3425,
+        "diff_ratio_pct": 14.270833333333332
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "diff_pixels": 5284,
+        "diff_ratio_pct": 22.01666666666667
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "diff_pixels": 4429,
+        "diff_ratio_pct": 18.454166666666666
+      },
+      {
+        "row": 1,
+        "col": 5,
+        "diff_pixels": 1565,
+        "diff_ratio_pct": 6.520833333333333
+      },
+      {
+        "row": 1,
+        "col": 6,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 1,
+        "col": 7,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "diff_pixels": 3083,
+        "diff_ratio_pct": 12.845833333333335
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "diff_pixels": 5994,
+        "diff_ratio_pct": 24.975
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "diff_pixels": 4249,
+        "diff_ratio_pct": 17.70416666666667
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "diff_pixels": 6331,
+        "diff_ratio_pct": 26.379166666666663
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "diff_pixels": 4622,
+        "diff_ratio_pct": 19.258333333333333
+      },
+      {
+        "row": 2,
+        "col": 5,
+        "diff_pixels": 5837,
+        "diff_ratio_pct": 24.320833333333333
+      },
+      {
+        "row": 2,
+        "col": 6,
+        "diff_pixels": 5087,
+        "diff_ratio_pct": 21.195833333333333
+      },
+      {
+        "row": 2,
+        "col": 7,
+        "diff_pixels": 1244,
+        "diff_ratio_pct": 5.183333333333334
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "diff_pixels": 3062,
+        "diff_ratio_pct": 12.758333333333333
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "diff_pixels": 7089,
+        "diff_ratio_pct": 29.5375
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "diff_pixels": 3107,
+        "diff_ratio_pct": 12.945833333333335
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "diff_pixels": 3616,
+        "diff_ratio_pct": 15.066666666666666
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "diff_pixels": 2389,
+        "diff_ratio_pct": 9.954166666666667
+      },
+      {
+        "row": 3,
+        "col": 5,
+        "diff_pixels": 4937,
+        "diff_ratio_pct": 20.570833333333333
+      },
+      {
+        "row": 3,
+        "col": 6,
+        "diff_pixels": 3251,
+        "diff_ratio_pct": 13.545833333333333
+      },
+      {
+        "row": 3,
+        "col": 7,
+        "diff_pixels": 1360,
+        "diff_ratio_pct": 5.666666666666666
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "diff_pixels": 2091,
+        "diff_ratio_pct": 8.712499999999999
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "diff_pixels": 3549,
+        "diff_ratio_pct": 14.787500000000001
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "diff_pixels": 3721,
+        "diff_ratio_pct": 15.504166666666666
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "diff_pixels": 1896,
+        "diff_ratio_pct": 7.9
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 4,
+        "col": 5,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 4,
+        "col": 6,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 4,
+        "col": 7,
+        "diff_pixels": 0,
+        "diff_ratio_pct": 0.0
+      },
+      {
+        "row": 5,
+        "col": 0,
+        "diff_pixels": 10369,
+        "diff_ratio_pct": 43.204166666666666
+      },
+      {
+        "row": 5,
+        "col": 1,
+        "diff_pixels": 11642,
+        "diff_ratio_pct": 48.50833333333333
+      },
+      {
+        "row": 5,
+        "col": 2,
+        "diff_pixels": 10896,
+        "diff_ratio_pct": 45.4
+      },
+      {
+        "row": 5,
+        "col": 3,
+        "diff_pixels": 10690,
+        "diff_ratio_pct": 44.54166666666667
+      },
+      {
+        "row": 5,
+        "col": 4,
+        "diff_pixels": 10427,
+        "diff_ratio_pct": 43.44583333333333
+      },
+      {
+        "row": 5,
+        "col": 5,
+        "diff_pixels": 9688,
+        "diff_ratio_pct": 40.36666666666667
+      },
+      {
+        "row": 5,
+        "col": 6,
+        "diff_pixels": 8960,
+        "diff_ratio_pct": 37.333333333333336
+      },
+      {
+        "row": 5,
+        "col": 7,
+        "diff_pixels": 8960,
+        "diff_ratio_pct": 37.333333333333336
+      }
+    ]
+  },
+  "verdict": "minor",
+  "max_diff": 25.0
+}

@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "name": "开始后遮罩隐藏",
+      "pass": true,
+      "expected": {
+        "class": "hidden"
+      },
+      "actual": "overlay hidden",
+      "reason": null
+    },
+    {
+      "name": "暂停后标题为已暂停",
+      "pass": true,
+      "expected": {
+        "text": "已暂停"
+      },
+      "actual": "已暂停",
+      "reason": null
+    },
+    {
+      "name": "恢复后遮罩隐藏",
+      "pass": true,
+      "expected": {
+        "class": "hidden"
+      },
+      "actual": "overlay hidden",
+      "reason": null
+    }
+  ],
+  "all_pass": true
+}

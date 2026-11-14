@@ -1,0 +1,4 @@
+[
+  {"name": "标题文本就位", "selector": "h1", "expect": {"text": "Example Domain"}},
+  {"name": "主区域可见", "selector": "main", "expect": {"visible": true}}
+]

@@ -14,6 +14,10 @@ from pathlib import Path
 METRIC_KEYS = ("diff_ratio_pct", "mean_abs_diff", "bg_match", "verdict")
 CONTENT_KEYS = ("content_original", "content_rebuild",
                 "content_rows_original", "content_rows_rebuild")
+# 宽松口径下视为同一档的判定分级（match 与 minor 互不算降级）
+CLOSE_VERDICTS = ("match", "minor")
+# 判定分级严重度排序，序号越大越差；仅当当前比基线更差时记漂移
+VERDICT_RANK = {"match": 0, "minor": 1, "major": 2, "fail": 3}
 
 
 def _dir(name, root):
@@ -42,12 +46,14 @@ def load_snapshot(name, root="evidence"):
     return json.loads(f.read_text(encoding="utf-8"))
 
 
-def diff_snapshot(name, current, max_ratio_drift=5.0, mean_diff_tol=3.0, root="evidence"):
+def diff_snapshot(name, current, max_ratio_drift=5.0, mean_diff_tol=3.0,
+                  verdict_strict=True, root="evidence"):
     """当前指标与基线回归比对，返回漂移项清单。
 
     - `diff_ratio_pct` 回升超过 `max_ratio_drift` 个百分点记漂移；
     - `mean_abs_diff` 绝对差超过 `mean_diff_tol` 记漂移，轻微抖动在容差内不报；
-    - `bg_match` / `verdict` 与基线不一致记漂移（布尔与分级不容差）；
+    - `bg_match` 为布尔值，严格比较（无数字容差）；
+    - `verdict` 默认严格全等；`verdict_strict=False` 时 match/minor 互不算降级；
     - 内容列/行区间新增或消失记入 `content_changes`。
     """
     base = load_snapshot(name, root=root)
@@ -59,9 +65,23 @@ def diff_snapshot(name, current, max_ratio_drift=5.0, mean_diff_tol=3.0, root="e
                 drift.append({"metric": key, "baseline": old, "current": new,
                               "detail": f"差异占比回升 {new - old:.1f} 个百分点"})
         elif key == "mean_abs_diff":
-            if new is not None and old is not None and abs(new - old) > mean_diff_tol:
+            if new is not None and old is not None and (new - old) > mean_diff_tol:
                 drift.append({"metric": key, "baseline": old, "current": new,
-                              "detail": f"平均差偏离 {abs(new - old):.1f}（容差 {mean_diff_tol}）"})
+                              "detail": f"平均差回升 {new - old:.1f}（容差 {mean_diff_tol}）"})
+        elif key == "verdict":
+            if old == new:
+                continue
+            if not verdict_strict and old in CLOSE_VERDICTS and new in CLOSE_VERDICTS:
+                continue
+            rank_old = VERDICT_RANK.get(old, len(VERDICT_RANK))
+            rank_new = VERDICT_RANK.get(new, len(VERDICT_RANK))
+            if rank_new > rank_old:
+                drift.append({"metric": key, "baseline": old, "current": new,
+                              "detail": "判定分级较基线降级"})
+        elif key == "bg_match":
+            if old is True and new is False:
+                drift.append({"metric": key, "baseline": old, "current": new,
+                              "detail": "背景匹配由一致变为不一致"})
         elif old != new:
             drift.append({"metric": key, "baseline": old, "current": new,
                           "detail": "指标与基线不一致"})
