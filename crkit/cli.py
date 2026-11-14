@@ -11,7 +11,7 @@ from . import cleanwords
 from . import inspect as imod
 from . import compare
 from . import pngio
-from . import act, probe
+from . import act, probe, a11y
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -174,6 +174,38 @@ def cmd_probe(a):
         sys.exit(1)
 
 
+def cmd_a11y(a):
+    if a.inspect:
+        report = json.loads(Path(a.inspect).read_text(encoding="utf-8"))
+    elif a.url:
+        r = bmod.launch(port=a.port, headless=True)
+        try:
+            c = CDP(get_page_ws("127.0.0.1", a.port))
+            c.set_device_metrics(a.width, a.height, mobile=a.mobile)
+            report = imod.inspect_page(c, a.url, wait=a.wait, timeout=a.timeout)
+            c.close()
+        finally:
+            bmod.close_session(r)
+    else:
+        raise RuntimeError("a11y 需要 --inspect 报告路径或 --url 现场取证")
+
+    result = a11y.analyze_inspect(report)
+    if a.out:
+        with open(a.out, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+    for p in result["pairs"]:
+        ratio = f"{p['ratio']:.2f}:1" if p["ratio"] is not None else "unverified"
+        mark = "UNVERIFIED" if p["grade"] == "unverified" else ("PASS" if p["pass"] else "FAIL")
+        print(f"[{mark}] {p['element']} 前景 {p['fg']} / 背景 {p['bg']} 对比度 {ratio}（{p['grade']}，{p['requirement']}）")
+    s = result["summary"]
+    print(f"汇总：共 {s['total']} 组，通过 {s['passed']}，失败 {s['failed']}，未核验 {s['unverified']}")
+    if result["checklist"].get("lang") is None:
+        print("提示：页面缺少 <html lang> 属性", file=sys.stderr)
+    if s["failed"]:
+        print(f"{s['failed']} 个颜色组合未达 AA", file=sys.stderr)
+        sys.exit(1)
+
+
 def cmd_version(a):
     info = {
         "version": get_version(),
@@ -280,6 +312,16 @@ def build_parser():
     s.add_argument("--wait", type=float, default=1.5)
     s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
     s.set_defaults(func=cmd_probe)
+
+    s = sub.add_parser("a11y", help="WCAG 对比度与无障碍清单检查")
+    s.add_argument("--inspect", help="inspect 报告 JSON 路径")
+    s.add_argument("--url", help="现场取证的页面地址（与 --inspect 二选一）")
+    s.add_argument("--out", help="结构化对比度报告落盘路径（JSON）")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9366); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_a11y)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")
     s.add_argument("--json", action="store_true")

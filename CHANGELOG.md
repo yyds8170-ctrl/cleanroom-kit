@@ -2,6 +2,17 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.10.0] - 2026-11-14
+
+### 新增
+- 新增 `crkit/a11y.py`：WCAG 相对亮度 / 对比度公式（sRGB 分段线性化 + 0.2126/0.7152/0.0722 加权），`grade` 输出 `AAA / AA / A / fail / unverified`，复用 v1.7.0 颜色归一化。
+- 新命令 `a11y`：支持 `--inspect` 报告或 `--url` 现场取证两种数据源，输出前景/背景对比度表（ratio / grade / requirement / pass）与 `passed / failed / unverified` 汇总，附带缺 alt、无名控件、缺 `lang` 清单；任一失败组合退出码 1。
+- 5 项单元测试（亮度已知值、黑白 21:1、分级临界点、报告配对、不可解析标 unverified），核心测试增至 60 项。
+
+### 修复
+- 半透明颜色合成背景未知：配对层只取不透明颜色，alpha < 1 的组合标 `unverified`，不参与通过/失败计数。
+- 元素级透明背景未回退 body 背景：前景/背景不可用时回退 body token 颜色后再配对分级。
+
 ## [1.9.0] - 2026-11-14
 
 ### 新增

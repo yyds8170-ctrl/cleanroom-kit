@@ -1,0 +1,232 @@
+{
+  "url": "http://127.0.0.1:8075/",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "tokens": {
+    "body": {
+      "backgroundColor": "rgb(238, 238, 238)",
+      "color": "rgb(0, 0, 0)",
+      "fontFamily": "system-ui, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "normal"
+    }
+  },
+  "elements": [
+    {
+      "tag": "main",
+      "id": null,
+      "className": "column",
+      "text": "Example Domain\n\n    \n    \n      \n      \n      \n      \n      \n      \n    \n\n    \n ",
+      "box": {
+        "x": 432,
+        "y": 181,
+        "width": 416,
+        "height": 687
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "h1",
+      "id": null,
+      "className": "sr-only",
+      "text": "Example Domain",
+      "box": {
+        "x": 640,
+        "y": 180,
+        "width": 1,
+        "height": 1
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "32px",
+        "fontWeight": "700",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "lead",
+      "text": "This domain is for use in documentation examples without needing permission.\n   ",
+      "box": {
+        "x": 432,
+        "y": 257,
+        "width": 416,
+        "height": 72
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "className": "note",
+      "text": "该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。",
+      "box": {
+        "x": 432,
+        "y": 345,
+        "width": 416,
+        "height": 45
+      },
+      "style": {
+        "color": {
+          "hex": "#333333",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "className": "more",
+      "text": "Learn more",
+      "box": {
+        "x": 600,
+        "y": 420,
+        "width": 79,
+        "height": 21
+      },
+      "style": {
+        "color": {
+          "hex": "#000000",
+          "alpha": 1.0,
+          "space": "rgb"
+        },
+        "backgroundColor": {
+          "hex": "#000000",
+          "alpha": 0.0,
+          "space": "rgb"
+        },
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "system-ui, sans-serif"
+      }
+    }
+  ],
+  "palette": [
+    {
+      "hex": "#000000",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#eeeeee",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#6b6b6b",
+      "alpha": 1.0,
+      "space": "rgb"
+    },
+    {
+      "hex": "#333333",
+      "alpha": 1.0,
+      "space": "rgb"
+    }
+  ],
+  "links": [
+    {
+      "text": "Learn more",
+      "href": "https://www.iana.org/help/example-domains",
+      "target": null
+    }
+  ],
+  "images": [],
+  "headings": [
+    {
+      "level": 1,
+      "text": "Example Domain",
+      "box": {
+        "x": 640,
+        "y": 180,
+        "width": 1,
+        "height": 1
+      }
+    }
+  ],
+  "a11y": {
+    "lang": "en",
+    "images_without_alt": 0,
+    "landmarks": [
+      "main"
+    ],
+    "unnamed_controls": []
+  },
+  "design": {
+    "font_sizes": [
+      "16px",
+      "32px",
+      "14px"
+    ],
+    "font_weights": [
+      "400",
+      "700"
+    ],
+    "fonts": [
+      "Times New Roman",
+      "system-ui"
+    ],
+    "max_widths": [
+      "416px"
+    ],
+    "radii": [
+      "3px"
+    ],
+    "shadows": [],
+    "spacing": [
+      "-1px",
+      "14px"
+    ]
+  },
+  "text": "Example Domain This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes. 该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。 Learn more",
+  "full_page": false
+}

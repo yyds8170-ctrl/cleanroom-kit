@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe, a11y  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -453,6 +453,62 @@ class TestVersion(unittest.TestCase):
     def test_init_dunder_derived(self):
         import crkit
         self.assertEqual(crkit.__version__, vmod.get_version())
+
+
+class TestA11y(unittest.TestCase):
+    def test_luminance_known_values(self):
+        self.assertEqual(a11y.relative_luminance("#000000"), 0.0)
+        self.assertEqual(a11y.relative_luminance("#ffffff"), 1.0)
+        gray = a11y.relative_luminance("#808080")
+        self.assertTrue(0.0 < gray < 1.0)
+
+    def test_contrast_ratio_black_white(self):
+        self.assertEqual(a11y.contrast_ratio("#000000", "#ffffff"), 21.0)
+
+    def test_grade_thresholds(self):
+        self.assertEqual(a11y.grade(7.0), "AAA")
+        self.assertEqual(a11y.grade(4.5), "AA")
+        self.assertEqual(a11y.grade(3.0), "A")
+        self.assertEqual(a11y.grade(2.0), "fail")
+        self.assertEqual(a11y.grade(4.5, large=True), "AAA")
+        self.assertEqual(a11y.grade(3.0, large=True), "AA")
+        self.assertEqual(a11y.grade(2.0, large=True), "fail")
+        self.assertEqual(a11y.grade(None), "unverified")
+
+    def test_inspect_report_pairing(self):
+        report = {
+            "tokens": {"body": {"color": "#111111", "backgroundColor": "#ffffff"}},
+            "elements": [{
+                "tag": "p", "id": None, "className": None, "text": "正文",
+                "style": {"color": {"hex": "#111111", "space": "hex"},
+                          "backgroundColor": {"hex": "#ffffff", "space": "hex"},
+                          "fontSize": "16px", "fontWeight": "400"},
+            }],
+            "a11y": {"lang": "zh-CN", "images_without_alt": 0, "unnamed_controls": [], "landmarks": ["main"]},
+        }
+        result = a11y.analyze_inspect(report)
+        self.assertEqual(result["summary"]["total"], 1)
+        self.assertIsNotNone(result["pairs"][0]["ratio"])
+        self.assertTrue(result["pairs"][0]["pass"])
+
+    def test_unparsable_marked_unverified(self):
+        report = {
+            "tokens": {"body": {"color": "raw-ink", "backgroundColor": "transparent"}},
+            "elements": [
+                {
+                    "tag": "span", "style": {"color": {"space": "raw", "raw": "weird"},
+                                              "backgroundColor": {"space": "raw", "raw": "weird"}},
+                },
+                {
+                    "tag": "i", "style": {"color": {"hex": "#111111", "alpha": 1.0, "space": "hex"},
+                                           "backgroundColor": {"hex": "#000000", "alpha": 0.0, "space": "rgba"}},
+                },
+            ],
+            "a11y": {},
+        }
+        result = a11y.analyze_inspect(report)
+        self.assertEqual(result["pairs"][0]["grade"], "unverified")
+        self.assertEqual(result["summary"]["unverified"], 2)
 
 
 class TestLint(unittest.TestCase):
