@@ -11,7 +11,7 @@ from . import cleanwords
 from . import inspect as imod
 from . import compare
 from . import pngio
-from . import act, probe, a11y
+from . import act, probe, a11y, pipeline, baseline
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -213,6 +213,84 @@ def cmd_a11y(a):
         sys.exit(1)
 
 
+def cmd_pipeline(a):
+    if a.targets:
+        targets = pipeline.load_targets(a.targets)
+    elif a.site:
+        targets = [{"name": Path(a.site).name or "site", "url": a.site,
+                    "widths": _parse_widths(a.widths) or [a.width]}]
+    else:
+        raise RuntimeError("pipeline 需要 --targets 配置或 --site 单站地址")
+
+    out = Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    reports = []
+    r = bmod.launch(port=a.port, headless=True)
+    try:
+        c = CDP(get_page_ws("127.0.0.1", a.port))
+        for t in targets:
+            name, url = t["name"], t["url"]
+            widths = t.get("widths") or _parse_widths(a.widths) or [a.width]
+            tdir = out / name
+            tdir.mkdir(parents=True, exist_ok=True)
+            shots = []
+            for w in widths:
+                c.set_device_metrics(w, a.height, mobile=a.mobile)
+                c.navigate(url, wait=a.wait, timeout=a.timeout)
+                data = c.screenshot(mobile=a.mobile, viewport=(w, a.height))
+                sp = tdir / f"shot-{w}.png"
+                sp.write_bytes(data)
+                shots.append(str(sp))
+            c.set_device_metrics(widths[0], a.height, mobile=a.mobile)
+            c.navigate(url, wait=a.wait, timeout=a.timeout)
+            insp = imod.inspect_page(c, wait=a.wait, timeout=a.timeout)
+            imod.write_report(insp, tdir / "inspect.json")
+
+            cmp_report = None
+            ref = Path(a.rebuild_dir) / f"{name}.png" if a.rebuild_dir else None
+            if ref and ref.exists():
+                cmp_report = compare.compare_images(str(ref), shots[0], resize=True,
+                                                    max_diff=a.max_diff)
+                compare.write_report_json(cmp_report, tdir / "compare.json")
+            reports.append({
+                "name": name, "url": url, "widths": widths, "shots": shots,
+                "inspect": str(tdir / "inspect.json"),
+                "compare": pipeline.compare_subset(cmp_report),
+                "pass": cmp_report is None or cmp_report["diff_ratio_pct"] <= a.max_diff,
+            })
+        c.close()
+    finally:
+        bmod.close_session(r)
+
+    agg = pipeline.aggregate(reports)
+    pipeline.write_report_json(agg, out / "report.json")
+    pipeline.write_report_md(agg, out / "report.md")
+    if a.archive:
+        pipeline.archive_zip(out, a.archive)
+        print(f"证据已归档：{a.archive}")
+    print(f"流水线完成：{agg['summary']['total']} 目标，总体 {agg['overall']}")
+    if agg["overall"] != "pass":
+        sys.exit(1)
+
+
+def cmd_baseline(a):
+    if a.baseline_action == "save":
+        metrics = json.loads(Path(a.metrics).read_text(encoding="utf-8")) if a.metrics else {}
+        d = baseline.save_snapshot(a.name, metrics, png_path=a.orig, root=a.evidence_root)
+        print(f"基线已保存：{d}")
+    else:
+        current = json.loads(Path(a.current).read_text(encoding="utf-8")) if a.current else {}
+        res = baseline.diff_snapshot(a.name, current, max_ratio_drift=a.max_diff,
+                                     root=a.evidence_root)
+        for d in res["drift"]:
+            print(f"漂移：{d['metric']} 基线 {d['baseline']} → 当前 {d['current']}（{d['detail']}）")
+        for ch in res["content_changes"]:
+            print(f"内容变化：{ch['field']} 基线 {ch['baseline']} → 当前 {ch['current']}")
+        print(f"回归判定：{'regressed' if res['regressed'] else 'stable'}")
+        if res["regressed"]:
+            sys.exit(1)
+
+
 def cmd_version(a):
     info = {
         "version": get_version(),
@@ -335,6 +413,30 @@ def build_parser():
     s.add_argument("--wait", type=float, default=1.5)
     s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
     s.set_defaults(func=cmd_a11y)
+
+    s = sub.add_parser("pipeline", help="批量流水线：截图→取证→对照→汇总报告")
+    s.add_argument("--targets", help="多目标配置 JSON（[{name,url,widths}]）")
+    s.add_argument("--site", help="单站地址（与 --targets 二选一）")
+    s.add_argument("--out", default="evidence/run", help="本轮证据输出目录")
+    s.add_argument("--rebuild-dir", help="对照参考图目录（<目标名>.png）")
+    s.add_argument("--archive", help="证据归档 zip 路径")
+    s.add_argument("--widths", help="逗号分隔多宽度批量出图")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9368); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.add_argument("--max-diff", type=float, default=10.0)
+    s.set_defaults(func=cmd_pipeline)
+
+    s = sub.add_parser("baseline", help="基准快照保存与回归比对")
+    s.add_argument("baseline_action", choices=["save", "diff"])
+    s.add_argument("--name", required=True, help="基线名")
+    s.add_argument("--orig", help="基准截图路径（save）")
+    s.add_argument("--metrics", help="compare 指标快照 JSON（save）")
+    s.add_argument("--current", help="当前指标 JSON（diff）")
+    s.add_argument("--max-diff", type=float, default=5.0, help="差异占比回升漂移阈值（百分点）")
+    s.add_argument("--evidence-root", default="evidence", help="证据根目录")
+    s.set_defaults(func=cmd_baseline)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")
     s.add_argument("--json", action="store_true")

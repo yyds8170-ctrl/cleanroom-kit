@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe, a11y  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe, a11y, pipeline, baseline  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -568,6 +568,79 @@ class TestA11y(unittest.TestCase):
         result = a11y.analyze_inspect(report)
         self.assertEqual(result["pairs"][0]["grade"], "unverified")
         self.assertEqual(result["summary"]["unverified"], 2)
+
+
+class TestPipeline(unittest.TestCase):
+    def test_targets_json_parsed(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "targets.json"
+            f.write_text(json.dumps([
+                {"name": "a", "url": "http://x/a", "widths": [1280]},
+                {"name": "b", "url": "http://x/b"},
+            ]), encoding="utf-8")
+            targets = pipeline.load_targets(f)
+            self.assertEqual([t["name"] for t in targets], ["a", "b"])
+            bad = Path(d) / "bad.json"
+            bad.write_text('[{"name": "x"}]', encoding="utf-8")
+            with self.assertRaises(RuntimeError):
+                pipeline.load_targets(bad)
+
+    def test_report_aggregates_metrics(self):
+        reports = [
+            {"name": "a", "pass": True, "compare": {"size": [1280, 900], "bg_match": True,
+             "mean_abs_diff": 3.2, "diff_ratio_pct": 4.1, "verdict": "match", "heaviest_bucket": None}},
+            {"name": "b", "pass": False, "compare": {"size": [1280, 900], "bg_match": False,
+             "mean_abs_diff": 18.0, "diff_ratio_pct": 16.8, "verdict": "major", "heaviest_bucket": None}},
+        ]
+        agg = pipeline.aggregate(reports)
+        self.assertEqual(agg["overall"], "fail")
+        self.assertEqual(agg["summary"]["total"], 2)
+        self.assertEqual(agg["summary"]["failed"], 1)
+        self.assertEqual(agg["targets"][1]["compare"]["verdict"], "major")
+
+    def test_archive_creates_zip(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "run" / "site"
+            out.mkdir(parents=True)
+            (out / "shot.png").write_bytes(b"png-bytes")
+            (out / "inspect.json").write_text("{}", encoding="utf-8")
+            zpath = Path(d) / "evidence.zip"
+            pipeline.archive_zip(Path(d) / "run", zpath)
+            import zipfile
+            with zipfile.ZipFile(zpath) as zf:
+                names = zf.namelist()
+            self.assertTrue(any(n.endswith("shot.png") for n in names))
+            self.assertTrue(any(n.endswith("inspect.json") for n in names))
+
+
+class TestBaseline(unittest.TestCase):
+    def test_save_and_load_snapshot(self):
+        with tempfile.TemporaryDirectory() as d:
+            metrics = {"diff_ratio_pct": 5.0, "mean_abs_diff": 3.0,
+                       "bg_match": True, "verdict": "match",
+                       "content_original": [0, 10], "content_rebuild": [0, 10]}
+            png = Path(d) / "orig.png"
+            pngio.write_png(png, 2, 2, bytearray([10, 10, 10] * 4))
+            baseline.save_snapshot("demo", metrics, png_path=png, root=d)
+            snap = baseline.load_snapshot("demo", root=d)
+            self.assertEqual(snap["diff_ratio_pct"], 5.0)
+            self.assertEqual(snap["verdict"], "match")
+            self.assertEqual(snap["content_original"], [0, 10])
+            self.assertTrue((Path(d) / "baselines" / "demo" / "reference.png").exists())
+
+    def test_regression_flags_drift(self):
+        with tempfile.TemporaryDirectory() as d:
+            baseline.save_snapshot("demo", {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                                             "bg_match": True, "verdict": "match"}, root=d)
+            worse = {"diff_ratio_pct": 12.0, "mean_abs_diff": 9.0,
+                     "bg_match": False, "verdict": "major"}
+            res = baseline.diff_snapshot("demo", worse, max_ratio_drift=5.0, root=d)
+            self.assertTrue(res["regressed"])
+            self.assertTrue(any(x["metric"] == "diff_ratio_pct" for x in res["drift"]))
+            stable = {"diff_ratio_pct": 5.0, "mean_abs_diff": 3.0,
+                      "bg_match": True, "verdict": "match"}
+            res2 = baseline.diff_snapshot("demo", stable, max_ratio_drift=5.0, root=d)
+            self.assertFalse(res2["regressed"])
 
 
 class TestLint(unittest.TestCase):

@@ -2,8 +2,8 @@
 
 [![ci](https://img.shields.io/github/actions/workflow/status/yyds8170-ctrl/cleanroom-kit/ci.yml?branch=main)](https://github.com/yyds8170-ctrl/cleanroom-kit/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
-[![version](https://img.shields.io/badge/version-1.11.0-blue.svg)](#快速开始)
-[![tests](https://img.shields.io/badge/tests-64%20passing-brightgreen.svg)](#测试)
+[![version](https://img.shields.io/badge/version-1.12.0-blue.svg)](#快速开始)
+[![tests](https://img.shields.io/badge/tests-69%20passing-brightgreen.svg)](#测试)
 
 一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包。它只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「**取证 → 实现 → 对照 → 验证**」的完整闭环。
 
@@ -72,6 +72,8 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 | `probe` | 页面状态断言，输出结构化 PASS/FAIL 报告 | `--url` `--out` `--assertions` `--script` `--width` `--height` `--mobile` `--wait` `--timeout` |
 | `a11y` | WCAG 对比度与无障碍清单检查（AA/AAA 分级） | `--inspect` `--url` `--out` `--width` `--height` `--mobile` `--wait` `--timeout` |
 | `compare` | 像素对照（区块级差异 + JSON 报告 + 差异热图） | `--orig` `--rebuild` `--max-diff` `--threshold` `--crop` `--resize` `--diff-out` `--json` |
+| `pipeline` | 批量流水线：截图→取证→对照→汇总报告，可归档 zip | `--targets` `--site` `--out` `--rebuild-dir` `--archive` `--widths` `--max-diff` |
+| `baseline` | 基准快照保存与回归比对 | `save`/`diff` `--name` `--orig` `--metrics` `--current` `--max-diff` |
 | `license` | 生成 PolyForm 许可证 | `name` `--dir` `--note` `--year` |
 | `browser` | 启动调试浏览器 | `--port` `--url` `--show` |
 
@@ -104,7 +106,7 @@ cleanroom-kit/
 ├── templates/game/         # game 栈项目模板（canvas + ES module）
 ├── data/                    # 内嵌 PolyForm 标准条款
 ├── evidence/                # 各版本真实浏览器验证产物
-└── tests/test_core.py       # 核心测试（64 项）
+└── tests/test_core.py       # 核心测试（69 项）
 ```
 
 ## 示例项目
@@ -121,7 +123,7 @@ cleanroom-kit/
 ## 测试
 
 ```bash
-python3 -m unittest tests.test_core -v   # 64 项，覆盖 PNG/颜色归一化/对照/网格分桶/取证/交互动作/断言/WCAG 对比度/脚手架双栈/许可证年份/版本一致性/合规自检/会话可靠性/WS 帧/全页截图
+python3 -m unittest tests.test_core -v   # 69 项，覆盖 PNG/颜色归一化/对照/网格分桶/取证/交互动作/断言/WCAG 对比度/脚手架双栈/批量流水线/基线回归/许可证年份/版本一致性/合规自检/会话可靠性/WS 帧/全页截图
 ```
 
 ## 许可证

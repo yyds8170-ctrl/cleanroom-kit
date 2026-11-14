@@ -1,0 +1,51 @@
+{
+  "targets": [
+    {
+      "name": "example",
+      "url": "http://127.0.0.1:8077/",
+      "widths": [
+        1280
+      ],
+      "shots": [
+        "evidence/v1.12.0/run/example/shot-1280.png"
+      ],
+      "inspect": "evidence/v1.12.0/run/example/inspect.json",
+      "compare": null,
+      "pass": true
+    },
+    {
+      "name": "site",
+      "url": "http://127.0.0.1:8078/",
+      "widths": [
+        1280
+      ],
+      "shots": [
+        "evidence/v1.12.0/run/site/shot-1280.png"
+      ],
+      "inspect": "evidence/v1.12.0/run/site/inspect.json",
+      "compare": {
+        "size": [
+          1280,
+          900
+        ],
+        "bg_match": true,
+        "mean_abs_diff": 28.48,
+        "diff_ratio_pct": 16.8,
+        "verdict": "major",
+        "heaviest_bucket": {
+          "row": 5,
+          "col": 1,
+          "diff_pixels": 11642,
+          "diff_ratio_pct": 48.50833333333333
+        }
+      },
+      "pass": false
+    }
+  ],
+  "overall": "fail",
+  "summary": {
+    "total": 2,
+    "passed": 1,
+    "failed": 1
+  }
+}

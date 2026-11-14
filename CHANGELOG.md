@@ -2,6 +2,17 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.12.0] - 2026-11-14
+
+### 新增
+- 新命令 `pipeline`：按 `--targets` 配置或 `--site` 批量执行截图 → 取证 →（可选）对照，汇总 `report.md` + `report.json`（背景一致 / 平均差 / 差异占比 / 判定 / 最重桶 / 总体 pass-fail），`--archive` 用标准库 `zipfile` 归档本轮证据。
+- 新命令 `baseline save/diff`：基准截图与 compare 指标快照（纯 JSON + PNG，无数据库），回归比对标出指标超差与内容区间新增/消失项，漂移退出码 1。
+- 5 项单元测试（目标配置解析、汇总聚合、快照保存读回、漂移判定、zip 归档列目录），核心测试增至 69 项。
+
+### 修复
+- 基线快照补存内容列/行区间字段，稳定样例不再误报内容变化。
+- CI e2e 补 act / probe 步骤，交互动作与状态断言纳入自动化覆盖。
+
 ## [1.11.0] - 2026-11-14
 
 ### 新增

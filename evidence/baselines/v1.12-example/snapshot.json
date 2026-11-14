@@ -1,0 +1,23 @@
+{
+  "diff_ratio_pct": 16.764062499999998,
+  "mean_abs_diff": 28.483716145833334,
+  "bg_match": true,
+  "verdict": "major",
+  "content_original": [
+    0,
+    1279
+  ],
+  "content_rebuild": [
+    0,
+    1279
+  ],
+  "content_rows_original": [
+    53,
+    899
+  ],
+  "content_rows_rebuild": [
+    48,
+    843
+  ],
+  "name": "v1.12-example"
+}
