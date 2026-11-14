@@ -11,6 +11,7 @@ from . import cleanwords
 from . import inspect as imod
 from . import compare
 from . import pngio
+from . import act, probe
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
@@ -127,6 +128,52 @@ def cmd_inspect(a):
         bmod.close_session(r)
 
 
+def cmd_act(a):
+    steps = act.load_steps(script_path=a.script, inline=a.steps)
+    r = bmod.launch(port=a.port, headless=True)
+    try:
+        c = CDP(get_page_ws("127.0.0.1", a.port))
+        c.set_device_metrics(a.width, a.height, mobile=a.mobile)
+        c.navigate(a.url, wait=a.wait, timeout=a.timeout)
+        report = act.run_steps(c, steps)
+        c.close()
+    finally:
+        bmod.close_session(r)
+    if a.out:
+        with open(a.out, "w", encoding="utf-8") as f:
+            json.dump({"steps": report}, f, ensure_ascii=False, indent=2)
+    failed = [x for x in report if not x["ok"]]
+    print(f"动作完成：{len(report)} 步，失败 {len(failed)} 步")
+    if failed:
+        for x in failed:
+            print(f"  失败：{x['op']} {x.get('target') or ''} - {x['error']}", file=sys.stderr)
+        sys.exit(1)
+
+
+def cmd_probe(a):
+    assertions = probe.load_assertions(a.assertions)
+    r = bmod.launch(port=a.port, headless=True)
+    try:
+        c = CDP(get_page_ws("127.0.0.1", a.port))
+        c.set_device_metrics(a.width, a.height, mobile=a.mobile)
+        c.navigate(a.url, wait=a.wait, timeout=a.timeout)
+        if a.script:
+            act.run_steps(c, act.load_steps(script_path=a.script))
+        report = probe.run_assertions(c, assertions)
+        c.close()
+    finally:
+        bmod.close_session(r)
+    payload = {"results": report, "all_pass": probe.all_pass(report)}
+    with open(a.out, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    for item in report:
+        mark = "PASS" if item["pass"] else "FAIL"
+        print(f"[{mark}] {item['name']}（期望 {item['expected']}，实测 {item['actual']}）")
+    if not probe.all_pass(report):
+        print("存在未通过的断言", file=sys.stderr)
+        sys.exit(1)
+
+
 def cmd_version(a):
     info = {
         "version": get_version(),
@@ -213,6 +260,26 @@ def build_parser():
     s.add_argument("--text-out", help="纯文本大纲另存路径（.txt）")
     s.add_argument("--max-text", type=int, default=4000, help="纯文本字符上限（默认 4000）")
     s.set_defaults(func=cmd_inspect)
+
+    s = sub.add_parser("act", help="按 JSON 动作序列执行交互（点击/输入/键盘/滚动/等待）")
+    s.add_argument("--url", required=True); s.add_argument("--out", help="动作日志 JSON 路径")
+    s.add_argument("--script", help="动作序列 JSON 文件路径")
+    s.add_argument("--steps", help="内联动作序列 JSON")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9343); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_act)
+
+    s = sub.add_parser("probe", help="页面状态断言，输出结构化断言报告")
+    s.add_argument("--url", required=True); s.add_argument("--out", default="probe-report.json")
+    s.add_argument("--assertions", required=True, help="断言序列 JSON 文件路径")
+    s.add_argument("--script", help="断言前执行的动作序列 JSON（可选，同一会话）")
+    s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
+    s.add_argument("--port", type=int, default=9344); s.add_argument("--mobile", action="store_true")
+    s.add_argument("--wait", type=float, default=1.5)
+    s.add_argument("--timeout", type=float, default=15.0, help="导航加载等待上限（秒）")
+    s.set_defaults(func=cmd_probe)
 
     s = sub.add_parser("version", help="输出版本与运行环境信息")
     s.add_argument("--json", action="store_true")

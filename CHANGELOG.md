@@ -2,6 +2,19 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.9.0] - 2026-11-14
+
+### 新增
+- CDP 交互原语：`click`、`type_text`、`press_key`、`scroll_to`、`wait_for`、`eval_state`，找不到元素抛中文错误。
+- 新命令 `act`：读取 JSON 动作序列（click/type/key/scroll/wait/eval/screenshot），逐步记录 `ok / elapsed_ms / error`，单步失败不中断后续。
+- 新命令 `probe`：按断言 schema（文本 / 类名 / 属性 / 可见性 / 条件表达式）输出结构化 PASS/FAIL 报告，任一 FAIL 退出码 1；断言可带前置步骤，同一会话逐段核对多状态。
+- 6 项单元测试（动作解析与未知 op、点击选择器、键盘事件构造、文本断言通过/失败、失败退出标识、act/probe 解析就位），核心测试增至 55 项。
+
+### 修复
+- 纯标准库闭环断在交互一环：补齐点击 / 键盘 / 输入 / 等待与断言取证，动态复刻可独立完成端到端验证。
+- `Page.loadEventFired` 竞态错过：send 层缓存无 id 事件，等待加载先查缓存再监听。
+- 键盘事件仅派发 window，页面监听挂在 document 时不生效：document 与 window 同时派发 keydown / keyup。
+
 ## [1.8.0] - 2026-11-14
 
 ### 新增

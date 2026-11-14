@@ -1,0 +1,67 @@
+{
+  "steps": [
+    {
+      "op": "screenshot",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 183.8,
+      "error": null
+    },
+    {
+      "op": "click",
+      "target": "#start-btn",
+      "ok": true,
+      "elapsed_ms": 31.0,
+      "error": null
+    },
+    {
+      "op": "wait",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 1.2,
+      "error": null
+    },
+    {
+      "op": "screenshot",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 170.2,
+      "error": null
+    },
+    {
+      "op": "key",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 1.0,
+      "error": null
+    },
+    {
+      "op": "wait",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 1.0,
+      "error": null
+    },
+    {
+      "op": "screenshot",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 167.9,
+      "error": null
+    },
+    {
+      "op": "key",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 1.3,
+      "error": null
+    },
+    {
+      "op": "wait",
+      "target": null,
+      "ok": true,
+      "elapsed_ms": 0.3,
+      "error": null
+    }
+  ]
+}

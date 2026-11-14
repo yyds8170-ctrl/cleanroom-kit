@@ -1,0 +1,11 @@
+[
+  {"op": "screenshot", "out": "evidence/v1.9.0/before.png"},
+  {"op": "click", "target": "#start-btn"},
+  {"op": "wait", "condition": "document.getElementById('overlay').classList.contains('hidden')", "timeout": 5},
+  {"op": "screenshot", "out": "evidence/v1.9.0/after-start.png"},
+  {"op": "key", "code": "Space"},
+  {"op": "wait", "condition": "document.getElementById('overlay-title').textContent === '已暂停'", "timeout": 5},
+  {"op": "screenshot", "out": "evidence/v1.9.0/paused.png"},
+  {"op": "key", "code": "Space"},
+  {"op": "wait", "condition": "document.getElementById('overlay').classList.contains('hidden')", "timeout": 5}
+]

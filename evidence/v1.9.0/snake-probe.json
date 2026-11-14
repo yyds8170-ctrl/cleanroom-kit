@@ -1,0 +1,29 @@
+[
+  {
+    "name": "开始后遮罩隐藏",
+    "selector": "#overlay",
+    "expect": {"class": "hidden"},
+    "steps": [
+      {"op": "click", "target": "#start-btn"},
+      {"op": "wait", "condition": "document.getElementById('overlay').classList.contains('hidden')", "timeout": 5}
+    ]
+  },
+  {
+    "name": "暂停后标题为已暂停",
+    "selector": "#overlay-title",
+    "expect": {"text": "已暂停"},
+    "steps": [
+      {"op": "key", "code": "Space"},
+      {"op": "wait", "condition": "document.getElementById('overlay-title').textContent === '已暂停'", "timeout": 5}
+    ]
+  },
+  {
+    "name": "恢复后遮罩隐藏",
+    "selector": "#overlay",
+    "expect": {"class": "hidden"},
+    "steps": [
+      {"op": "key", "code": "Space"},
+      {"op": "wait", "condition": "document.getElementById('overlay').classList.contains('hidden')", "timeout": 5}
+    ]
+  }
+]

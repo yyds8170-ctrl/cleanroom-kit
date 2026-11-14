@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
-from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors  # noqa: E402
+from crkit import version as vmod, cleanwords, cdp as cdpmod, cli, colors, act, probe  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -312,6 +312,21 @@ class TestCDPNavigate(unittest.TestCase):
         self.assertEqual(methods[0], "Page.enable")
         self.assertEqual(methods[1], "Page.navigate")
 
+    def test_click_evaluates_selector(self):
+        ws = _FakeWS([{"id": 1, "result": {"result": {"value": True}}}])
+        c = cdpmod.CDP("ws://x", ws=ws)
+        c.click("#start-btn")
+        expr = [m for m in ws.sent if m["method"] == "Runtime.evaluate"][0]["params"]["expression"]
+        self.assertIn("#start-btn", expr)
+
+    def test_press_key_builds_keyboard_event(self):
+        ws = _FakeWS([{"id": 1, "result": {"result": {"value": True}}}])
+        c = cdpmod.CDP("ws://x", ws=ws)
+        c.press_key("Space")
+        expr = [m for m in ws.sent if m["method"] == "Runtime.evaluate"][0]["params"]["expression"]
+        self.assertIn("KeyboardEvent", expr)
+        self.assertIn("Space", expr)
+
     def test_fullpage_screenshot_passes_capture_beyond_viewport(self):
         import base64
         b64 = base64.b64encode(b"x").decode()
@@ -346,6 +361,56 @@ class TestCLIParse(unittest.TestCase):
         )
         self.assertTrue(args.full_page)
         self.assertEqual(args.widths, "1280,390")
+
+    def test_act_probe_parser_registered(self):
+        args = cli.build_parser().parse_args(
+            ["act", "--url", "http://x", "--steps", "[]"]
+        )
+        self.assertEqual(args.command, "act")
+        args2 = cli.build_parser().parse_args(
+            ["probe", "--url", "http://x", "--assertions", "a.json"]
+        )
+        self.assertEqual(args2.command, "probe")
+
+
+class TestAct(unittest.TestCase):
+    def test_script_parses_steps(self):
+        steps = act.load_steps(
+            inline='[{"op":"click","target":"#btn"},{"op":"key","code":"Space"}]'
+        )
+        self.assertEqual([s["op"] for s in steps], ["click", "key"])
+        with self.assertRaises(RuntimeError):
+            act.load_steps(inline='[{"op":"teleport"}]')
+
+
+class TestProbeCDP:
+    """记录 evaluate 调用并返回固定快照，避免依赖真实浏览器。"""
+    def __init__(self, snapshot):
+        self.snapshot = snapshot
+
+    def evaluate(self, js):
+        return self.snapshot
+
+    def eval_state(self, js):
+        return self.snapshot
+
+
+class TestProbe(unittest.TestCase):
+    def test_assertion_text_pass_fail(self):
+        ok = probe.run_assertions(
+            TestProbeCDP({"text": "已开始", "className": "", "attrs": {}, "visible": True}),
+            [{"name": "t", "selector": "#overlay", "expect": {"text": "已开始"}}],
+        )
+        self.assertTrue(ok[0]["pass"])
+        bad = probe.run_assertions(
+            TestProbeCDP({"text": "已暂停", "className": "", "attrs": {}, "visible": True}),
+            [{"name": "t", "selector": "#overlay", "expect": {"text": "已开始"}}],
+        )
+        self.assertFalse(bad[0]["pass"])
+
+    def test_report_exit_code_on_fail(self):
+        self.assertFalse(probe.all_pass([{"pass": False}]))
+        self.assertTrue(probe.all_pass([{"pass": True}, {"pass": True}]))
 
 
 def _ws_frame(opcode, payload, fin=True):
