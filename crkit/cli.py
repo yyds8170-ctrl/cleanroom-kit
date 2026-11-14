@@ -1,15 +1,20 @@
 """cleanroom-kit 统一命令行入口（argparse，标准库）。"""
 import argparse
+import json
+import platform
 import shutil
 import sys
+from pathlib import Path
 
 from . import browser as bmod
+from . import cleanwords
 from . import inspect as imod
 from . import compare
 from .cdp import CDP, get_page_ws
 from .compare import compare_images, format_report
 from .license import write_license
 from .scaffold import init_project
+from .version import get_version
 
 
 def cmd_init(a):
@@ -40,7 +45,7 @@ def cmd_shot(a):
         with open(a.out, "wb") as f:
             f.write(data)
         c.close()
-        print(f"已保存截图（{a.width}x{a.height}）：{a.out}（{len(data)} 字节）")
+        print(f"已保存截图（{a.width}x{a.height}）：{a.out}（{len(data)} bytes）")
     finally:
         r["process"].terminate()
 
@@ -71,6 +76,33 @@ def cmd_inspect(a):
         )
     finally:
         r["process"].terminate()
+
+
+def cmd_version(a):
+    info = {
+        "version": get_version(),
+        "python": sys.version.split()[0],
+        "platform": platform.platform(),
+        "license": "PolyForm Noncommercial License 1.0.0",
+    }
+    if a.json:
+        print(json.dumps(info, ensure_ascii=False, indent=2))
+    else:
+        print(f"版本：{info['version']}")
+        print(f"Python：{info['python']}")
+        print(f"平台：{info['platform']}")
+        print(f"许可证：{info['license']}")
+
+
+def cmd_lint(a):
+    root = Path(__file__).resolve().parent.parent
+    hits = cleanwords.scan_tree(root)
+    if hits:
+        print(f"禁用词命中 {len(hits)} 处：", file=sys.stderr)
+        for h in hits:
+            print(f"{h['file']}:{h['line']}: [{h['word']}] {h['text']}", file=sys.stderr)
+        sys.exit(1)
+    print("PASS：未发现禁用词。")
 
 
 def cmd_doctor(a):
@@ -120,6 +152,12 @@ def build_parser():
     s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
     s.add_argument("--port", type=int, default=9342); s.add_argument("--mobile", action="store_true")
     s.add_argument("--wait", type=float, default=1.5); s.set_defaults(func=cmd_inspect)
+
+    s = sub.add_parser("version", help="输出版本与运行环境信息")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_version)
+
+    sub.add_parser("lint", help="禁用词合规自检").set_defaults(func=cmd_lint)
 
     sub.add_parser("doctor", help="环境自检").set_defaults(func=cmd_doctor)
     return p

@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from crkit import pngio, compare, license as lic, scaffold, ws, browser, inspect as insp  # noqa: E402
+from crkit import version as vmod, cleanwords  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 ASSET = FIXTURES / "page-1280x900.png"
@@ -181,6 +182,49 @@ class TestBrowserDetect(unittest.TestCase):
     def test_find_returns_path_or_none(self):
         r = browser.find_browser()
         self.assertTrue(r is None or os.path.exists(r))
+
+
+class TestVersion(unittest.TestCase):
+    def test_version_matches_VERSION(self):
+        self.assertEqual(
+            vmod.get_version(),
+            vmod.VERSION_PATH.read_text(encoding="utf-8").strip(),
+        )
+
+    def test_init_dunder_derived(self):
+        import crkit
+        self.assertEqual(crkit.__version__, vmod.get_version())
+
+
+class TestLint(unittest.TestCase):
+    def test_no_banned_words_in_tree(self):
+        self.assertEqual(cleanwords.scan_tree(ROOT), [])
+
+    def test_detector_bidirectional(self):
+        with tempfile.TemporaryDirectory() as d:
+            sample = Path(d) / "crkit"
+            sample.mkdir()
+            # 真实禁用词（厂商 / 机构名）必须被检出
+            targets = [
+                cleanwords.BANNED_WORDS[0],
+                cleanwords.BANNED_WORDS[2],
+                cleanwords.BANNED_WORDS[12],
+            ]
+            (sample / "banned.txt").write_text(
+                "样例：" + "、".join(targets), encoding="utf-8"
+            )
+            hits = cleanwords.scan_tree(Path(d))
+            found = {h["word"].lower() for h in hits}
+            for t in targets:
+                self.assertIn(t.lower(), found)
+            # 普通中文单位用词不得被误报
+            (sample / "normal.txt").write_text(
+                "按字节读取；8 字节对齐；单位用 bytes 表述。", encoding="utf-8"
+            )
+            hits = cleanwords.scan_tree(Path(d))
+            self.assertEqual(
+                [h for h in hits if h["file"].endswith("normal.txt")], []
+            )
 
 
 class FakeCDP:

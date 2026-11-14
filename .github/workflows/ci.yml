@@ -56,6 +56,8 @@ jobs:
           bin/crk compare --orig /tmp/shot.png --rebuild /tmp/shot.png --diff-out /tmp/diff.png
           python3 -c "import sys;sys.path.insert(0,'.');from crkit import pngio;w,h,c,px=pngio.read_png('/tmp/diff.png');red=sum(1 for i in range(w*h) if px[i*3]==255 and px[i*3+1]==0 and px[i*3+2]==0);assert red==0,red;print('差异热图 OK，红色像素 0')"
       - name: DOM 取证（inspect）
+        env:
+          CRK_BROWSER: "${{ steps.setup-chrome.outputs.chrome-path }}"
         run: |
           bin/crk inspect --url http://127.0.0.1:8060/ --out /tmp/inspect.json --width 390 --height 844 --mobile --port 9351
           python3 -c "import json;d=json.load(open('/tmp/inspect.json'));assert d['viewport']['width']==390;assert len(d['elements'])>0;print('inspect 端到端 OK，元素',len(d['elements']))"

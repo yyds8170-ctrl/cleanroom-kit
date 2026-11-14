@@ -1,9 +1,9 @@
 # cleanroom-kit · 洁净室复刻工具包
 
+[![ci](https://img.shields.io/github/actions/workflow/status/yyds8170-ctrl/cleanroom-kit/ci.yml?branch=main)](https://github.com/yyds8170-ctrl/cleanroom-kit/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
-[![python](https://img.shields.io/badge/python-3.8%2B%20%7C%20stdlib%20only-lightgrey.svg)](#零依赖与跨平台)
-[![test](https://img.shields.io/badge/tests-22%20passing-brightgreen.svg)](#测试)
-[![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#零依赖与跨平台)
+[![version](https://img.shields.io/badge/version-1.4.0-blue.svg)](#快速开始)
+[![tests](https://img.shields.io/badge/tests-26%20passing-brightgreen.svg)](#测试)
 
 一套**零依赖、跨平台、即开即用**的洁净室（clean-room）复刻工具包。它只观察目标网站或应用的**外部可见行为**，不读取其源码，帮助你独立完成「**取证 → 实现 → 对照 → 验证**」的完整闭环。
 
@@ -63,6 +63,8 @@ bin/crk compare --orig evidence/orig.png --rebuild evidence/rebuild.png --diff-o
 | 命令 | 作用 | 关键参数 |
 | --- | --- | --- |
 | `doctor` | 环境自检 | — |
+| `version` | 输出版本与运行环境信息 | `--json` |
+| `lint` | 禁用词合规自检，命中即非零退出 | — |
 | `init` | 从模板创建项目 | `name` `--dir` `--desc` `--force` |
 | `shot` | 设备模拟截图 | `--url` `--out` `--width` `--height` `--mobile` |
 | `inspect` | DOM 取证（设计 token / 元素坐标 / 调色板） | `--url` `--out` `--width` `--height` `--mobile` |
@@ -86,6 +88,8 @@ cleanroom-kit/
 ├── bin/crk, bin/crk.cmd     # 跨平台启动器（无需安装）
 ├── crkit/                   # 纯标准库包
 │   ├── cli.py               # 命令路由
+│   ├── version.py           # VERSION 单一来源读取
+│   ├── cleanwords.py        # 禁用词合规自检
 │   ├── pngio.py             # PNG 解码与编码（zlib，替代图像库）
 │   ├── ws.py / cdp.py       # WebSocket + CDP 客户端
 │   ├── browser.py           # 浏览器探测与启动
@@ -95,7 +99,8 @@ cleanroom-kit/
 │   └── license.py           # 许可证生成
 ├── templates/web/           # 项目模板
 ├── data/                    # 内嵌 PolyForm 标准条款
-└── tests/test_core.py       # 核心测试（22 项）
+├── evidence/                # 各版本真实浏览器验证产物
+└── tests/test_core.py       # 核心测试（26 项）
 ```
 
 ## 示例项目
@@ -112,7 +117,7 @@ cleanroom-kit/
 ## 测试
 
 ```bash
-python3 -m unittest tests.test_core -v   # 22 项，覆盖 PNG/归一化/对照/裁剪/取证/脚手架/许可证
+python3 -m unittest tests.test_core -v   # 26 项，覆盖 PNG/归一化/对照/裁剪/取证/脚手架/许可证/版本一致性/合规自检
 ```
 
 ## 许可证
