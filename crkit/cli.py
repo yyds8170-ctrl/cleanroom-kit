@@ -75,7 +75,8 @@ def cmd_shot(a):
         for width, out in zip(targets, outs):
             c.set_device_metrics(width, a.height, mobile=a.mobile)
             c.navigate(a.url, wait=a.wait, timeout=a.timeout)
-            data = c.screenshot(full_page=a.full_page)
+            data = c.screenshot(full_page=a.full_page, mobile=a.mobile,
+                                viewport=(width, a.height))
             with open(out, "wb") as f:
                 f.write(data)
             w_out, h_out, _, _ = pngio.read_png(out)
@@ -85,13 +86,23 @@ def cmd_shot(a):
         bmod.close_session(r)
 
 
+def _validate_compare_options(a):
+    if a.crop and a.resize:
+        raise RuntimeError("--crop 与 --resize 互斥，请二选一")
+
+
 def cmd_compare(a):
-    r = compare_images(a.orig, a.rebuild, threshold=a.threshold, crop=a.crop)
+    _validate_compare_options(a)
+    r = compare_images(a.orig, a.rebuild, threshold=a.threshold, crop=a.crop,
+                       resize=a.resize, max_diff=a.max_diff)
     print(format_report(r))
     if a.diff_out:
         compare.write_diff_image(a.orig, a.rebuild, a.diff_out,
-                                 threshold=a.threshold, crop=a.crop)
+                                 threshold=a.threshold, crop=a.crop, resize=a.resize)
         print(f"差异热图已保存：{a.diff_out}")
+    if a.json:
+        compare.write_report_json(r, a.json)
+        print(f"结构化报告已保存：{a.json}")
     if r["diff_ratio_pct"] > a.max_diff:
         print(f"差异 {r['diff_ratio_pct']:.1f}% 超过阈值 {a.max_diff}%", file=sys.stderr)
         sys.exit(1)
@@ -186,7 +197,10 @@ def build_parser():
                    help="单像素 RGB 差值判定阈值（默认 20）")
     s.add_argument("--crop", action="store_true",
                    help="尺寸不一致时裁剪到共同最小区域")
+    s.add_argument("--resize", action="store_true",
+                   help="尺寸不一致时把复刻图缩放对齐到原版尺寸（与 --crop 互斥）")
     s.add_argument("--diff-out", help="差异热图输出路径（差异像素标红）")
+    s.add_argument("--json", help="结构化对照报告落盘路径（JSON）")
     s.set_defaults(func=cmd_compare)
 
     s = sub.add_parser("inspect", help="DOM 取证（设计 token/元素坐标/调色板）")

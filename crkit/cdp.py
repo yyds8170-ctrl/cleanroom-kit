@@ -75,21 +75,28 @@ class CDP:
             raise RuntimeError(f"JS 执行异常：{r['exceptionDetails']}")
         return r.get("result", {}).get("value")
 
-    def page_dimensions(self):
-        """探测整页滚动尺寸（scrollWidth / scrollHeight）。"""
-        return self.evaluate(
+    def page_dimensions(self, fallback=None):
+        """探测整页滚动尺寸；探测异常或为 0 时回退到给定视口尺寸。"""
+        dims = self.evaluate(
             "({w: document.documentElement.scrollWidth, "
             "h: document.documentElement.scrollHeight})"
-        ) or {"w": 0, "h": 0}
+        )
+        if not isinstance(dims, dict) or not dims.get("w") or not dims.get("h"):
+            if fallback:
+                return {"w": fallback[0], "h": fallback[1]}
+            return {"w": 0, "h": 0}
+        return dims
 
-    def screenshot(self, full_page=False):
+    def screenshot(self, full_page=False, mobile=False, viewport=None):
         params = {"format": "png"}
         if full_page:
-            dims = self.page_dimensions()
+            dims = self.page_dimensions(fallback=viewport)
+            if not dims["w"] or not dims["h"]:
+                raise RuntimeError("整页尺寸探测失败：宽高为 0，请检查页面是否正常加载")
             self.send("Emulation.setScrollbarsHidden", {"hidden": True})
             self.send("Emulation.setDeviceMetricsOverride", {
                 "width": dims["w"], "height": dims["h"],
-                "deviceScaleFactor": 1, "mobile": False,
+                "deviceScaleFactor": 1, "mobile": mobile,
             })
             params["captureBeyondViewport"] = True
         r = self.send("Page.captureScreenshot", params)

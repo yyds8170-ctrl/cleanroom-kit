@@ -16,6 +16,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m unittest tests.test_core -v
+      - name: 禁用词合规自检
+        run: bin/crk lint
 
   cli-smoke:
     name: CLI 冒烟（doctor/init）

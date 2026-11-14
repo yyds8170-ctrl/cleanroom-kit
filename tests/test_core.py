@@ -156,6 +156,69 @@ class TestCompare(unittest.TestCase):
             compare.write_diff_image(pa, pb, out)
             self.assertTrue(out.exists())
 
+    def test_vertical_content_range(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([200, 200, 200] * 2 * 2 + [240, 240, 240] * 2 * 2)
+            pa = Path(d) / "a.png"
+            pngio.write_png(pa, 2, 4, a)
+            r = compare.compare_images(pa, pa)
+            self.assertEqual(r["content_rows_original"], (0, 1))
+            self.assertEqual(r["content_rows_rebuild"], (0, 1))
+
+    def test_grid_buckets_report_diff_per_cell(self):
+        with tempfile.TemporaryDirectory() as d:
+            w, h = 8, 6
+            a = bytearray([240, 240, 240] * w * h)
+            b = bytearray(a)
+            b[0:3] = bytearray([10, 10, 10])  # 仅 (row0, col0) 差异
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, w, h, a)
+            pngio.write_png(pb, w, h, b)
+            r = compare.compare_images(pa, pb)
+            buckets = r["grid"]["buckets"]
+            target = [x for x in buckets if x["row"] == 0 and x["col"] == 0][0]
+            self.assertGreater(target["diff_ratio_pct"], 0.0)
+            others = [x for x in buckets if not (x["row"] == 0 and x["col"] == 0)]
+            self.assertTrue(all(x["diff_ratio_pct"] == 0.0 for x in others))
+
+    def test_json_report_roundtrip(self):
+        with tempfile.TemporaryDirectory() as d:
+            r = compare.compare_images(ASSET, ASSET)
+            p = Path(d) / "report.json"
+            compare.write_report_json(r, p)
+            loaded = json.loads(p.read_text(encoding="utf-8"))
+            self.assertEqual(tuple(loaded["size"]), r["size"])
+            self.assertEqual(loaded["verdict"], "match")
+            self.assertIn("grid", loaded)
+
+    def test_resize_aligns_mismatched_size(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([10, 10, 10] * 6)   # 3x2
+            b = bytearray([10, 10, 10] * 4)   # 2x2
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, 3, 2, a)
+            pngio.write_png(pb, 2, 2, b)
+            r = compare.compare_images(pa, pb, resize=True)
+            self.assertEqual(r["size"], (3, 2))
+
+    def test_crop_and_resize_mutually_exclusive(self):
+        args = cli.build_parser().parse_args(
+            ["compare", "--orig", "x", "--rebuild", "y", "--crop", "--resize"]
+        )
+        with self.assertRaises(RuntimeError):
+            cli._validate_compare_options(args)
+
+    def test_verdict_threshold(self):
+        self.assertEqual(compare.compare_images(ASSET, ASSET)["verdict"], "match")
+        with tempfile.TemporaryDirectory() as d:
+            a = bytearray([10, 10, 10] * 4)
+            b = bytearray([240, 240, 240] * 4)
+            pa, pb = Path(d) / "a.png", Path(d) / "b.png"
+            pngio.write_png(pa, 2, 2, a)
+            pngio.write_png(pb, 2, 2, b)
+            r = compare.compare_images(pa, pb, max_diff=10.0)
+            self.assertEqual(r["verdict"], "major")
+
 
 class TestLicense(unittest.TestCase):
     def test_build_license(self):
@@ -330,6 +393,11 @@ class TestVersion(unittest.TestCase):
 class TestLint(unittest.TestCase):
     def test_no_banned_words_in_tree(self):
         self.assertEqual(cleanwords.scan_tree(ROOT), [])
+        rel = {str(p.relative_to(ROOT)) for p in cleanwords._iter_files(ROOT)}
+        self.assertIn("evidence/v1.7.0/example-inspect.json", rel)
+        self.assertIn("data/polyform-noncommercial.txt", rel)
+        self.assertIn("NOTICE", rel)
+        self.assertIn("VERSION", rel)
 
     def test_detector_bidirectional(self):
         with tempfile.TemporaryDirectory() as d:
@@ -352,9 +420,18 @@ class TestLint(unittest.TestCase):
             (sample / "normal.txt").write_text(
                 "按字节读取；8 字节对齐；单位用 bytes 表述。", encoding="utf-8"
             )
+            # 含同名子串的普通英文词不得被词边界规则误报
+            normal_ascii = " ".join([
+                "g" + "ptx", "open" + "air", "moon" + "shotx",
+                "byte" + "dancex", "q" + "wenx",
+            ])
+            (sample / "ascii-normal.txt").write_text(normal_ascii, encoding="utf-8")
             hits = cleanwords.scan_tree(Path(d))
             self.assertEqual(
                 [h for h in hits if h["file"].endswith("normal.txt")], []
+            )
+            self.assertEqual(
+                [h for h in hits if h["file"].endswith("ascii-normal.txt")], []
             )
 
 

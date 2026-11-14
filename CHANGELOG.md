@@ -2,6 +2,26 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.8.0] - 2026-11-14
+
+### 新增
+- 对照报告新增垂直内容范围 `content_rows_original / content_rows_rebuild`（与水平列算法对称）。
+- 新增 8×6 网格分桶：每桶输出差异像素数与 `diff_ratio_pct`，定位差异集中区域。
+- 新增整体判定 `verdict`：`match / minor / major`，依据差异占比与 `--max-diff` 阈值。
+- `compare` 新增 `--resize`：把复刻图最近邻缩放对齐到原版尺寸，与 `--crop` 互斥（CLI 层校验）。
+- 新增 `write_report_json` 与 `compare --json` 结构化报告落盘；文本报告末尾追加垂直范围、最重桶与判定结论。
+- 背景采样边距做成函数参数（默认 5px）。
+- 6 项单元测试（垂直范围、网格分桶、JSON 往返、resize 对齐、互斥校验、判定阈值），核心测试增至 49 项。
+
+### 修复
+- 对照只算水平内容列、报告仅终端文本、尺寸不一致只能裁剪、差异无区块定位：补垂直范围、网格分桶、JSON 报告、resize 策略与判定结论。
+- 禁用词扫描范围不全：纳入 `evidence/`、`data/` 与根 `NOTICE/VERSION`。
+- CI 缺合规门禁：unit job 新增 `bin/crk lint` 步骤。
+- 全页截图重设度量硬编码 `mobile: False`，`--mobile --full-page` 丢失移动模拟：全页分支透传 `mobile`。
+- 仓库根缺 `LICENSE` 实体：生成 PolyForm 全文 LICENSE 入库并保持徽章/NOTICE 一致。
+- 页高探测异常兜底 `0×0` 静默出图：改为视口回退，仍为 0 时抛中文错误。
+- ASCII 禁用词子串误报：ASCII 词加词边界，中文词保持全词包含。
+
 ## [1.7.0] - 2026-11-14
 
 ### 新增
