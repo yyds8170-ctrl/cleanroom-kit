@@ -1,0 +1,8 @@
+[PASS] VERSION 与 __version__ 一致：VERSION=1.13.0 __version__=1.13.0
+[PASS] CHANGELOG 顶部版本与 VERSION 一致：changelog=1.13.0
+[PASS] README 版本徽章与 VERSION 一致：badge=1.13.0
+[PASS] README 测试数与测试方法计数一致：badge=77 count=77
+[PASS] 禁用词零命中：hits=0
+[PASS] 当前版本证据目录齐备：evidence/v1.13.0/README.md
+[PASS] git 工作区干净：未提交条目 0
+发布自检全部通过。

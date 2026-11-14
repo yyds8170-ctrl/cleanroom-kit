@@ -26,11 +26,11 @@ _FRAGMENTS = [
 ]
 BANNED_WORDS = ["".join(parts) for parts in _FRAGMENTS]
 
-SCAN_DIRS = ["crkit", "bin", "templates", "tests", "evidence", "data"]
-ROOT_FILES = ["NOTICE", "VERSION"]
+SCAN_DIRS = ["crkit", "bin", "templates", "tests", "evidence", "data", "scripts", "docs"]
+ROOT_FILES = ["NOTICE", "VERSION", "CITATION.cff"]
 TEXT_SUFFIXES = {
     ".py", ".sh", ".cmd", ".html", ".css", ".js", ".mjs",
-    ".md", ".yml", ".yaml", ".txt", ".json", ".gitignore",
+    ".md", ".yml", ".yaml", ".txt", ".json", ".gitignore", ".cff", ".svg",
 }
 
 

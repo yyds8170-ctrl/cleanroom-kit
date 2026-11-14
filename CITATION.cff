@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: cleanroom-kit
+abstract: 零依赖、跨平台的洁净室复刻工具包（Python 标准库 + CDP）
+version: 1.13.0
+date-released: 2026-11-14
+license: PolyForm-Noncommercial-1.0.0
+authors:
+  - name: 洋洋
+    website: https://github.com/yyds8170-ctrl
+repository-code: https://github.com/yyds8170-ctrl/cleanroom-kit
+copyright: Copyright (c) 2026 洋洋

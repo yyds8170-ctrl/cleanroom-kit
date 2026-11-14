@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 260" width="1280" height="260" role="img" aria-label="cleanroom-kit banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b2430"/>
+      <stop offset="1" stop-color="#2a3646"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="260" fill="url(#bg)"/>
+  <rect x="80" y="96" width="6" height="68" rx="3" fill="#4caf8d"/>
+  <text x="112" y="140" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="56" font-weight="700" fill="#f2f6f8">cleanroom-kit</text>
+  <text x="112" y="188" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="26" fill="#9fb3c8">零依赖 · 跨平台 · 洁净室复刻工具包（Python 标准库 + CDP）</text>
+</svg>

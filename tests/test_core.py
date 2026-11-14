@@ -1,12 +1,15 @@
 """cleanroom-kit 核心测试（unittest，标准库，零依赖）。"""
 import json
 import os
+import shutil
 import socket
 import struct
+import subprocess
 import sys
 import tempfile
 import unittest
 import zlib
+import importlib.util
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -36,6 +39,22 @@ def _write_raw_png(path, w, h, color_type, channels, pixels):
         f.write(b"\x89PNG\r\n\x1a\n")
         f.write(chunk(b"IHDR", ihdr))
         f.write(chunk(b"IDAT", zlib.compress(bytes(raw))))
+        f.write(chunk(b"IEND", b""))
+
+
+def _write_custom_png(path, w, h, color_type, channels, raw, interlace=0, extra_chunks=()):
+    """构造 8 位 PNG，支持隔行标记与附加 chunk（tRNS 等）。"""
+    def chunk(ct, data):
+        block = ct + data
+        return struct.pack(">I", len(data)) + block + struct.pack(
+            ">I", zlib.crc32(block) & 0xFFFFFFFF)
+    ihdr = struct.pack(">IIBBBBB", w, h, 8, color_type, 0, 0, interlace)
+    with open(path, "wb") as f:
+        f.write(b"\x89PNG\r\n\x1a\n")
+        f.write(chunk(b"IHDR", ihdr))
+        for ct, body in extra_chunks:
+            f.write(chunk(ct, body))
+        f.write(chunk(b"IDAT", zlib.compress(raw)))
         f.write(chunk(b"IEND", b""))
 
 
@@ -88,6 +107,27 @@ class TestPNG(unittest.TestCase):
             _write_raw_png(p, 1, 1, 6, 4, pix)
             _, _, rgb = pngio.read_png_rgb(p)
             self.assertEqual(bytes(rgb), bytes([255, 255, 255]))
+
+    def test_adam7_interlace_decode(self):
+        # 2x2 灰度 Adam7：pass1=(0,0)=10，pass6=(1,0)=20，pass7=(0,1)=30、(1,1)=40
+        raw = bytes([0, 10, 0, 20, 0, 30, 40])
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "adam7.png"
+            _write_custom_png(p, 2, 2, 0, 1, raw, interlace=1)
+            w, h, c, px = pngio.read_png(p)
+            self.assertEqual((w, h, c), (2, 2, 1))
+            self.assertEqual(bytes(px), bytes([10, 20, 30, 40]))
+
+    def test_trns_transparency_composited(self):
+        # 2x1 RGB：第一格红色为 tRNS 透明色（合成白底），第二格绿色保留
+        raw = bytes([0, 255, 0, 0, 0, 128, 0])
+        trns = struct.pack(">HHH", 255 << 8, 0, 0)
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "trns.png"
+            _write_custom_png(p, 2, 1, 2, 3, raw, extra_chunks=[(b"tRNS", trns)])
+            w, h, rgb = pngio.read_png_rgb(p)
+            self.assertEqual((w, h), (2, 1))
+            self.assertEqual(bytes(rgb), bytes([255, 255, 255, 0, 128, 0]))
 
     def test_readback_fullpage_dimensions(self):
         with tempfile.TemporaryDirectory() as d:
@@ -612,6 +652,37 @@ class TestPipeline(unittest.TestCase):
             self.assertTrue(any(n.endswith("shot.png") for n in names))
             self.assertTrue(any(n.endswith("inspect.json") for n in names))
 
+    def test_assertions_summary_and_forensics_mode(self):
+        reports = [
+            {"name": "a", "mode": "compare", "pass": True,
+             "assertions": [{"name": "标题", "pass": True}],
+             "compare": {"verdict": "match"}},
+            {"name": "b", "mode": "forensics-only", "note": "仅取证，未做像素对照",
+             "pass": True, "assertions": [], "compare": None},
+        ]
+        agg = pipeline.aggregate(reports)
+        self.assertEqual(agg["assertions"], {"total": 1, "passed": 1, "failed": 0})
+        self.assertEqual(agg["targets"][1]["mode"], "forensics-only")
+        self.assertIn("仅取证", agg["targets"][1]["note"])
+
+    def test_archive_includes_reference_and_baseline(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "run" / "site"
+            out.mkdir(parents=True)
+            (out / "shot.png").write_bytes(b"shot")
+            ref = Path(d) / "ref"
+            ref.mkdir()
+            (ref / "site.png").write_bytes(b"ref")
+            base = Path(d) / "baselines" / "demo"
+            base.mkdir(parents=True)
+            (base / "snapshot.json").write_text("{}", encoding="utf-8")
+            zpath = Path(d) / "evidence.zip"
+            pipeline.archive_zip(Path(d) / "run", zpath, extra_dirs=[ref, base])
+            import zipfile
+            names = zipfile.ZipFile(zpath).namelist()
+            self.assertTrue(any(n.endswith("site.png") for n in names))
+            self.assertTrue(any(n.endswith("snapshot.json") for n in names))
+
 
 class TestBaseline(unittest.TestCase):
     def test_save_and_load_snapshot(self):
@@ -641,6 +712,22 @@ class TestBaseline(unittest.TestCase):
                       "bg_match": True, "verdict": "match"}
             res2 = baseline.diff_snapshot("demo", stable, max_ratio_drift=5.0, root=d)
             self.assertFalse(res2["regressed"])
+
+    def test_mean_diff_within_tolerance_not_drift(self):
+        with tempfile.TemporaryDirectory() as d:
+            baseline.save_snapshot("demo", {"diff_ratio_pct": 4.0, "mean_abs_diff": 3.0,
+                                             "bg_match": True, "verdict": "match"}, root=d)
+            # 平均差 3.0 → 5.0，偏离 2.0 在默认容差 3.0 内，不报漂移
+            minor = {"diff_ratio_pct": 4.0, "mean_abs_diff": 5.0,
+                     "bg_match": True, "verdict": "match"}
+            res = baseline.diff_snapshot("demo", minor, root=d)
+            self.assertFalse(res["regressed"])
+            # 平均差 3.0 → 9.0，偏离 6.0 超容差，仍报漂移
+            worse = {"diff_ratio_pct": 4.0, "mean_abs_diff": 9.0,
+                     "bg_match": True, "verdict": "match"}
+            res2 = baseline.diff_snapshot("demo", worse, root=d)
+            self.assertTrue(res2["regressed"])
+            self.assertTrue(any(x["metric"] == "mean_abs_diff" for x in res2["drift"]))
 
 
 class TestLint(unittest.TestCase):
@@ -800,6 +887,10 @@ class TestInspect(unittest.TestCase):
         self.assertIn("alt", insp.INSPECT_JS)
         self.assertIn("header,nav,main,footer,aside,section", insp.INSPECT_JS)
 
+    def test_spacing_samples_side_margins_and_gap(self):
+        for prop in ("marginLeft", "marginRight", "gap"):
+            self.assertIn(prop, insp.INSPECT_JS)
+
     def test_plaintext_export(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d) / "text.txt"
@@ -807,6 +898,51 @@ class TestInspect(unittest.TestCase):
             txt = out.read_text(encoding="utf-8")
             self.assertIn("标题", txt)
             self.assertIn("页面可见纯文本", txt)
+
+
+class TestDoctor(unittest.TestCase):
+    def test_json_report_fields(self):
+        info = cli._doctor_info(9369)
+        for key in ("version", "python", "platform", "browser", "node",
+                    "craft_cli", "port", "port_free", "license"):
+            self.assertIn(key, info)
+        self.assertEqual(info["version"], vmod.get_version())
+
+
+class TestRelease(unittest.TestCase):
+    def _build_sample(self, root):
+        root = Path(root)
+        shutil.copytree(ROOT / "crkit", root / "crkit")
+        (root / "tests").mkdir()
+        shutil.copy(ROOT / "tests" / "test_core.py", root / "tests")
+        shutil.copy(ROOT / "README.md", root)
+        shutil.copy(ROOT / "CHANGELOG.md", root)
+        ver = vmod.get_version()
+        (root / "VERSION").write_text(ver, encoding="utf-8")
+        ev = root / "evidence" / f"v{ver}"
+        ev.mkdir(parents=True)
+        (ev / "README.md").write_text("样例证据", encoding="utf-8")
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+        subprocess.run(["git", "-c", "user.email=t@example.com",
+                        "-c", "user.name=t", "commit", "-qm", "init"],
+                       cwd=root, check=True)
+        return ver
+
+    def test_pre_release_check_passes_on_clean_tree(self):
+        spec = importlib.util.spec_from_file_location(
+            "prc", ROOT / "scripts" / "pre_release_check.py")
+        prc = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(prc)
+        with tempfile.TemporaryDirectory() as d:
+            self._build_sample(d)
+            res = prc.run_checks(d)
+            self.assertTrue(res["ok"], [c["detail"] for c in res["checks"] if not c["ok"]])
+            # 注入版本不一致，自检应正确报错
+            (Path(d) / "VERSION").write_text("9.9.9", encoding="utf-8")
+            res2 = prc.run_checks(d)
+            self.assertFalse(res2["ok"])
+            self.assertTrue(any("VERSION" in c["name"] for c in res2["checks"] if not c["ok"]))
 
 
 if __name__ == "__main__":

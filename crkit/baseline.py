@@ -42,11 +42,12 @@ def load_snapshot(name, root="evidence"):
     return json.loads(f.read_text(encoding="utf-8"))
 
 
-def diff_snapshot(name, current, max_ratio_drift=5.0, root="evidence"):
+def diff_snapshot(name, current, max_ratio_drift=5.0, mean_diff_tol=3.0, root="evidence"):
     """当前指标与基线回归比对，返回漂移项清单。
 
     - `diff_ratio_pct` 回升超过 `max_ratio_drift` 个百分点记漂移；
-    - 其余指标与基线不一致记漂移；
+    - `mean_abs_diff` 绝对差超过 `mean_diff_tol` 记漂移，轻微抖动在容差内不报；
+    - `bg_match` / `verdict` 与基线不一致记漂移（布尔与分级不容差）；
     - 内容列/行区间新增或消失记入 `content_changes`。
     """
     base = load_snapshot(name, root=root)
@@ -57,6 +58,10 @@ def diff_snapshot(name, current, max_ratio_drift=5.0, root="evidence"):
             if new is not None and old is not None and (new - old) > max_ratio_drift:
                 drift.append({"metric": key, "baseline": old, "current": new,
                               "detail": f"差异占比回升 {new - old:.1f} 个百分点"})
+        elif key == "mean_abs_diff":
+            if new is not None and old is not None and abs(new - old) > mean_diff_tol:
+                drift.append({"metric": key, "baseline": old, "current": new,
+                              "detail": f"平均差偏离 {abs(new - old):.1f}（容差 {mean_diff_tol}）"})
         elif old != new:
             drift.append({"metric": key, "baseline": old, "current": new,
                           "detail": "指标与基线不一致"})

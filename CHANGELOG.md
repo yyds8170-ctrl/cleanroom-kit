@@ -2,6 +2,24 @@
 
 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)，许可证 PolyForm Noncommercial 1.0.0。
 
+## [1.13.0] - 2026-11-14
+
+### 新增
+- PNG 格式加固：支持 Adam7 隔行解包、tRNS 透明块（索引/灰度/RGB）并入 alpha 合成；每个 chunk 做 CRC32 校验，不一致给出中文警告并标注 `crc_mismatch`；非 8 位深、不支持颜色类型、非法文件头均给出列出实际值与支持范围的中文报错。
+- 启动器加固：`bin/crk` 与 `bin/crk.cmd` 按 `python3`/`python` 顺序探测解释器，找不到给出中文提示，启动失败不抛裸栈。
+- `doctor --json`：机器可读输出 Python、平台、浏览器、Node（可选）、craft-anything CLI（可选）、端口自检与版本号，CI 可直接解析。
+- 新增 `scripts/pre_release_check.py`：串联版本一致性、README/CHANGELOG/测试数对齐、禁用词零命中、证据目录齐备、git 工作区干净检查，并接入 CI。
+- 8 项单元测试（Adam7 隔行、tRNS 合成、doctor JSON 字段、发布自检正反例、流水线断言摘要/取证-only、归档含参考图与基线、基线容差、spacing 左右 margin/gap），核心测试增至 77 项。
+
+### 修复
+- tRNS RGB/灰度透明采样按 16 位大端高字节取值，避免透明色误判。
+- 流水线汇总补断言摘要；无对照目标明确标「仅取证」模式与说明，不参与对照门禁。
+- 证据归档把参考图与基线快照一并打包。
+- 基线 `mean_abs_diff` 增加可配置绝对容差（默认 3.0），轻微抖动不误报漂移。
+- `a11y` 补 `--json` 别名（同 `--out`），文档统一为结构化 JSON 报告路径。
+- 取证 spacing 补采 `marginLeft/marginRight/gap`。
+- web/game 模板自带占位测试，init 后 CI 单测开箱可跑绿。
+
 ## [1.12.0] - 2026-11-14
 
 ### 新增

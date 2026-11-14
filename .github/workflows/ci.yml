@@ -18,6 +18,8 @@ jobs:
       - run: python -m unittest tests.test_core -v
       - name: 禁用词合规自检
         run: bin/crk lint
+      - name: 发布前一致性自检
+        run: python3 scripts/pre_release_check.py
 
   cli-smoke:
     name: CLI 冒烟（doctor/init）
@@ -28,6 +30,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: bin/crk doctor
+      - name: doctor 机器可读输出可解析
+        run: bin/crk doctor --json | python3 -c "import sys,json;d=json.load(sys.stdin);assert d['version'] and d['python'] and d['platform'];print('doctor --json OK')"
       - run: bin/crk init demo --dir /tmp/demo --desc "smoke"
       - name: 校验生成项目带许可证
         run: grep -q "PolyForm Noncommercial License 1.0.0" /tmp/demo/LICENSE

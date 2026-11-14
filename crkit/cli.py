@@ -246,17 +246,31 @@ def cmd_pipeline(a):
             insp = imod.inspect_page(c, wait=a.wait, timeout=a.timeout)
             imod.write_report(insp, tdir / "inspect.json")
 
+            assertions = []
+            if t.get("assertions"):
+                items = probe.load_assertions(Path(t["assertions"]))
+                probe_report = probe.run_assertions(c, items)
+                (tdir / "probe.json").write_text(
+                    json.dumps({"results": probe_report,
+                                "all_pass": probe.all_pass(probe_report)},
+                               ensure_ascii=False, indent=2), encoding="utf-8")
+                assertions = [{"name": x["name"], "pass": x["pass"]} for x in probe_report]
+
             cmp_report = None
             ref = Path(a.rebuild_dir) / f"{name}.png" if a.rebuild_dir else None
             if ref and ref.exists():
                 cmp_report = compare.compare_images(str(ref), shots[0], resize=True,
                                                     max_diff=a.max_diff)
                 compare.write_report_json(cmp_report, tdir / "compare.json")
+            compare_ok = cmp_report is None or cmp_report["diff_ratio_pct"] <= a.max_diff
             reports.append({
                 "name": name, "url": url, "widths": widths, "shots": shots,
                 "inspect": str(tdir / "inspect.json"),
+                "mode": "compare" if cmp_report else "forensics-only",
+                "note": "" if cmp_report else "仅取证，未做像素对照，不参与对照门禁",
+                "assertions": assertions,
                 "compare": pipeline.compare_subset(cmp_report),
-                "pass": cmp_report is None or cmp_report["diff_ratio_pct"] <= a.max_diff,
+                "pass": compare_ok and all(x["pass"] for x in assertions),
             })
         c.close()
     finally:
@@ -266,7 +280,8 @@ def cmd_pipeline(a):
     pipeline.write_report_json(agg, out / "report.json")
     pipeline.write_report_md(agg, out / "report.md")
     if a.archive:
-        pipeline.archive_zip(out, a.archive)
+        extras = [p for p in (a.rebuild_dir, str(out.parent.parent / "baselines")) if p]
+        pipeline.archive_zip(out, a.archive, extra_dirs=extras)
         print(f"证据已归档：{a.archive}")
     print(f"流水线完成：{agg['summary']['total']} 目标，总体 {agg['overall']}")
     if agg["overall"] != "pass":
@@ -281,6 +296,7 @@ def cmd_baseline(a):
     else:
         current = json.loads(Path(a.current).read_text(encoding="utf-8")) if a.current else {}
         res = baseline.diff_snapshot(a.name, current, max_ratio_drift=a.max_diff,
+                                     mean_diff_tol=a.mean_diff_tol,
                                      root=a.evidence_root)
         for d in res["drift"]:
             print(f"漂移：{d['metric']} 基线 {d['baseline']} → 当前 {d['current']}（{d['detail']}）")
@@ -318,13 +334,40 @@ def cmd_lint(a):
     print("PASS：未发现禁用词。")
 
 
+def _doctor_info(port=9340):
+    import socket
+    port_free = True
+    try:
+        sock = socket.socket()
+        sock.bind(("127.0.0.1", port))
+        sock.close()
+    except OSError:
+        port_free = False
+    return {
+        "version": get_version(),
+        "python": sys.version.split()[0],
+        "platform": platform.platform(),
+        "browser": bmod.find_browser(),
+        "node": shutil.which("node"),
+        "craft_cli": shutil.which("craft-anything-cli"),
+        "port": port,
+        "port_free": port_free,
+        "license": "PolyForm Noncommercial License 1.0.0",
+    }
+
+
 def cmd_doctor(a):
-    import platform
-    print("运行环境：", platform.platform())
-    print("Python：", sys.version.split()[0])
-    print("浏览器：", bmod.find_browser() or "未找到（请安装 Chrome/Edge/Chromium）")
-    print("Node：", shutil.which("node") or "未安装（可选）")
-    print("craft-anything：", shutil.which("craft-anything-cli") or "未安装（可选增强）")
+    info = _doctor_info(a.port)
+    if a.json:
+        print(json.dumps(info, ensure_ascii=False, indent=2))
+        return
+    print(f"版本：{info['version']}")
+    print(f"Python：{info['python']}")
+    print(f"平台：{info['platform']}")
+    print(f"浏览器：{info['browser'] or '未找到（请安装 Chrome/Edge/Chromium）'}")
+    print(f"Node：{info['node'] or '未安装（可选）'}")
+    print(f"craft-anything：{info['craft_cli'] or '未安装（可选增强）'}")
+    print(f"端口 {info['port']}：{'空闲' if info['port_free'] else '被占用'}")
     print("所有核心功能仅依赖 Python 标准库，无需 pip 安装。")
 
 
@@ -407,7 +450,8 @@ def build_parser():
     s = sub.add_parser("a11y", help="WCAG 对比度与无障碍清单检查")
     s.add_argument("--inspect", help="inspect 报告 JSON 路径")
     s.add_argument("--url", help="现场取证的页面地址（与 --inspect 二选一）")
-    s.add_argument("--out", help="结构化对比度报告落盘路径（JSON）")
+    s.add_argument("--out", dest="out", help="结构化对比度报告落盘路径（JSON）")
+    s.add_argument("--json", dest="out", help="同 --out，结构化 JSON 报告路径")
     s.add_argument("--width", type=int, default=1280); s.add_argument("--height", type=int, default=900)
     s.add_argument("--port", type=int, default=9366); s.add_argument("--mobile", action="store_true")
     s.add_argument("--wait", type=float, default=1.5)
@@ -435,6 +479,7 @@ def build_parser():
     s.add_argument("--metrics", help="compare 指标快照 JSON（save）")
     s.add_argument("--current", help="当前指标 JSON（diff）")
     s.add_argument("--max-diff", type=float, default=5.0, help="差异占比回升漂移阈值（百分点）")
+    s.add_argument("--mean-diff-tol", type=float, default=3.0, help="平均差绝对容差")
     s.add_argument("--evidence-root", default="evidence", help="证据根目录")
     s.set_defaults(func=cmd_baseline)
 
@@ -444,7 +489,10 @@ def build_parser():
 
     sub.add_parser("lint", help="禁用词合规自检").set_defaults(func=cmd_lint)
 
-    sub.add_parser("doctor", help="环境自检").set_defaults(func=cmd_doctor)
+    s = sub.add_parser("doctor", help="环境自检")
+    s.add_argument("--json", action="store_true", help="输出机器可读 JSON")
+    s.add_argument("--port", type=int, default=9340, help="自检端口")
+    s.set_defaults(func=cmd_doctor)
     return p
 
 
